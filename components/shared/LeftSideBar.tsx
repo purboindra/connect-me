@@ -9,7 +9,7 @@ import React from "react";
 export const LeftSideBar = () => {
   const pathname = usePathname();
   return (
-    <section className="left-0 top-0 sticky flex justify-between flex-col h-screen overflow-y-auto border-r pl-2 pr-14 max-lg:pr-2 pt-20 pb-8 max-sm:hidden lg:w-[200px] ">
+    <section className="left-0 top-0 sticky flex justify-between flex-col h-screen overflow-y-auto border-r pl-2 pr-14 max-lg:pr-8 pt-28 pb-8 max-sm:hidden lg:w-[200px] ">
       <div className="flex space-y-8 flex-col">
         {sidebarLinks.map((item, index) => {
           const isActive =
@@ -48,7 +48,9 @@ export const LeftSideBar = () => {
           height={20}
           className="invert"
         />
-        <p className="text-base font-semibold text-neutral-700">More</p>
+        <p className="text-base font-semibold text-neutral-700 max-lg:hidden">
+          More
+        </p>
       </div>
     </section>
   );
