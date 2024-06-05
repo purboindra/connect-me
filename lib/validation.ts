@@ -27,6 +27,9 @@ export type LoginState = {
 };
 
 export const LoginSchema = z.object({
-  email: z.string().min(1, "Email required"),
+  email: z
+    .string()
+    .min(1, "Email required")
+    .refine((args) => args.includes("@")),
   password: z.string().min(1, "Password required"),
 });

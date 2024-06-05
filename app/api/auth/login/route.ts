@@ -15,20 +15,20 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    if (!user)
-      return NextResponse.json({
-        status: 401,
-        message: "User not found",
-      });
+    console.log(user);
 
-    return NextResponse.json({
-      status: 201,
-      message: "Login successfully",
-    });
+    if (!user) {
+      return NextResponse.json({ message: "User not found" }, { status: 401 });
+    }
+
+    return NextResponse.json(
+      { message: "Login successfully" },
+      { status: 201 }
+    );
   } catch (error) {
-    return NextResponse.json({
-      status: 500,
-      message: "Internal server error",
-    });
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

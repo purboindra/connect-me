@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 import bcrypt from "bcrypt";
+import { parseStringify } from "@/lib/utils";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
@@ -37,16 +38,22 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json({
-      message: "user created",
-      status: 201,
-      // data: user,
-    });
+    if (!user)
+      return NextResponse.json(
+        { message: "User already register" },
+        { status: 401 }
+      );
+
+    return NextResponse.json(
+      { message: "Login successfully" },
+      { status: 201 }
+    );
   } catch (error) {
     console.error(error);
-    return NextResponse.json({
-      message: "Internal Server Error",
-      status: 500,
-    });
+
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
