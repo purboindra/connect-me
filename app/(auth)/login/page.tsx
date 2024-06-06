@@ -6,16 +6,6 @@ import { useFormStatus } from "react-dom";
 import { ArrowRightIcon } from "lucide-react";
 import { LoginForm } from "@/components/shared/LoginForm";
 
-function LoginButton() {
-  const { pending } = useFormStatus();
-
-  return (
-    <Button className="mt-4 w-full" aria-disabled={pending}>
-      Log in <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
-    </Button>
-  );
-}
-
 export default function Login() {
   return (
     <main className="max-w-5xl w-1/2 flex flex-col gap-2 h-screen items-center justify-center mx-auto py-14 px-12">
