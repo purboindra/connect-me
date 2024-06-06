@@ -18,17 +18,11 @@ export async function POST(req: NextRequest) {
     console.log(user);
 
     if (!user) {
-      return NextResponse.json({ message: "User not found" }, { status: 401 });
+      return NextResponse.json({ message: "User not found", status: 401 });
     }
 
-    return NextResponse.json(
-      { message: "Login successfully" },
-      { status: 201 }
-    );
+    return NextResponse.json({ message: "Login successfully", status: 201 });
   } catch (error) {
-    return NextResponse.json(
-      { message: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "Internal server error", status: 500 });
   }
 }

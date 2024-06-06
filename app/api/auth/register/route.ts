@@ -39,21 +39,15 @@ export async function POST(req: NextRequest) {
     });
 
     if (!user)
-      return NextResponse.json(
-        { message: "User already register" },
-        { status: 401 }
-      );
+      return NextResponse.json({
+        message: "User already register",
+        status: 401,
+      });
 
-    return NextResponse.json(
-      { message: "Login successfully" },
-      { status: 201 }
-    );
+    return NextResponse.json({ message: "Login successfully", status: 201 });
   } catch (error) {
     console.error(error);
 
-    return NextResponse.json(
-      { message: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "Internal server error", status: 500 });
   }
 }
