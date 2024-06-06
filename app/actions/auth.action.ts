@@ -34,7 +34,7 @@ export async function register(prevState: RegisterState, formData: FormData) {
 
     console.log(email);
 
-    const response = await fetch("http://localhost:3000/api/auth/register", {
+    const response = await fetch(`${process.env.BASE_URL}/api/auth/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -80,7 +80,7 @@ export async function login(prevState: LoginState, formData: FormData) {
     const email = validatedFields.data.email;
     const password = validatedFields.data.password;
 
-    const response = await fetch("http://localhost:3000/api/auth/login", {
+    const response = await fetch(`${process.env.BASE_URL}/api/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -107,4 +107,28 @@ export async function login(prevState: LoginState, formData: FormData) {
     throw error;
   }
   redirect("/");
+}
+
+export async function getCurrentUser() {
+  const token = cookies().get("token")?.value;
+
+  if (!token) throw new Error("Invalid token");
+
+  try {
+    const response = await fetch(`${process.env.BASE_URL}/api/auth/get-user`, {
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    const data = await response.json();
+
+    if (data.status !== 200) throw new Error("Something went wrong");
+
+    return parseStringify(data.data);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
