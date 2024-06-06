@@ -15,7 +15,7 @@ import { RegisterSchema } from "@/lib/validation";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useFormState, useFormStatus } from "react-dom";
-import { register } from "@/app/actions/user.action";
+import { register } from "@/app/actions/auth.action";
 
 function SubmitButton() {
   const { pending } = useFormStatus();

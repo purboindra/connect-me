@@ -20,6 +20,7 @@ model User{
   username String? @unique
   email String @unique
   password String
+  tokens    Token[]
   photo_url String
   created_at DateTime @default(now())
   likes Like[]
@@ -29,6 +30,13 @@ model User{
   posts Post[]
 }
 
+model Token {
+  id        Int      @id @default(autoincrement())
+  token     String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
 model Comment {
   id         Int      @id @default(autoincrement())
   author     User     @relation(fields: [authorId], references: [id])

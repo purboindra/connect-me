@@ -8,7 +8,7 @@ import { LoginSchema } from "@/lib/validation";
 import { useFormState, useFormStatus } from "react-dom";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { login } from "@/app/actions/user.action";
+import { login } from "@/app/actions/auth.action";
 
 function SubmitButton() {
   const { pending } = useFormStatus();

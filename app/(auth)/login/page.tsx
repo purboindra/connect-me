@@ -22,7 +22,7 @@ export default function Login() {
       <h1 className="text-3xl max-sm:text-lg font-semibold text-neutral-700">
         Hello, welcome back!
       </h1>
-      <div className="p-4 border border-neutral-300 w-full">
+      <div className="p-4 border border-neutral-300 w-full ">
         <LoginForm />
       </div>
     </main>

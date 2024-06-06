@@ -2,7 +2,11 @@ import { LeftSideBar } from "@/components/shared/LeftSideBar";
 import { Navbar } from "@/components/shared/Navbar";
 import React from "react";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <main className="relative">
       <Navbar />

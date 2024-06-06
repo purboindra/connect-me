@@ -7,7 +7,8 @@ import {
   RegisterSchema,
   RegisterState,
 } from "../../lib/validation";
-import { parseStringify } from "../../lib/utils";
+import { parseStringify, verifyToken } from "../../lib/utils";
+import { cookies } from "next/headers";
 
 export async function register(prevState: RegisterState, formData: FormData) {
   console.log("REGISTER CALLED");
@@ -48,6 +49,14 @@ export async function register(prevState: RegisterState, formData: FormData) {
     const data = await response.json();
 
     if (data.status !== 201) throw new Error(`${data.message}`);
+
+    cookies().set("token", data.token);
+
+    const userData = verifyToken(data.token);
+
+    const userId = (userData as any).userId;
+
+    cookies().set("user_id", userId);
   } catch (error) {
     console.error(error);
     throw error;
@@ -88,6 +97,11 @@ export async function login(prevState: LoginState, formData: FormData) {
     if (data.status !== 201) throw new Error(`${data.message}`);
 
     console.log(data);
+
+    cookies().set("token", data.data.tokens[0].token);
+    cookies().set("user_id", data.data.id);
+    cookies().set("username", data.data.username);
+    cookies().set("email", data.data.email);
   } catch (error) {
     console.error(error);
     throw error;
