@@ -1,3 +1,5 @@
+"use client";
+
 import { getCurrentUser } from "@/app/actions/auth.action";
 import { useState, useEffect } from "react";
 
