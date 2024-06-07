@@ -3,3 +3,10 @@ export interface SidebarLinkInterface {
   route: string;
   label: string;
 }
+
+export interface UserInterface {
+  id: string;
+  username: string;
+  email: string;
+  photoUrl: string;
+}

@@ -9,6 +9,7 @@ import {
 } from "../../lib/validation";
 import { parseStringify, verifyToken } from "../../lib/utils";
 import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
 
 export async function register(prevState: RegisterState, formData: FormData) {
   console.log("REGISTER CALLED");
@@ -112,6 +113,8 @@ export async function login(prevState: LoginState, formData: FormData) {
 export async function getCurrentUser() {
   const token = cookies().get("token")?.value;
 
+  console.log(`token: ${token}`);
+
   if (!token) throw new Error("Invalid token");
 
   try {
@@ -124,9 +127,21 @@ export async function getCurrentUser() {
 
     const data = await response.json();
 
-    if (data.status !== 200) throw new Error("Something went wrong");
+    if (data.status !== 200) return null;
 
     return parseStringify(data.data);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function logout() {
+  try {
+    cookies().delete("token");
+    cookies().delete("user_id");
+    cookies().delete("email");
+    cookies().delete("username");
   } catch (error) {
     console.error(error);
     throw error;

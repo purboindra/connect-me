@@ -1,14 +1,11 @@
 "use client";
 
 import { getCurrentUser } from "@/app/actions/auth.action";
+import { UserInterface } from "@/types";
 import { useState, useEffect } from "react";
 
 export function useCurrentUser() {
-  const [user, setUser] = useState<null | {
-    id: number;
-    email: string;
-    username: string;
-  }>(null);
+  const [user, setUser] = useState<null | UserInterface>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null | string>(null);
 
@@ -29,5 +26,5 @@ export function useCurrentUser() {
     fetchUser();
   }, []);
 
-  return { user, loading, error };
+  return { user, loading, error, setUser };
 }

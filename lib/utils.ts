@@ -12,20 +12,17 @@ export const parseStringify: any = (value: any) =>
   JSON.parse(JSON.stringify(value));
 
 export function generateToken(payload: object) {
-  return jwt.sign(payload, secret, { expiresIn: "1d" });
+  return jwt.sign(payload, secret, { expiresIn: "3d" });
 }
 
 export function verifyToken(token: string) {
   try {
-    return jwt.verify(token, secret);
+    console.log(`secret: ${secret}`);
+    const verifJwt = jwt.verify(token, secret);
+    console.log(`Verif JWT: ${verifJwt}`);
+
+    return verifJwt;
   } catch (error) {
     throw new Error("Invalid token");
   }
 }
-
-// export async function verifyPassword(
-//   password: string,
-//   hashedPassword: string
-// ): Promise<boolean> {
-//   return await bcrypt.compare(password, hashedPassword);
-// }
