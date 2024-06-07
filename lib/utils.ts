@@ -12,15 +12,12 @@ export const parseStringify: any = (value: any) =>
   JSON.parse(JSON.stringify(value));
 
 export function generateToken(payload: object) {
-  return jwt.sign(payload, secret, { expiresIn: "3d" });
+  return jwt.sign(payload, secret, { expiresIn: "30d" });
 }
 
 export function verifyToken(token: string) {
   try {
-    console.log(`secret: ${secret}`);
     const verifJwt = jwt.verify(token, secret);
-    console.log(`Verif JWT: ${verifJwt}`);
-
     return verifJwt;
   } catch (error) {
     throw new Error("Invalid token");
