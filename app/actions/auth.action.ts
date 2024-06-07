@@ -115,7 +115,7 @@ export async function getCurrentUser() {
 
   console.log(`token: ${token}`);
 
-  if (!token) throw new Error("Invalid token");
+  if (!token) return null;
 
   try {
     const response = await fetch(`${process.env.BASE_URL}/api/auth/get-user`, {
