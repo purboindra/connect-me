@@ -7,7 +7,6 @@ import {
   verifyRefreshToken,
   verifyToken,
 } from "@/lib/utils";
-import { addDays, addMinutes } from "date-fns";
 
 export async function POST(req: NextRequest) {
   try {
@@ -57,47 +56,37 @@ export async function POST(req: NextRequest) {
       : null;
 
     await prisma.$transaction(async () => {
-      if (existingToken) {
-        prisma.token.update({
-          where: {
-            token: existingToken.token,
-            id: existingToken.id,
-          },
-          data: {
-            token: token,
-            expiresAt: parseExpToken,
-          },
-        });
-      } else {
-        prisma.token.create({
-          data: {
-            token,
-            userId: user.id,
-            expiresAt: parseExpToken,
-          },
-        });
-      }
+      prisma.token.upsert({
+        where: {
+          token: existingToken?.token,
+          id: existingToken?.id,
+        },
+        create: {
+          token,
+          userId: user.id,
+          expiresAt: parseExpToken,
+        },
+        update: {
+          token: token,
+          expiresAt: parseExpToken,
+        },
+      });
 
-      if (existingRefreshToken) {
-        prisma.refreshToken.update({
-          where: {
-            token: existingRefreshToken.token,
-            id: existingRefreshToken.id,
-          },
-          data: {
-            expiresAt: parseExpRefresh,
-            token: refreshToken,
-          },
-        });
-      } else {
-        prisma.refreshToken.create({
-          data: {
-            expiresAt: parseExpRefresh,
-            token: refreshToken,
-            userId: user.id,
-          },
-        });
-      }
+      prisma.refreshToken.upsert({
+        where: {
+          token: existingRefreshToken?.token,
+          id: existingRefreshToken?.id,
+        },
+        create: {
+          token: refreshToken,
+          userId: user.id,
+          expiresAt: parseExpRefresh,
+        },
+        update: {
+          expiresAt: parseExpRefresh,
+          token: refreshToken,
+        },
+      });
     });
 
     return NextResponse.json({
