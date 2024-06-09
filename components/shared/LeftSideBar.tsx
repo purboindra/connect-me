@@ -27,7 +27,8 @@ export const LeftSideBar = () => {
                 alt="Sidebar Icon"
                 width={20}
                 height={20}
-                className={`${isActive ? "invert" : ""}`}
+                className={`${isActive ? "" : "invert"}`}
+                aria-hidden="true"
               />
               <p
                 className={`max-lg:hidden text-base font-semibold ${

@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { verifyToken } from "@/lib/utils";
+import console from "console";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -14,11 +15,15 @@ export async function GET(req: NextRequest) {
     const payload = verifyToken(token);
     const userId = (payload as any).userId;
 
+    console.log(payload);
+
     const user = await prisma.user.findFirst({
       where: {
         id: userId,
       },
     });
+
+    console.log(user);
 
     if (!user)
       return NextResponse.json({

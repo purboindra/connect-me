@@ -9,18 +9,13 @@ import {
 } from "../../lib/validation";
 import { parseStringify, verifyToken } from "../../lib/utils";
 import { cookies } from "next/headers";
-import { revalidatePath } from "next/cache";
 
 export async function register(prevState: RegisterState, formData: FormData) {
-  console.log("REGISTER CALLED");
-
   const validatedFields = RegisterSchema.safeParse({
     username: formData.get("username"),
     password: formData.get("password"),
     email: formData.get("email"),
   });
-
-  console.log(validatedFields.success);
 
   if (!validatedFields.success) {
     return {
@@ -32,8 +27,6 @@ export async function register(prevState: RegisterState, formData: FormData) {
     const email = validatedFields.data.email;
     const password = validatedFields.data.password;
     const username = validatedFields.data.username;
-
-    console.log(email);
 
     const response = await fetch(`${process.env.BASE_URL}/api/auth/register`, {
       method: "POST",
@@ -48,16 +41,20 @@ export async function register(prevState: RegisterState, formData: FormData) {
     });
 
     const data = await response.json();
+    console.log(data);
 
     if (data.status !== 201) throw new Error(`${data.message}`);
 
-    cookies().set("token", data.token);
-
-    const userData = verifyToken(data.token);
+    const userData = verifyToken(data.data.access_token);
 
     const userId = (userData as any).userId;
 
     cookies().set("user_id", userId);
+    cookies().set("access_token", data.data.access_token);
+
+    cookies().set("refresh_token", data.data.refresh_token);
+    cookies().set("username", username);
+    cookies().set("email", email);
   } catch (error) {
     console.error(error);
     throw error;
@@ -99,7 +96,8 @@ export async function login(prevState: LoginState, formData: FormData) {
 
     console.log(data);
 
-    cookies().set("token", data.data.tokens[0].token);
+    cookies().set("access_token", data.data.token);
+    cookies().set("refresh_token", data.data.token);
     cookies().set("user_id", data.data.id);
     cookies().set("username", data.data.username);
     cookies().set("email", data.data.email);
@@ -111,9 +109,7 @@ export async function login(prevState: LoginState, formData: FormData) {
 }
 
 export async function getCurrentUser() {
-  const token = cookies().get("token")?.value;
-
-  console.log(`token: ${token}`);
+  const token = cookies().get("access_token")?.value;
 
   if (!token) return null;
 
@@ -127,6 +123,8 @@ export async function getCurrentUser() {
 
     const data = await response.json();
 
+    console.log(data);
+
     if (data.status !== 200) return null;
 
     return parseStringify(data.data);
@@ -138,10 +136,42 @@ export async function getCurrentUser() {
 
 export async function logout() {
   try {
-    cookies().delete("token");
+    cookies().delete("access_token");
     cookies().delete("user_id");
     cookies().delete("email");
     cookies().delete("username");
+    cookies().delete("refresh_token");
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function refreshToken() {
+  const refreshToken = cookies().get("refresh_token");
+  const token = cookies().get("access_token");
+
+  if (!refreshToken || !token) return null;
+
+  try {
+    const response = await fetch(
+      `${process.env.BASE_URL}/api/auth/refresh-token`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          refhreshToken: refreshToken.value,
+        }),
+        headers: {
+          Authorization: token.value,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    if (data.status !== 201) return null;
+
+    console.log(`REFRESH TOKEN: ${data}`);
   } catch (error) {
     console.error(error);
     throw error;

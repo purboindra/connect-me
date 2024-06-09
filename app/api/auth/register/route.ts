@@ -2,14 +2,21 @@ import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 import bcrypt from "bcrypt";
-import { generateToken } from "@/lib/utils";
+import {
+  generateRefreshToken,
+  generateToken,
+  verifyRefreshToken,
+  verifyToken,
+} from "@/lib/utils";
+import { addHours, addDays, addMinutes } from "date-fns"; // Use date-fns for date manipulations
+import { refreshToken } from "@/app/actions/auth.action";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
 
-  const email = body.email;
-  const password = body.password;
-  const username = body.username;
+  const { email, password, username } = body;
+
+  let userId = 0;
 
   try {
     const existingUser = await prisma.user.findUnique({
@@ -28,8 +35,6 @@ export async function POST(req: NextRequest) {
     const salt = await bcrypt.genSalt(saltRounds);
     const passwordHash = await bcrypt.hash(password, salt);
 
-    console.log(passwordHash);
-
     const user = await prisma.user.create({
       data: {
         email: body.email,
@@ -39,16 +44,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    const token = generateToken({ userId: user.id });
-
-    await prisma.token.create({
-      data: {
-        token: token,
-        user: {
-          connect: { id: user.id },
-        },
-      },
-    });
+    userId = user.id;
 
     if (!user)
       return NextResponse.json({
@@ -56,13 +52,60 @@ export async function POST(req: NextRequest) {
         status: 401,
       });
 
+    const token = generateToken({ userId: user.id });
+    const refreshToken = generateRefreshToken({ userId: user.id });
+
+    const tokenPayload = verifyToken(token);
+    const refreshTokenPayload = verifyRefreshToken(refreshToken);
+
+    const accessTokenExpiresAt = (tokenPayload as any).exp;
+    const refreshTokenExpiresAt = (refreshTokenPayload as any).exp;
+
+    const parseExpToken = new Date(accessTokenExpiresAt * 1000);
+    const parseExpRefresh = new Date(refreshTokenExpiresAt * 1000);
+
+    await prisma.$transaction([
+      prisma.token.create({
+        data: {
+          token: token,
+          expiresAt: parseExpToken,
+          user: {
+            connect: { id: user.id },
+          },
+        },
+      }),
+
+      prisma.refreshToken.create({
+        data: {
+          token: refreshToken,
+          expiresAt: parseExpRefresh,
+          user: {
+            connect: {
+              id: user.id,
+            },
+          },
+        },
+      }),
+    ]);
+
     return NextResponse.json({
-      message: "Login successfully",
-      token: token,
+      message: "User created successfully",
+      data: {
+        user: user,
+        access_token: token,
+        refresh_token: refreshToken,
+      },
       status: 201,
     });
   } catch (error) {
     console.error(error);
+
+    await prisma.user.delete({
+      where: {
+        id: userId,
+      },
+    });
+
     return NextResponse.json({ message: "Internal server error", status: 500 });
   }
 }

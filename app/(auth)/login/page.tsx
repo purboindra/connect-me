@@ -5,6 +5,7 @@ import React from "react";
 import { useFormStatus } from "react-dom";
 import { ArrowRightIcon } from "lucide-react";
 import { LoginForm } from "@/components/shared/LoginForm";
+import Link from "next/link";
 
 export default function Login() {
   return (
@@ -15,6 +16,12 @@ export default function Login() {
       <div className="p-4 border border-neutral-300 w-full ">
         <LoginForm />
       </div>
+      <p className="text-base">
+        Don&apos;t have an account?
+        <Link href={"/register"}>
+          <span className="text-blue-500 font-bold"> Sign Up </span>
+        </Link>
+      </p>
     </main>
   );
 }
