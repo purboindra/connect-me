@@ -7,8 +7,9 @@ import {
   RegisterSchema,
   RegisterState,
 } from "../../lib/validation";
-import { parseStringify, verifyToken } from "../../lib/utils";
+import { isTokenExpired, parseStringify, verifyToken } from "../../lib/utils";
 import { cookies } from "next/headers";
+import console from "console";
 
 export async function register(prevState: RegisterState, formData: FormData) {
   const validatedFields = RegisterSchema.safeParse({
@@ -109,9 +110,28 @@ export async function login(prevState: LoginState, formData: FormData) {
 }
 
 export async function getCurrentUser() {
-  const token = cookies().get("access_token")?.value;
+  let token = cookies().get("access_token")?.value;
+  const refreshToken = cookies().get("refresh_token")?.value;
 
-  if (!token) return null;
+  if (!token || !refreshToken) return null;
+
+  if (isTokenExpired(token)) {
+    const respRefresh = await fetch(
+      `${process.env.BASE_URL}/api/auth/refresh-token`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          refreshToken,
+        }),
+      }
+    );
+
+    if (respRefresh.status !== 201) throw new Error("Failed refresh token");
+
+    const dataRefresh = await respRefresh.json();
+
+    console.log(dataRefresh);
+  }
 
   try {
     const response = await fetch(`${process.env.BASE_URL}/api/auth/get-user`, {
