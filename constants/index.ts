@@ -13,8 +13,8 @@ export const sidebarLinks: SidebarLinkInterface[] = [
   },
   {
     imgUrl: "/assets/icons/add-post.svg",
-    label: "Post",
-    route: "/post",
+    label: "Create",
+    route: "/create",
   },
   {
     imgUrl: "/assets/icons/comment.svg",
