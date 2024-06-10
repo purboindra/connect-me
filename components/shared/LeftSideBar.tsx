@@ -20,23 +20,31 @@ export const LeftSideBar = () => {
             <Link
               href={item.route}
               key={index}
-              className="flex space-x-4 items-center justify-start"
+              className="flex flex-col items-start justify-center"
             >
-              <Image
-                src={item.imgUrl}
-                alt="Sidebar Icon"
-                width={20}
-                height={20}
-                className={`${isActive ? "" : "invert"}`}
-                aria-hidden="true"
-              />
-              <p
-                className={`max-lg:hidden text-base font-semibold ${
-                  isActive ? " text-neutral-700" : " text-neutral-700/40"
+              <div className="flex flex-row items-center space-x-2">
+                <Image
+                  src={item.imgUrl}
+                  alt="Sidebar Icon"
+                  width={20}
+                  height={20}
+                  className={` ${
+                    isActive ? "text-neutral-900" : "text-neutral-400"
+                  }`}
+                />
+                <p
+                  className={`max-lg:hidden text-base font-semibold ${
+                    isActive ? " text-neutral-700" : " text-neutral-700/40"
+                  }`}
+                >
+                  {item.label}
+                </p>
+              </div>
+              <div
+                className={`h-2 w-6 flex items-start mt-1 lg:hidden ${
+                  isActive ? "bg-blue-500" : "bg-neutral-200"
                 }`}
-              >
-                {item.label}
-              </p>
+              />
             </Link>
           );
         })}
