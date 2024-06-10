@@ -44,13 +44,13 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    userId = user.id;
-
     if (!user)
       return NextResponse.json({
         message: "User already register",
         status: 401,
       });
+
+    userId = user.id;
 
     const token = generateToken({ userId: user.id });
     const refreshToken = generateRefreshToken({ userId: user.id });
