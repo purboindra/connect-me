@@ -11,9 +11,13 @@ export const sidebarLinks: SidebarLinkInterface[] = [
     label: "Search",
     route: "/search",
   },
-
   {
-    imgUrl: "/assets/icons/message.svg",
+    imgUrl: "/assets/icons/add-post.svg",
+    label: "Post",
+    route: "/post",
+  },
+  {
+    imgUrl: "/assets/icons/comment.svg",
     label: "Message",
     route: "/message",
   },
