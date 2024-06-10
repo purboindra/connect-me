@@ -13,6 +13,7 @@ export function useCurrentUser() {
     const fetchUser = async () => {
       try {
         const response = await getCurrentUser();
+        console.log("response", response);
         setUser(response);
       } catch (error: any) {
         console.error(error);
