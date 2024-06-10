@@ -39,8 +39,6 @@ export async function createPost(
       },
     });
 
-    console.log(response.body);
-
     const data = await response.json();
 
     if (data.status !== 201) throw new Error("Failed creating post");
