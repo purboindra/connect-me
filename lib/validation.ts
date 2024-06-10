@@ -33,3 +33,16 @@ export const LoginSchema = z.object({
     .refine((args) => args.includes("@")),
   password: z.string().min(1, "Password required"),
 });
+
+export type CreatePostState = {
+  errors?: {
+    title?: string[];
+    content?: string[];
+  };
+  message?: string | null;
+};
+
+export const CreatePostSchema = z.object({
+  title: z.string().min(1, "Title required"),
+  content: z.string().min(1, "Content required"),
+});
