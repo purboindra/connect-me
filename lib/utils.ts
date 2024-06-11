@@ -70,7 +70,7 @@ export function verifyRefreshToken(token: string) {
 export function isTokenExpired(token: string): boolean {
   const decoded = jwt.decode(token) as { exp: number };
   if (!decoded || !decoded.exp) {
-    throw new Error("Invalid token");
+    return true;
   }
   const currentTime = Math.floor(Date.now() / 1000);
   return decoded.exp < currentTime;
