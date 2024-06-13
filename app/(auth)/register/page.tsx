@@ -1,30 +1,33 @@
 import { RegisterForm } from "@/components/shared/RegisterForm";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";
 
 export default function Register() {
   return (
-    <main className="max-w-5xl h-screen mx-auto flex py-14 px-12 items-center justify-center">
-      <div className="flex w-full flex-row gap-4">
-        <div className=" flex flex-col gap-1 max-md:hidden justify-center">
-          <h1 className="text-lg font-semibold text-neutral-700">Hello,</h1>
-          <p className="text-lg font-medium text-neutral-700">
-            Welcome to connect me
-          </p>
-        </div>
-        <div className="flex flex-1 flex-col p-8 border border-neutral-300">
-          <h1 className="text-3xl max-sm:text-lg font-semibold text-neutral-800 text-center">
-            Connect Me
-          </h1>
-          <RegisterForm />
-          <p className="text-base">
-            Have an account?
-            <Link href={"/login"}>
-              <span className="text-blue-500 font-bold"> Sign In </span>
-            </Link>
-          </p>
-        </div>
+    <main className="max-w-5xl h-screen mx-auto flex flex-col py-14 px-12 items-center justify-center">
+      <h1 className="text-lg max-sm:text-base font-semibold text-neutral-800">
+        Create an account
+      </h1>
+      <p className="text-neutral-800 max-sm:w-48 truncate max-md:text-base">
+        Enter your email and password to sign up for this app
+      </p>
+      <div className="w-1/2">
+        <RegisterForm />
       </div>
+      <div className="mt-4 flex w-1/2 items-center flex-col space-y-2">
+        <p className="font-semibold text-neutral-800">OR</p>
+        <Link href={"/login"} className="w-full">
+          <Button className="w-full" variant={"outline"}>
+            Sign In
+          </Button>
+        </Link>
+      </div>
+      <p className="mt-4 text-neutral-500 text-sm text-center">
+        By clicking continue, you agree to our <br />{" "}
+        <span className="text-neutral-700">Terms of Service</span> and{" "}
+        <span className="text-neutral-700">Privacy Policy</span>
+      </p>
     </main>
   );
 }
