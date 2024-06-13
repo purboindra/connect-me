@@ -12,7 +12,7 @@ export default function Register() {
       <p className="text-neutral-800 max-sm:w-48 truncate max-md:text-base">
         Enter your email and password to sign up for this app
       </p>
-      <div className="w-1/2">
+      <div className="w-1/2 mt-6">
         <RegisterForm />
       </div>
       <div className="mt-4 flex w-1/2 items-center flex-col space-y-2">
