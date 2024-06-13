@@ -20,8 +20,8 @@ import { register } from "@/app/actions/auth.action";
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <Button disabled={pending} type="submit">
-      {pending ? "Loading..." : "Register"}
+    <Button className="w-full" disabled={pending} type="submit">
+      {pending ? "Loading..." : "Sign up with email"}
     </Button>
   );
 }
@@ -41,7 +41,7 @@ export const RegisterForm = () => {
 
   return (
     <Form {...form}>
-      <form className="flex flex-col gap-2" action={dispatch}>
+      <form className="flex flex-col space-y-4" action={dispatch}>
         <FormField
           name="username"
           control={form.control}
@@ -86,7 +86,7 @@ export const RegisterForm = () => {
         />
         {state.errors?.password && <p>{state.errors.password[0]}</p>}
 
-        <div className="w-full flex justify-end">
+        <div className="w-full">
           <SubmitButton />
         </div>
       </form>
