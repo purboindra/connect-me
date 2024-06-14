@@ -45,4 +45,5 @@ export type CreatePostState = {
 export const CreatePostSchema = z.object({
   title: z.string().min(1, "Title required"),
   content: z.string().min(1, "Content required"),
+  imageUrl: z.string().min(1, "Content required"),
 });
