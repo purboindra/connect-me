@@ -95,8 +95,6 @@ export async function login(prevState: LoginState, formData: FormData) {
 
     if (data.status !== 201) throw new Error(`${data.message}`);
 
-    console.log(data);
-
     cookies().set("access_token", data.data.token);
     cookies().set("refresh_token", data.data.token);
     cookies().set("user_id", data.data.id);

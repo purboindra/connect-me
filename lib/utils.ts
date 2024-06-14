@@ -43,7 +43,6 @@ export function generateRefreshToken(payload: object) {
 
 export function verifyRefreshToken(token: string) {
   try {
-    console.log(token);
     if (!token || typeof token !== "string") {
       console.error("Invalid token refresh format");
       throw new Error("Invalid token format");
