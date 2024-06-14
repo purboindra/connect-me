@@ -16,6 +16,7 @@ export async function createPost(
   const validateFields = CreatePostSchema.safeParse({
     title: formData.get("title"),
     content: formData.get("content"),
+    imageUrl: formData.get("imageUrl"),
   });
 
   if (!validateFields.success) {
@@ -26,6 +27,7 @@ export async function createPost(
 
   const title = validateFields.data.title;
   const content = validateFields.data.content;
+  const imageUrl = validateFields.data.imageUrl;
 
   try {
     const response = await fetch(`${process.env.BASE_URL}/api/post/create`, {
