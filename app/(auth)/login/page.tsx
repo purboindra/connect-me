@@ -11,7 +11,8 @@ export default function Login() {
         Hello, welcome back!
       </h1>
       <p className="text-neutral-800 max-sm:w-48 truncate max-md:text-base">
-        Sign in again to enjoy Connect Me!
+        Sign in first to enjoy{" "}
+        <span className="font-semibold"> Connect Me</span>
       </p>
       <div className="w-1/2 mt-6">
         <LoginForm />
