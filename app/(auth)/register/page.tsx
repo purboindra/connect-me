@@ -23,7 +23,7 @@ export default function Register() {
           </Button>
         </Link>
       </div>
-      <p className="mt-4 text-neutral-500 text-sm text-center">
+      <p className="mt-4 text-neutral-400 text-sm text-center">
         By clicking continue, you agree to our <br />{" "}
         <span className="text-neutral-700">Terms of Service</span> and{" "}
         <span className="text-neutral-700">Privacy Policy</span>
