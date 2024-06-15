@@ -1,6 +1,6 @@
 "use client";
 
-import { suggestedPeoples } from "@/constants";
+import { suggestedPeople } from "@/constants";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -20,7 +20,7 @@ export const RightSideBar = () => {
         </h2>
         {mounted && (
           <>
-            {suggestedPeoples.map((person) => {
+            {suggestedPeople.map((person) => {
               return (
                 <Link
                   href={"/profile"}
@@ -56,7 +56,7 @@ export const RightSideBar = () => {
         </h2>
         {mounted && (
           <>
-            {suggestedPeoples.map((person) => {
+            {suggestedPeople.map((person) => {
               return (
                 <Link
                   href={"/profile"}
