@@ -1,5 +1,6 @@
 import { LeftSideBar } from "@/components/shared/LeftSideBar";
 import { Navbar } from "@/components/shared/Navbar";
+import { RightSideBar } from "@/components/shared/RightSideBar";
 import React from "react";
 
 export default async function Layout({
@@ -9,13 +10,13 @@ export default async function Layout({
 }) {
   return (
     <main className="relative">
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="flex">
         <LeftSideBar />
-        <section className="flex min-h-screen flex-1 flex-col px-6 pb-6 pt-28 max-md:pb-14 sm:px-8  overflow-x-auto">
+        <section className="flex min-h-screen flex-1 flex-col px-6 pb-6 pt-24 max-md:pb-14 sm:px-8 overflow-x-auto">
           <div className="max-w-5xl mx-auto w-full">{children}</div>
         </section>
-        Right Sidebar
+        <RightSideBar />
       </div>
     </main>
   );
