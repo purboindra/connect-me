@@ -13,9 +13,9 @@ const imgUrl =
 
 export default function page() {
   return (
-    <section className="flex flex-col items-center">
-      <div className="w-full px-8 overflow-auto no-scrollbar">
-        <div className="flex py-4 px-2 flex-row gap-4 ">
+    <section className="flex flex-col items-center ">
+      <div className="w-full overflow-auto no-scrollbar">
+        <div className="flex py-4 flex-row gap-4 ">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map(
             (item) => (
               <div
@@ -31,7 +31,7 @@ export default function page() {
           )}
         </div>
       </div>
-      <div className="mt-8 flex flex-col space-y-4 max-md:w-[200px] w-[550px]">
+      <div className="mt-8 flex flex-col space-y-4 max-md:w-full w-[550px]">
         <div className="flex flex-col gap-2">
           <div className="flex justify-between items-center">
             <div className="flex space-x-2 items-center">
