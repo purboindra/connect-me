@@ -12,7 +12,7 @@ export const parseStringify: any = (value: any) =>
   JSON.parse(JSON.stringify(value));
 
 export function generateToken(payload: object) {
-  const token = jwt.sign(payload, secret, { expiresIn: "15m" });
+  const token = jwt.sign(payload, secret, { expiresIn: "60m" });
 
   return token;
 }

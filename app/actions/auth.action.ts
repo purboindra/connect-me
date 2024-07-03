@@ -107,51 +107,6 @@ export async function login(prevState: LoginState, formData: FormData) {
   redirect("/");
 }
 
-export async function getCurrentUser() {
-  let token = cookies().get("access_token")?.value;
-  const refreshToken = cookies().get("refresh_token")?.value;
-
-  if (!token || !refreshToken) return null;
-
-  if (isTokenExpired(token)) {
-    const respRefresh = await fetch(
-      `${process.env.BASE_URL}/api/auth/refresh-token`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          refreshToken,
-        }),
-      }
-    );
-
-    if (respRefresh.status !== 201) throw new Error("Failed refresh token");
-
-    const dataRefresh = await respRefresh.json();
-
-    console.log(dataRefresh);
-  }
-
-  try {
-    const response = await fetch(`${process.env.BASE_URL}/api/auth/get-user`, {
-      method: "GET",
-      headers: {
-        Authorization: token,
-      },
-    });
-
-    const data = await response.json();
-
-    console.log(data);
-
-    if (data.status !== 200) return null;
-
-    return parseStringify(data.data);
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-}
-
 export async function logout() {
   try {
     cookies().delete("access_token");

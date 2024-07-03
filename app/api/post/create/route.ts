@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
   if (!token)
     return NextResponse.json({ message: "Invalid token", status: 401 });
 
-  const { title, content, imageUrl } = await req.json();
+  const { title, content, file } = await req.json();
 
   if (!title || !content)
     return NextResponse.json({
@@ -22,25 +22,18 @@ export async function POST(req: NextRequest) {
       message: "Title or content is required",
     });
 
+  console.log("FILE IMAGE URL BACKEND", file);
+
   try {
     const payload = verifyToken(token);
     const userId = (payload as any).userId;
-
-    const { data, error } = await supabase.storage
-      .from("post")
-      .createSignedUrl(imageUrl, 3600);
-
-    if (error) {
-      return NextResponse.json({
-        message: "Failed upload an image",
-        status: 400,
-      });
-    }
 
     const post = await prisma.post.create({
       data: {
         title: title,
         content: content,
+        imageUrl: file,
+        hashtag: {},
         author: {
           connect: {
             id: userId,
@@ -54,8 +47,6 @@ export async function POST(req: NextRequest) {
         message: "Failed create post",
         status: 400,
       });
-
-    // TODO STORE IMAGE
 
     return NextResponse.json({
       message: "Post successfully created",

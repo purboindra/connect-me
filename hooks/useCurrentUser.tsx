@@ -1,6 +1,6 @@
 "use client";
 
-import { getCurrentUser } from "@/app/actions/auth.action";
+import { getCurrentUser } from "@/app/actions/user.action";
 import { UserInterface } from "@/types";
 import { useState, useEffect } from "react";
 
@@ -13,7 +13,6 @@ export function useCurrentUser() {
     const fetchUser = async () => {
       try {
         const response = await getCurrentUser();
-        console.log("response", response);
         setUser(response);
       } catch (error: any) {
         console.error(error);

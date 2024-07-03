@@ -1,16 +1,17 @@
 "use client";
 
 import { CreatePostSchema } from "@/lib/validation";
-import React, { useState } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
-import { useFormState, useFormStatus } from "react-dom";
 import { Button } from "../ui/button";
 import { createPost } from "@/app/actions/post.action";
 import Image from "next/image";
+import { useFormState, useFormStatus } from "react-dom";
+import { useToast } from "../ui/use-toast";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -28,8 +29,12 @@ const initialState = {
 };
 
 export const CreateForm = () => {
-  const [state, dispatch] = useFormState(createPost, initialState);
+  const { toast } = useToast();
 
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const [state, dispatch] = useFormState(createPost, initialState);
   const form = useForm<z.infer<typeof CreatePostSchema>>({
     defaultValues: {
       title: "",
@@ -38,16 +43,35 @@ export const CreateForm = () => {
     },
   });
 
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  useEffect(() => {
+    console.log("error happen", state.errors);
+    if (state.errors.imageUrl) {
+      toast({
+        title: "Something went wrong",
+        description: state.errors.imageUrl[0],
+        variant: "destructive",
+      });
+    }
+  }, [state.errors, toast]);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
     if (file) {
       setSelectedImage(file);
-      setImagePreview(URL.createObjectURL(file));
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreview(previewUrl);
+      console.log("my file", file);
+      form.setValue("imageUrl", file, {
+        shouldTouch: true,
+      });
     }
   };
+
+  useEffect(() => {
+    if (imagePreview) {
+      console.log("imagePreview", imagePreview);
+    }
+  }, [imagePreview]);
 
   return (
     <div className="flex space-y-2 w-full">

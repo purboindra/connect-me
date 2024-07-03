@@ -15,7 +15,8 @@
   "dependencies": {
     "@hookform/resolvers": "^3.4.2",
     "@prisma/adapter-pg": "^5.14.0",
-    "@prisma/client": "5.14.0",
+    "@prisma/client": "^5.15.1",
+    "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-toast": "^1.1.5",
@@ -32,13 +33,14 @@
     "next": "14.2.3",
     "next-cloudinary": "^6.6.2",
     "pg": "^8.11.5",
-    "prisma": "^5.15.0",
+    "prisma": "^5.15.1",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.51.5",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "zustand": "^4.5.4"
   },
   "devDependencies": {
     "@types/node": "^20.14.2",
