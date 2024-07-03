@@ -2,27 +2,22 @@ import { verifyToken } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
 
 import prisma from "@/lib/prisma";
-import { createClient } from "@/lib/supabase/server";
 
 export async function POST(req: NextRequest) {
   const requestHeaders = new Headers(req.headers);
-
-  const supabase = createClient();
 
   const token = requestHeaders.get("Authorization");
 
   if (!token)
     return NextResponse.json({ message: "Invalid token", status: 401 });
 
-  const { title, content, file } = await req.json();
+  const { title, content, imageUrl } = await req.json();
 
   if (!title || !content)
     return NextResponse.json({
       status: 400,
       message: "Title or content is required",
     });
-
-  console.log("FILE IMAGE URL BACKEND", file);
 
   try {
     const payload = verifyToken(token);
@@ -32,13 +27,15 @@ export async function POST(req: NextRequest) {
       data: {
         title: title,
         content: content,
-        imageUrl: file,
-        hashtag: {},
+        imageUrl,
         author: {
           connect: {
             id: userId,
           },
         },
+      },
+      include: {
+        hashtag: true,
       },
     });
 
