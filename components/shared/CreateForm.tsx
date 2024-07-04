@@ -38,17 +38,31 @@ const initialState = {
 export const CreateForm = () => {
   const { toast } = useToast();
 
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-
   const [state, dispatch] = useFormState(createPost, initialState);
   const form = useForm<z.infer<typeof CreatePostSchema>>({
     defaultValues: {
       title: "",
       content: "",
       imageUrl: "",
+      hastags: [],
     },
   });
+
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const [hastags, setHastags] = useState<string[]>([]);
+
+  const addHastags = (text: string) => {
+    const words = text.split(" ");
+    const newHastags = words.filter(
+      (word) => word.startsWith("#") && word.length > 1
+    );
+    setHastags(newHastags);
+    form.setValue("hastags", newHastags, {
+      shouldTouch: true,
+    });
+  };
 
   useEffect(() => {
     if (state.errors.imageUrl) {
@@ -66,7 +80,6 @@ export const CreateForm = () => {
       setSelectedImage(file);
       const previewUrl = URL.createObjectURL(file);
       setImagePreview(previewUrl);
-      console.log("my file", file);
       form.setValue("imageUrl", file, {
         shouldTouch: true,
       });
@@ -106,19 +119,35 @@ export const CreateForm = () => {
           <FormField
             name="content"
             control={form.control}
-            render={({ field }) => (
+            render={({ field: { value, onChange, ...fieldProps } }) => (
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea
                     placeholder="Tell us a little bit about your story.."
-                    {...field}
+                    onChange={(e) => {
+                      addHastags(e.target.value);
+                    }}
+                    {...fieldProps}
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+          <div className="flex flex-row gap-1 flex-wrap">
+            {hastags.length > 0 &&
+              hastags.map((hastag, index) => (
+                <div
+                  key={index}
+                  className="py-1 px-2 rounded-sm bg-neutral-200/60"
+                >
+                  <p className="text-neutral-600 font-medium flex">
+                    {hastag.replaceAll("#", " ")}
+                  </p>
+                </div>
+              ))}
+          </div>
           {state.errors.content && (
             <p className="text-sm font-normal text-red-600">
               {state.errors.content}
