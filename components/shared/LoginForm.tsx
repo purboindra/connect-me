@@ -47,7 +47,11 @@ export const LoginForm = () => {
             </FormItem>
           )}
         />
-        {state.errors.email && <p>{state.errors.email}</p>}
+        {state.errors.email && (
+          <p className="text-sm font-normal text-red-600">
+            {state.errors.email}
+          </p>
+        )}
         <FormField
           name="password"
           control={form.control}
@@ -60,7 +64,11 @@ export const LoginForm = () => {
             </FormItem>
           )}
         />
-        {state.errors.password && <p>{state.errors.password}</p>}
+        {state.errors.password && (
+          <p className="text-sm font-normal text-red-600">
+            {state.errors.password}
+          </p>
+        )}
 
         <SubmitButton />
       </form>
