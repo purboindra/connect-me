@@ -4,7 +4,14 @@ import { CreatePostSchema } from "@/lib/validation";
 import React, { useActionState, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
@@ -44,7 +51,6 @@ export const CreateForm = () => {
   });
 
   useEffect(() => {
-    console.log("error happen", state.errors);
     if (state.errors.imageUrl) {
       toast({
         title: "Something went wrong",
@@ -92,6 +98,11 @@ export const CreateForm = () => {
               </FormItem>
             )}
           />
+          {state.errors.title && (
+            <p className="text-sm font-normal text-red-600">
+              {state.errors.title}
+            </p>
+          )}
           <FormField
             name="content"
             control={form.control}
@@ -104,9 +115,15 @@ export const CreateForm = () => {
                     {...field}
                   />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
+          {state.errors.content && (
+            <p className="text-sm font-normal text-red-600">
+              {state.errors.content}
+            </p>
+          )}
           <FormField
             name="imageUrl"
             control={form.control}
@@ -139,6 +156,11 @@ export const CreateForm = () => {
               </FormItem>
             )}
           />
+          {state.errors.imageUrl && (
+            <p className="text-sm font-normal text-red-600">
+              {state.errors.imageUrl}
+            </p>
+          )}
           <SubmitButton />
         </form>
       </Form>
