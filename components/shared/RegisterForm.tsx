@@ -55,7 +55,11 @@ export const RegisterForm = () => {
             </FormItem>
           )}
         />
-        {state.errors?.username && <p>{state.errors.username[0]}</p>}
+        {state.errors.username && (
+          <p className="text-sm font-normal text-red-600">
+            {state.errors.username}
+          </p>
+        )}
         <FormField
           name="email"
           control={form.control}
@@ -69,8 +73,11 @@ export const RegisterForm = () => {
             </FormItem>
           )}
         />
-        {state.errors?.email && <p>{state.errors.email[0]}</p>}
-
+        {state.errors.email && (
+          <p className="text-sm font-normal text-red-600">
+            {state.errors.email}
+          </p>
+        )}
         <FormField
           name="password"
           control={form.control}
@@ -84,8 +91,11 @@ export const RegisterForm = () => {
             </FormItem>
           )}
         />
-        {state.errors?.password && <p>{state.errors.password[0]}</p>}
-
+        {state.errors.password && (
+          <p className="text-sm font-normal text-red-600">
+            {state.errors.password}
+          </p>
+        )}
         <div className="w-full">
           <SubmitButton />
         </div>
