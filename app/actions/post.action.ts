@@ -5,6 +5,8 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { dynamicToPostInterface } from "@/lib/utils";
+import console from "console";
 
 export async function createPost(
   prevState: CreatePostState,
@@ -15,50 +17,54 @@ export async function createPost(
 
   if (!token) throw new Error("Invalid token");
 
+  const validateFields = CreatePostSchema.safeParse({
+    title: formData.get("title"),
+    content: formData.get("content"),
+    imageUrl: formData.get("imageUrl"),
+    hashtags: formData.get("hashtags"),
+  });
+
+  if (!validateFields.success) {
+    console.log("ERROR VALIDATE", validateFields.error.flatten().fieldErrors);
+    return {
+      errors: validateFields.error.flatten().fieldErrors,
+    };
+  }
+
+  const title = validateFields.data.title;
+  const content = validateFields.data.content;
+  const imageUrl = validateFields.data.imageUrl;
+  const hashtags = validateFields.data.hashtags;
+
+  console.log(hashtags);
+
   try {
-    const validateFields = CreatePostSchema.safeParse({
-      title: formData.get("title"),
-      content: formData.get("content"),
-      imageUrl: formData.get("imageUrl"),
-    });
-
-    if (!validateFields.success) {
-      console.log("ERROR VALIDATE", validateFields.error.flatten().fieldErrors);
-      return {
-        errors: validateFields.error.flatten().fieldErrors,
-      };
-    }
-
-    const title = validateFields.data.title;
-    const content = validateFields.data.content;
-    const imageUrl = validateFields.data.imageUrl;
-
     const fileName = `${Date.now()}_${imageUrl.name}`;
 
-    console.log("imageUrl from server", imageUrl);
-
-    const { data: image, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from("post")
       .upload(fileName, imageUrl);
-    console.log("supabase error storage", error);
 
-    if (error) throw new Error(error.message);
+    // if (error) {
+    //   console.log("supabase error storage", error);
+    //   throw new Error(error.message);
+    // }
 
     const { data: url, error: urlError } = await supabase.storage
       .from("post")
       .createSignedUrl(fileName, 3600);
 
-    console.log("urlError", urlError);
-
-    if (error) throw new Error(urlError?.message);
+    // if (urlError) {
+    //   console.log("error createSignedUrl", urlError);
+    //   throw new Error(urlError?.message);
+    // }
 
     const body = JSON.stringify({
       title,
       content,
+      hashtags,
       imageUrl: url?.signedUrl,
     });
-
-    console.log("body post", body);
 
     const response = await fetch(`${process.env.BASE_URL}/api/post/create`, {
       method: "POST",
@@ -80,4 +86,21 @@ export async function createPost(
 
   revalidatePath("/");
   redirect("/");
+}
+
+export async function fetchAllPost() {
+  try {
+    const response = await fetch(`${process.env.BASE_URL}/api/post/get-all`, {
+      method: "GET",
+    });
+    const data = await response.json();
+    if (response.status !== 200) {
+      throw new Error(data.message);
+    }
+
+    return dynamicToPostInterface(data.data.posts);
+  } catch (error) {
+    console.log("Error fetchAllPost", error);
+    throw error;
+  }
 }
