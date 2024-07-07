@@ -58,3 +58,27 @@ export const suggestedPeople: SuggestedPeopleInterface[] = [
     username: "@carlorojas",
   },
 ];
+
+export const communities: SuggestedPeopleInterface[] = [
+  {
+    id: "1",
+    name: "Carlo Rojas",
+    photoUrl:
+      "https://plus.unsplash.com/premium_photo-1682681907111-c13bc10b1587?q=80&w=3388&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    username: "@carlorojas",
+  },
+  {
+    id: "2",
+    name: "Helena Hills",
+    photoUrl:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=3276&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    username: "@helenahills",
+  },
+  {
+    id: "3",
+    name: "Oscar Davis",
+    photoUrl:
+      "https://plus.unsplash.com/premium_photo-1663054774427-55adfb2be76f?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    username: "@oscardavis",
+  },
+];
