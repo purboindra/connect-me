@@ -24,7 +24,7 @@ export default function Register() {
         </Link>
       </div>
       <p className="mt-4 text-neutral-400 text-sm text-center">
-        By clicking continue, you agree to our <br />{" "}
+        By clicking Sign Up, you agree to our <br />{" "}
         <span className="text-neutral-700">Terms of Service</span> and{" "}
         <span className="text-neutral-700">Privacy Policy</span>
       </p>
