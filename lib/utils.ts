@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import jwt from "jsonwebtoken";
+import { PostInterface } from "@/types";
 
 const secret = process.env.JWT_SECRET || "";
 
@@ -12,8 +13,7 @@ export const parseStringify: any = (value: any) =>
   JSON.parse(JSON.stringify(value));
 
 export function generateToken(payload: object) {
-  const token = jwt.sign(payload, secret, { expiresIn: "60m" });
-
+  const token = jwt.sign(payload, secret, { expiresIn: "3d" });
   return token;
 }
 
@@ -54,13 +54,10 @@ export function verifyRefreshToken(token: string) {
     return verifJwt;
   } catch (error: any) {
     if (error.name === "TokenExpiredError") {
-      console.error("Refresh Token has expired");
       throw new Error("Refresh Token has expired");
     } else if (error.name === "JsonWebTokenError") {
-      console.error("Invalid Refresh Token");
       throw new Error("Invalid Refresh Token");
     } else {
-      console.error("Token Refresh Token failed");
       throw new Error("Token Refresh Token failed");
     }
   }
@@ -73,4 +70,12 @@ export function isTokenExpired(token: string): boolean {
   }
   const currentTime = Math.floor(Date.now() / 1000);
   return decoded.exp < currentTime;
+}
+
+export function dynamicToPostInterface(posts: []) {
+  let temp: PostInterface[] = [];
+  for (const post of posts) {
+    temp.push(parseStringify(post));
+  }
+  return temp;
 }
