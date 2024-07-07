@@ -2,7 +2,7 @@ import { isTokenExpired, parseStringify } from "@/lib/utils";
 import { UserInterface } from "@/types";
 import { cookies } from "next/headers";
 
-export async function getAllUser() {
+export async function fetchAllUser() {
   let users: UserInterface[] = [];
 
   try {
