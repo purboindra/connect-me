@@ -1,7 +1,6 @@
 "use client";
 
 import { sidebarLinks } from "@/constants";
-import { useDialog } from "@/hooks/useDialog";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -12,9 +11,11 @@ export const LeftSideBar = () => {
   return (
     <section className="left-0 top-0 sticky flex justify-between flex-col h-screen overflow-y-auto pl-8 pr-14 max-lg:pr-8 pt-8 pb-8 max-sm:hidden lg:w-[220px]">
       <div className="flex space-y-2 flex-col">
-        <h1 className="text-xl font-semibold text-neutral-800 mb-8">
-          Connect Me
-        </h1>
+        <Link href={"/"} className="flex">
+          <h1 className="text-xl font-semibold text-neutral-800 mb-8">
+            Connect Me
+          </h1>
+        </Link>
         {sidebarLinks.map((item, index) => {
           const isActive =
             (pathname.includes(item.route) && item.route.length > 1) ||
