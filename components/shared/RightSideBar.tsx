@@ -3,9 +3,12 @@
 import { communities, suggestedPeople } from "@/constants";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 export const RightSideBar = () => {
+  const pathname = usePathname();
+
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -13,7 +16,11 @@ export const RightSideBar = () => {
   }, []);
 
   return (
-    <section className="pr-8 pt-24 flex sticky top-0 right-0 h-screen overflow-y-auto flex-col space-y-8 max-w-[300px] w-full max-lg:hidden">
+    <section
+      className={`pr-8 pt-24 flex sticky top-0 right-0 h-screen overflow-y-auto flex-col space-y-8 max-w-[300px] w-full max-lg:hidden ${
+        pathname !== "/" && "hidden"
+      }`}
+    >
       <div className="p-[24px] border w-full  rounded-md border-neutral-400 h-fit">
         <h2 className="text-base font-medium text-neutral-700 mb-8">
           Suggested people
