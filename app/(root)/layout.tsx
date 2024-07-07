@@ -10,6 +10,7 @@ export default async function Layout({
 }) {
   return (
     <main className="relative">
+      <Navbar />
       <div className="flex">
         <LeftSideBar />
         <section className="flex min-h-screen flex-1 flex-col px-6 pb-6 pt-24 max-md:pb-14 sm:px-8 overflow-x-auto">
