@@ -23,3 +23,13 @@ export interface SuggestedPeopleInterface {
   name: string;
   photoUrl: string;
 }
+
+export interface PostInterface {
+  id: number;
+  authorId: number;
+  title: string;
+  content: string;
+  imageUrl: string?;
+  created_at: number;
+  author: UserInterface;
+}
