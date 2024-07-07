@@ -5,9 +5,6 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import Image from "next/image";
@@ -19,9 +16,13 @@ const NavContent = () => {
   const pathname = usePathname();
   return (
     <section className="flex h-full flex-col gap-6 pt-8">
-      <h1 className="text-xl font-semibold text-neutral-800 mb-8">
-        Connect Me
-      </h1>
+      <SheetClose className="flex" asChild>
+        <Link href={"/"} className="hover:cursor-pointer">
+          <h1 className="text-xl font-semibold text-neutral-800 mb-8">
+            Connect Me
+          </h1>
+        </Link>
+      </SheetClose>
       {sidebarLinks.map((item, index) => {
         const isActive =
           (pathname.includes(item.route) && item.route.length > 1) ||
@@ -57,6 +58,27 @@ const NavContent = () => {
           </SheetClose>
         );
       })}
+      <SheetClose className="flex h-full items-end  hover:cursor-pointer">
+        <div className="space-x-4">
+          <Link
+            href={"/profile"}
+            className={`flex flex-col items-start justify-center py-1 px-2 `}
+          >
+            <div className="flex flex-row items-center space-x-2">
+              <Image
+                src={"/assets/icons/user.svg"}
+                alt="Sidebar Icon"
+                width={20}
+                height={20}
+                className="text-neutral-900"
+              />
+              <p className={`text-base font-medium  text-neutral-700/40`}>
+                Profile
+              </p>
+            </div>
+          </Link>
+        </div>
+      </SheetClose>
     </section>
   );
 };
