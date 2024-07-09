@@ -3,7 +3,7 @@
 import React from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Image from "next/image";
-import { CustomSheetContent } from "./SheetContent";
+import { CustomSheetContent } from "./CustomSheetContent";
 
 const NavContent = () => {
   return (
