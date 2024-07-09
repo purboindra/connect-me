@@ -48,6 +48,7 @@ const ACCEPTED_IMAGE_MIME_TYPES = ["image/jpeg", "image/png", "image/webp"];
 export const CreatePostSchema = z.object({
   title: z.string().min(1, "Title required"),
   content: z.string().min(1, "Content required"),
+  hashtags: z.array(z.string()).optional(),
   imageUrl: z
     .any()
     .refine((file) => {
@@ -58,4 +59,5 @@ export const CreatePostSchema = z.object({
       if (!file) return true;
       return ACCEPTED_IMAGE_MIME_TYPES.includes(file.type);
     }, "Only .jpg, .jpeg, .png and .webp formats are supported."),
+  // .optional(),
 });

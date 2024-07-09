@@ -79,3 +79,11 @@ export function dynamicToPostInterface(posts: []) {
   }
   return temp;
 }
+
+export const addHashtags = (text: string) => {
+  const words = text.split(" ");
+  const newHashtags = words.filter(
+    (word) => word.startsWith("#") && word.length > 1
+  );
+  return newHashtags;
+};

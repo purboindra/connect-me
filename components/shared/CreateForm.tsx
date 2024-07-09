@@ -1,7 +1,7 @@
 "use client";
 
 import { CreatePostSchema } from "@/lib/validation";
-import React, { useActionState, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -38,30 +38,39 @@ const initialState = {
 export const CreateForm = () => {
   const { toast } = useToast();
 
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [hashtags, setHashtags] = useState<string[]>([]);
   const [state, dispatch] = useFormState(createPost, initialState);
+
   const form = useForm<z.infer<typeof CreatePostSchema>>({
     defaultValues: {
       title: "",
       content: "",
       imageUrl: "",
-      hastags: [],
+      hashtags: [],
     },
+    // resolver: zodResolver(CreatePostSchema),
   });
 
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const { control, register } = form;
 
-  const [hastags, setHastags] = useState<string[]>([]);
-
-  const addHastags = (text: string) => {
+  // TODO ADD HASHTAGS FROM CLIENT
+  const addHashtags = (text: string) => {
     const words = text.split(" ");
-    const newHastags = words.filter(
+    const newHashtags = words.filter(
       (word) => word.startsWith("#") && word.length > 1
     );
-    setHastags(newHastags);
-    form.setValue("hastags", newHastags, {
-      shouldTouch: true,
-    });
+    setHashtags(newHashtags);
+  };
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files && event.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreview(previewUrl);
+    }
   };
 
   useEffect(() => {
@@ -74,23 +83,9 @@ export const CreateForm = () => {
     }
   }, [state.errors, toast]);
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files && event.target.files[0];
-    if (file) {
-      setSelectedImage(file);
-      const previewUrl = URL.createObjectURL(file);
-      setImagePreview(previewUrl);
-      form.setValue("imageUrl", file, {
-        shouldTouch: true,
-      });
-    }
+  const onSubmit = (data: any) => {
+    console.log("Form Data:", data);
   };
-
-  useEffect(() => {
-    if (imagePreview) {
-      console.log("imagePreview", imagePreview);
-    }
-  }, [imagePreview]);
 
   return (
     <div className="flex space-y-2 w-full">
@@ -98,10 +93,16 @@ export const CreateForm = () => {
         <form className="w-full space-y-4" action={dispatch}>
           <FormField
             name="title"
-            control={form.control}
+            control={control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Title</FormLabel>
+                <FormLabel
+                  className={`${
+                    state.errors.title ? "text-red-500" : "text-neutral-800"
+                  }`}
+                >
+                  Title
+                </FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Title maximal 100 characters..."
@@ -118,15 +119,21 @@ export const CreateForm = () => {
           )}
           <FormField
             name="content"
-            control={form.control}
+            control={control}
             render={({ field: { value, onChange, ...fieldProps } }) => (
               <FormItem>
-                <FormLabel>Description</FormLabel>
+                <FormLabel
+                  className={`${
+                    state.errors.content ? "text-red-500" : "text-neutral-800"
+                  }`}
+                >
+                  Description
+                </FormLabel>
                 <FormControl>
                   <Textarea
                     placeholder="Tell us a little bit about your story.."
                     onChange={(e) => {
-                      addHastags(e.target.value);
+                      addHashtags(e.target.value);
                     }}
                     {...fieldProps}
                   />
@@ -135,30 +142,41 @@ export const CreateForm = () => {
               </FormItem>
             )}
           />
-          <div className="flex flex-row gap-1 flex-wrap">
-            {hastags.length > 0 &&
-              hastags.map((hastag, index) => (
-                <div
-                  key={index}
-                  className="py-1 px-2 rounded-sm bg-neutral-200/60"
-                >
-                  <p className="text-neutral-600 font-medium flex">
-                    {hastag.replaceAll("#", " ")}
-                  </p>
-                </div>
-              ))}
-          </div>
           {state.errors.content && (
             <p className="text-sm font-normal text-red-600">
               {state.errors.content}
             </p>
           )}
+          <div
+            className="flex flex-row gap-1 flex-wrap"
+            {...register("hashtags", {
+              required: true,
+            })}
+          >
+            {hashtags.length > 0 &&
+              hashtags.map((hashtag, index) => (
+                <div
+                  key={index}
+                  className="py-1 px-2 rounded-sm bg-neutral-200/60"
+                >
+                  <p className="text-neutral-600 font-medium flex">
+                    {hashtag.replaceAll("#", " ")}
+                  </p>
+                </div>
+              ))}
+          </div>
           <FormField
             name="imageUrl"
-            control={form.control}
+            control={control}
             render={({ field: { value, onChange, ...fieldProps } }) => (
               <FormItem>
-                <FormLabel>Image</FormLabel>
+                <FormLabel
+                  className={`${
+                    state.errors.imageUrl ? "text-red-500" : "text-neutral-800"
+                  }`}
+                >
+                  Image
+                </FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Upload Imge"
@@ -191,8 +209,45 @@ export const CreateForm = () => {
             </p>
           )}
           <SubmitButton />
+          <Button onClick={() => {}}>Testt</Button>
         </form>
       </Form>
     </div>
   );
 };
+function zodResolver(
+  CreatePostSchema: z.ZodObject<
+    {
+      title: z.ZodString;
+      content: z.ZodString;
+      hashtags: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+      imageUrl: z.ZodOptional<z.ZodAny>;
+    },
+    "strip",
+    z.ZodTypeAny,
+    {
+      title: string;
+      content: string;
+      hashtags?: string[] | undefined;
+      imageUrl?: any;
+    },
+    {
+      title: string;
+      content: string;
+      hashtags?: string[] | undefined;
+      imageUrl?: any;
+    }
+  >
+):
+  | import("react-hook-form").Resolver<
+      {
+        title: string;
+        content: string;
+        hashtags?: string[] | undefined;
+        imageUrl?: any;
+      },
+      any
+    >
+  | undefined {
+  throw new Error("Function not implemented.");
+}

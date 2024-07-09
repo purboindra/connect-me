@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { dynamicToPostInterface } from "@/lib/utils";
+import { addHashtags, dynamicToPostInterface } from "@/lib/utils";
 import console from "console";
 
 export async function createPost(
@@ -17,15 +17,17 @@ export async function createPost(
 
   if (!token) throw new Error("Invalid token");
 
+  Array.from(formData.entries()).forEach(([key, value]) => {
+    console.log(`${key}: ${value}`);
+  });
+
   const validateFields = CreatePostSchema.safeParse({
     title: formData.get("title"),
     content: formData.get("content"),
     imageUrl: formData.get("imageUrl"),
-    hashtags: formData.get("hashtags"),
   });
 
   if (!validateFields.success) {
-    console.log("ERROR VALIDATE", validateFields.error.flatten().fieldErrors);
     return {
       errors: validateFields.error.flatten().fieldErrors,
     };
@@ -34,7 +36,8 @@ export async function createPost(
   const title = validateFields.data.title;
   const content = validateFields.data.content;
   const imageUrl = validateFields.data.imageUrl;
-  const hashtags = validateFields.data.hashtags;
+
+  const hashtags = addHashtags(content);
 
   console.log(hashtags);
 

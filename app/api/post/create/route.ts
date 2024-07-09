@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   if (!token)
     return NextResponse.json({ message: "Invalid token", status: 401 });
 
-  const { title, content, imageUrl } = await req.json();
+  const { title, content, imageUrl, hashtags } = await req.json();
 
   if (!title || !content)
     return NextResponse.json({
