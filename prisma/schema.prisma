@@ -50,7 +50,7 @@ model RefreshToken {
 }
 model Comment {
   id         Int      @id @default(autoincrement())
-  author     User     @relation(fields: [authorId], references: [id])
+  author     User     @relation(fields: [authorId], references: [id],onDelete: Cascade)
   authorId   Int
   content    String
   created_at DateTime @default(now())
@@ -60,7 +60,7 @@ model Comment {
 
 model Post {
   id         Int      @id @default(autoincrement())
-  author     User     @relation(fields: [authorId], references: [id])
+  author     User     @relation(fields: [authorId], references: [id],onDelete: Cascade)
   authorId   Int
   title      String
   content    String
@@ -83,7 +83,7 @@ model PostHashtag{
   postId Int
   hashtagId Int
   post Post @relation(fields: [postId],references: [id])
-  hashtag Hashtag @relation(fields: [hashtagId], references: [id])
+  hashtag Hashtag @relation(fields: [hashtagId], references: [id],onDelete: Cascade)
 
   @@id([postId, hashtagId])
   @@unique([postId, hashtagId])
@@ -96,8 +96,8 @@ model Like {
   postId     Int
   created_at DateTime @default(now())
 
-  user       User     @relation(fields: [userId], references: [id])
-  post       Post     @relation(fields: [postId], references: [id])
+  user       User     @relation(fields: [userId], references: [id],onDelete: Cascade)
+  post       Post     @relation(fields: [postId], references: [id],onDelete: Cascade)
 
   @@id([userId, postId])
 }
@@ -107,8 +107,8 @@ model Follow {
   followedUserId  Int
   created_at      DateTime @default(now())
 
-  follower        User @relation("followersRelation", fields: [followingUserId], references: [id])
-  following       User @relation("followingRelation", fields: [followedUserId], references: [id])
+  follower        User @relation("followersRelation", fields: [followingUserId], references: [id],onDelete: Cascade)
+  following       User @relation("followingRelation", fields: [followedUserId], references: [id],onDelete: Cascade)
 
   @@id([followingUserId, followedUserId])
 }
