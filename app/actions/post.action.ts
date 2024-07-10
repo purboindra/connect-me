@@ -17,10 +17,6 @@ export async function createPost(
 
   if (!token) throw new Error("Invalid token");
 
-  Array.from(formData.entries()).forEach(([key, value]) => {
-    console.log(`${key}: ${value}`);
-  });
-
   const validateFields = CreatePostSchema.safeParse({
     title: formData.get("title"),
     content: formData.get("content"),

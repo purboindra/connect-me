@@ -209,45 +209,8 @@ export const CreateForm = () => {
             </p>
           )}
           <SubmitButton />
-          <Button onClick={() => {}}>Testt</Button>
         </form>
       </Form>
     </div>
   );
 };
-function zodResolver(
-  CreatePostSchema: z.ZodObject<
-    {
-      title: z.ZodString;
-      content: z.ZodString;
-      hashtags: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
-      imageUrl: z.ZodOptional<z.ZodAny>;
-    },
-    "strip",
-    z.ZodTypeAny,
-    {
-      title: string;
-      content: string;
-      hashtags?: string[] | undefined;
-      imageUrl?: any;
-    },
-    {
-      title: string;
-      content: string;
-      hashtags?: string[] | undefined;
-      imageUrl?: any;
-    }
-  >
-):
-  | import("react-hook-form").Resolver<
-      {
-        title: string;
-        content: string;
-        hashtags?: string[] | undefined;
-        imageUrl?: any;
-      },
-      any
-    >
-  | undefined {
-  throw new Error("Function not implemented.");
-}

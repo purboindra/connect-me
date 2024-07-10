@@ -82,7 +82,7 @@ model Hashtag{
 model PostHashtag{
   postId Int
   hashtagId Int
-  post Post @relation(fields: [postId],references: [id])
+  post Post @relation(fields: [postId],references: [id],onDelete: Cascade)
   hashtag Hashtag @relation(fields: [hashtagId], references: [id],onDelete: Cascade)
 
   @@id([postId, hashtagId])

@@ -7,6 +7,9 @@ export async function GET(request: NextRequest) {
       include: {
         author: true,
       },
+      orderBy: {
+        created_at: "desc",
+      },
     });
 
     return NextResponse.json({
