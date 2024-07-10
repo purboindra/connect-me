@@ -4,22 +4,56 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
-  const requestHeaders = new Headers(req.headers);
+  try {
+    const requestHeaders = new Headers(req.headers);
 
-  const token = requestHeaders.get("Authorization");
+    const token = requestHeaders.get("Authorization");
 
-  if (!token)
-    return NextResponse.json({ message: "Invalid token", status: 401 });
+    if (!token)
+      return NextResponse.json({ message: "Invalid token", status: 401 });
 
-  const { title, content, imageUrl, hashtags } = await req.json();
+    const { title, content, imageUrl, hashtags } = await req.json();
 
-  if (!title || !content)
-    return NextResponse.json({
-      status: 400,
-      message: "Title or content is required",
+    if (!title || !content)
+      return NextResponse.json({
+        status: 400,
+        message: "Title or content is required",
+      });
+
+    /// LOWERCASE HASHTAGS
+    const normalizedHashtags = (hashtags as string[]).map((hashtag) =>
+      hashtag.toLowerCase()
+    );
+
+    const existingHashtags = await prisma.hashtag.findMany({
+      where: {
+        name: {
+          in: normalizedHashtags,
+        },
+      },
     });
 
-  try {
+    const existingHashtagNames = existingHashtags.map(
+      (hashtag) => hashtag.name
+    );
+
+    const newHashtags = normalizedHashtags.filter(
+      (hashtag) => !existingHashtagNames.includes(hashtag)
+    );
+
+    await prisma.hashtag.createMany({
+      data: newHashtags.map((hashtag) => ({ name: hashtag })),
+      skipDuplicates: true,
+    });
+
+    const allHashtags = await prisma.hashtag.findMany({
+      where: {
+        name: {
+          in: normalizedHashtags,
+        },
+      },
+    });
+
     const payload = verifyToken(token);
     const userId = (payload as any).userId;
 
@@ -33,9 +67,11 @@ export async function POST(req: NextRequest) {
             id: userId,
           },
         },
-      },
-      include: {
-        hashtag: true,
+        hashtag: {
+          create: allHashtags.map((hashtag) => ({
+            hashtag: { connect: { id: hashtag.id } },
+          })),
+        },
       },
     });
 

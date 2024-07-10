@@ -39,8 +39,6 @@ export async function createPost(
 
   const hashtags = addHashtags(content);
 
-  console.log(hashtags);
-
   try {
     const fileName = `${Date.now()}_${imageUrl.name}`;
 
@@ -48,19 +46,19 @@ export async function createPost(
       .from("post")
       .upload(fileName, imageUrl);
 
-    // if (error) {
-    //   console.log("supabase error storage", error);
-    //   throw new Error(error.message);
-    // }
+    if (error) {
+      console.log("supabase error storage", error);
+      throw new Error(error.message);
+    }
 
     const { data: url, error: urlError } = await supabase.storage
       .from("post")
       .createSignedUrl(fileName, 3600);
 
-    // if (urlError) {
-    //   console.log("error createSignedUrl", urlError);
-    //   throw new Error(urlError?.message);
-    // }
+    if (urlError) {
+      console.log("error createSignedUrl", urlError);
+      throw new Error(urlError?.message);
+    }
 
     const body = JSON.stringify({
       title,
@@ -78,8 +76,6 @@ export async function createPost(
     });
 
     const data = await response.json();
-
-    console.log("post create", data);
 
     if (data.status !== 201) throw new Error("Failed creating post");
   } catch (error) {
