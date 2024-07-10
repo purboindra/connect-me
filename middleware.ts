@@ -7,15 +7,15 @@ export async function middleware(request: NextRequest) {
   const hasOnLogin = request.url.includes("/login");
   const hasOnRegister = request.url.includes("/register");
 
-  if (!token && !hasOnLogin && !hasOnRegister) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
+  // if (!token && !hasOnLogin && !hasOnRegister) {
+  //   return NextResponse.redirect(new URL("/login", request.url));
+  // }
 
   const isExpired = isTokenExpired(token || "");
 
-  if (isExpired && !hasOnLogin && !hasOnRegister) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
+  // if (isExpired && !hasOnLogin && !hasOnRegister) {
+  //   return NextResponse.redirect(new URL("/login", request.url));
+  // }
 
   if ((hasOnLogin || hasOnRegister) && token && !isExpired) {
     return NextResponse.redirect(new URL("/", request.url));
