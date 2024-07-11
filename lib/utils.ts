@@ -68,8 +68,8 @@ export function isTokenExpired(token: string): boolean {
   if (!decoded || !decoded.exp) {
     return true;
   }
-  const currentTime = Math.floor(Date.now() / 1000);
-  return decoded.exp < currentTime;
+  const currentTime = Math.floor(Date.now());
+  return decoded.exp * 1000 < currentTime;
 }
 
 export function dynamicToPostInterface(posts: []) {
