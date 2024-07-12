@@ -7,7 +7,7 @@ import {
   RegisterSchema,
   RegisterState,
 } from "../../lib/validation";
-import { isTokenExpired, parseStringify, verifyToken } from "../../lib/utils";
+import { verifyToken } from "../../lib/utils";
 import { cookies } from "next/headers";
 import console from "console";
 
@@ -118,6 +118,7 @@ export async function logout() {
     console.error(error);
     throw error;
   }
+  redirect("/login");
 }
 
 export async function refreshToken() {

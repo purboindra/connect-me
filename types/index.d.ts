@@ -24,12 +24,19 @@ export interface SuggestedPeopleInterface {
   photoUrl: string;
 }
 
+export interface LikeInterface {
+  userId: string;
+  postid: string;
+  createdAt: number;
+}
+
 export interface PostInterface {
-  id: number;
-  authorId: number;
+  id: string;
+  authorId: string;
   title: string;
   content: string;
   imageUrl: string?;
   created_at: number;
   author: UserInterface;
+  likes: Array<LikeInterface>;
 }

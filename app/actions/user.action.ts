@@ -17,12 +17,18 @@ export async function fetchAllUser() {
 
     const currentUser = await getCurrentUser();
 
-    const filteredUsers = data.data.filter(
-      (user: any) => user.id !== currentUser.id
-    );
+    if (currentUser) {
+      const filteredUsers = data.data.filter(
+        (user: any) => user.id !== currentUser.id
+      );
 
-    for (const user of filteredUsers) {
-      users.push(parseStringify(user));
+      for (const user of filteredUsers) {
+        users.push(parseStringify(user));
+      }
+    } else {
+      for (const user of data.data) {
+        users.push(parseStringify(user));
+      }
     }
 
     return users;
@@ -71,6 +77,6 @@ export async function getCurrentUser() {
     return parseStringify(data.data);
   } catch (error) {
     console.error(error);
-    throw error;
+    return null;
   }
 }

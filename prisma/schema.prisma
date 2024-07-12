@@ -60,15 +60,16 @@ model Comment {
 
 model Post {
   id         Int      @id @default(autoincrement())
-  author     User     @relation(fields: [authorId], references: [id],onDelete: Cascade)
+  author     User     @relation(fields: [authorId], references: [id])
   authorId   Int
   title      String
   content    String
-  imageUrl String?
-  hashtag PostHashtag[]
+  imageUrl   String?
+  hashtag    PostHashtag[]
   created_at DateTime @default(now())
   comments   Comment[]
   likes      Like[]
+  likesCount Int      @default(0) // Field to store the count of likes
 }
 
 model Hashtag{

@@ -11,6 +11,8 @@ export async function middleware(request: NextRequest) {
   //   return NextResponse.redirect(new URL("/login", request.url));
   // }
 
+  console.log("req.nextUrl.pathname", request.nextUrl.pathname);
+
   const isExpired = isTokenExpired(token || "");
 
   // if (isExpired && !hasOnLogin && !hasOnRegister) {

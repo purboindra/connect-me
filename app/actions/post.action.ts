@@ -89,13 +89,94 @@ export async function fetchAllPost() {
       method: "GET",
     });
     const data = await response.json();
+
     if (response.status !== 200) {
       throw new Error(data.message);
     }
+
+    if (data.data == null) throw new Error("Data not found");
 
     return dynamicToPostInterface(data.data.posts);
   } catch (error) {
     console.log("Error fetchAllPost", error);
     throw error;
   }
+}
+
+export async function createLike(formData: FormData) {
+  const cookieStore = cookies();
+
+  const token = cookieStore.get("access_token")?.value;
+
+  if (!token) {
+    redirect("/login");
+  }
+
+  try {
+    const postId = formData.get("postId");
+
+    if (!postId) throw new Error("Invalid post");
+
+    const response = await fetch(
+      `${process.env.BASE_URL}/api/post/like/create`,
+      {
+        method: "POST",
+        body: JSON.stringify({ post_id: postId }),
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    console.log(data);
+
+    if (response.status !== 200) {
+      throw new Error(data.message);
+    }
+  } catch (error) {
+    console.log("Error createLike", error);
+    throw error;
+  }
+  revalidatePath("/");
+}
+
+export async function deleteLike(formData: FormData) {
+  const cookieStore = cookies();
+
+  const token = cookieStore.get("access_token")?.value;
+
+  if (!token) {
+    throw new Error("Invalid token");
+  }
+
+  try {
+    const postId = formData.get("postId");
+
+    if (!postId) throw new Error("Invalid post");
+
+    const response = await fetch(
+      `${process.env.BASE_URL}/api/post/like/delete`,
+      {
+        method: "DELETE",
+        body: JSON.stringify({ post_id: postId }),
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    console.log(data);
+
+    if (response.status !== 200) {
+      throw new Error(data.message);
+    }
+  } catch (error) {
+    console.log("Error deleteLike", error);
+    throw error;
+  }
+  revalidatePath("/");
 }

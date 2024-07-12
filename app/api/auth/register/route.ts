@@ -8,8 +8,6 @@ import {
   verifyRefreshToken,
   verifyToken,
 } from "@/lib/utils";
-import { addHours, addDays, addMinutes } from "date-fns"; // Use date-fns for date manipulations
-import { refreshToken } from "@/app/actions/auth.action";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();

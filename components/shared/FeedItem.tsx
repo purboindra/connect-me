@@ -12,15 +12,16 @@ import {
   ReplyAll,
 } from "lucide-react";
 
-import { motion } from "framer-motion";
-
 import Image from "next/image";
+import { LikeButton } from "./LikeButton";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 interface FeedItemInterface {
   posts: PostInterface[];
+  user: any;
 }
 
-export const FeedItem = ({ posts }: FeedItemInterface) => {
+export const FeedItem = ({ posts, user }: FeedItemInterface) => {
   const [isClient, setIsClient] = React.useState(false);
 
   const isHashtag = (word: string) => word.startsWith("#");
@@ -40,8 +41,6 @@ export const FeedItem = ({ posts }: FeedItemInterface) => {
     ));
   };
 
-  const likes = Math.random() * 301;
-
   React.useEffect(() => {
     setIsClient(true);
   }, []);
@@ -49,6 +48,12 @@ export const FeedItem = ({ posts }: FeedItemInterface) => {
   return (
     <>
       {posts.map((post) => {
+        const hasLiked =
+          user &&
+          post.likes.find(
+            (like) => like.userId.toString() === user.id.toString()
+          ) !== undefined;
+
         return (
           <div
             key={post.id}
@@ -106,7 +111,14 @@ export const FeedItem = ({ posts }: FeedItemInterface) => {
             </div>
             <div className="flex w-full flex-row justify-between">
               <div className="flex flex-row gap-4">
-                <Heart size={24} />
+                <LikeButton
+                  postId={post.id.toString()}
+                  initialLikeCount={{
+                    hasLike: hasLiked,
+                    likeCount: post.likes.length,
+                  }}
+                  hasLiked={hasLiked ?? false}
+                />
                 <MessageCircle size={24} />
                 <ReplyAll size={24} />
               </div>
@@ -114,9 +126,9 @@ export const FeedItem = ({ posts }: FeedItemInterface) => {
                 <BookMarkedIcon size={24} />
               </div>
             </div>
-            {isClient && (
-              <p className="text-sm font-semibold text-neutral-800">{`${likes.toFixed()} likes`}</p>
-            )}{" "}
+            {isClient && post.likes.length > 0 && (
+              <p className="text-sm font-semibold text-neutral-800">{`${post.likes.length} likes`}</p>
+            )}
             <div className="flex flex-col gap-1">
               <h1 className="text-base font-semibold text-neutral-700">
                 {post.title}

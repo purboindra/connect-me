@@ -8,6 +8,8 @@ export default async function page() {
   const users = await fetchAllUser();
   const posts = await fetchAllPost();
 
+  const currentUser = await getCurrentUser();
+
   return (
     <section className="flex flex-col items-center">
       <div className="w-full overflow-auto no-scrollbar">
@@ -31,7 +33,7 @@ export default async function page() {
         </div>
       </div>
       {/* FEED */}
-      <FeedItem posts={posts} />
+      <FeedItem posts={posts} user={currentUser} />
     </section>
   );
 }

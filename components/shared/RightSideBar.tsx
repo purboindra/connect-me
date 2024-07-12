@@ -17,7 +17,7 @@ export const RightSideBar = () => {
 
   return (
     <section
-      className={`pr-8 pt-24 flex sticky top-0 right-0 h-screen overflow-y-auto flex-col space-y-8 max-w-[300px] w-full max-lg:hidden ${
+      className={`pr-8 pt-24 hidden md:flex sticky top-0 right-0 h-screen overflow-y-auto flex-col space-y-8 max-w-[300px] w-full${
         pathname !== "/" && "hidden"
       }`}
     >
