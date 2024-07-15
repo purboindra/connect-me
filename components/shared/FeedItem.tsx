@@ -2,21 +2,12 @@
 
 import React from "react";
 
-import { dynamicToPostInterface } from "@/lib/utils";
 import { PostInterface } from "@/types";
-import {
-  BookMarkedIcon,
-  Heart,
-  MessageCircle,
-  MoreHorizontal,
-  ReplyAll,
-} from "lucide-react";
 
-import Image from "next/image";
 import { InteractionItem } from "./InteractionItem";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { PostItem } from "./PostItem";
 import { TruncateText } from "./TruncateText";
+import { CommentFeedItem } from "./CommentFeedItem";
 
 interface FeedItemInterface {
   posts: PostInterface[];
@@ -80,6 +71,11 @@ export const FeedItem = ({ posts, user }: FeedItemInterface) => {
                 </span>
               )}
             </div>
+            <CommentFeedItem
+              comments={post.comments}
+              postId={post.id}
+              userId={post.authorId}
+            />
           </div>
         );
       })}
