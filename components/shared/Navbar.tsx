@@ -3,7 +3,7 @@
 import React from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Image from "next/image";
-import { CustomSheetContent } from "./CustomSheetContent";
+import { LeftSidebarSheet } from "./LeftSidebarSheet";
 
 interface NavContentInterface {
   user: any;
@@ -12,7 +12,7 @@ interface NavContentInterface {
 const NavContent = ({ user }: NavContentInterface) => {
   return (
     <section className="flex h-full flex-col gap-6 pt-8">
-      <CustomSheetContent user={user} />
+      <LeftSidebarSheet user={user} />
     </section>
   );
 };

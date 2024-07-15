@@ -8,11 +8,11 @@ import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { Button } from "../ui/button";
 
-interface CustomSheetContentInterface {
+interface LeftSidebarSheetInterface {
   user: any;
 }
 
-export const CustomSheetContent = ({ user }: CustomSheetContentInterface) => {
+export const LeftSidebarSheet = ({ user }: LeftSidebarSheetInterface) => {
   const pathname = usePathname();
 
   const router = useRouter();
