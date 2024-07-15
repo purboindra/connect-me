@@ -17,8 +17,6 @@ export async function POST(req: NextRequest) {
 
     const { post_id } = await req.json();
 
-    console.log(`post id: ${post_id} -- ${userId}`);
-
     const responseLike = await prisma.like.create({
       data: {
         postId: Number.parseInt(post_id),
@@ -26,9 +24,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    console.log("responseLike", responseLike);
-
-    const updateddd = await prisma.post.update({
+    await prisma.post.update({
       where: {
         id: Number.parseInt(post_id),
       },
@@ -38,8 +34,6 @@ export async function POST(req: NextRequest) {
         },
       },
     });
-
-    console.log("updatedd", updateddd);
 
     return NextResponse.json({
       message: "Success like post",

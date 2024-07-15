@@ -19,6 +19,7 @@ import { createPost } from "@/app/actions/post.action";
 import Image from "next/image";
 import { useFormState, useFormStatus } from "react-dom";
 import { useToast } from "../ui/use-toast";
+import { X } from "lucide-react";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -32,7 +33,7 @@ function SubmitButton() {
 
 const initialState = {
   message: null,
-  errors: {},
+  errors: null,
 };
 
 export const CreateForm = () => {
@@ -50,10 +51,9 @@ export const CreateForm = () => {
       imageUrl: "",
       hashtags: [],
     },
-    // resolver: zodResolver(CreatePostSchema),
   });
 
-  const { control, register } = form;
+  const { control, register, setValue } = form;
 
   // TODO ADD HASHTAGS FROM CLIENT
   const addHashtags = (text: string) => {
@@ -74,18 +74,25 @@ export const CreateForm = () => {
   };
 
   useEffect(() => {
-    if (state.errors.imageUrl) {
-      toast({
-        title: "Something went wrong",
-        description: state.errors.imageUrl[0],
-        variant: "destructive",
-      });
+    if (state.errors) {
+      let errorMessage;
+      const errors = state.errors || {};
+
+      if (typeof errors !== "string") {
+        errorMessage = errors?.content?.[0];
+      } else {
+        errorMessage = errors;
+      }
+
+      if (errors) {
+        toast({
+          title: "Oops...",
+          description: errorMessage,
+          variant: "destructive",
+        });
+      }
     }
   }, [state.errors, toast]);
-
-  const onSubmit = (data: any) => {
-    console.log("Form Data:", data);
-  };
 
   return (
     <div className="flex space-y-2 w-full">
@@ -98,7 +105,7 @@ export const CreateForm = () => {
               <FormItem>
                 <FormLabel
                   className={`${
-                    state.errors.title ? "text-red-500" : "text-neutral-800"
+                    state.errors?.title ? "text-red-500" : "text-neutral-800"
                   }`}
                 >
                   Title
@@ -112,7 +119,7 @@ export const CreateForm = () => {
               </FormItem>
             )}
           />
-          {state.errors.title && (
+          {state.errors?.title && (
             <p className="text-sm font-normal text-red-600">
               {state.errors.title}
             </p>
@@ -124,7 +131,7 @@ export const CreateForm = () => {
               <FormItem>
                 <FormLabel
                   className={`${
-                    state.errors.content ? "text-red-500" : "text-neutral-800"
+                    state.errors?.content ? "text-red-500" : "text-neutral-800"
                   }`}
                 >
                   Description
@@ -142,7 +149,7 @@ export const CreateForm = () => {
               </FormItem>
             )}
           />
-          {state.errors.content && (
+          {state.errors?.content && (
             <p className="text-sm font-normal text-red-600">
               {state.errors.content}
             </p>
@@ -172,7 +179,7 @@ export const CreateForm = () => {
               <FormItem>
                 <FormLabel
                   className={`${
-                    state.errors.imageUrl ? "text-red-500" : "text-neutral-800"
+                    state.errors?.imageUrl ? "text-red-500" : "text-neutral-800"
                   }`}
                 >
                   Image
@@ -190,20 +197,30 @@ export const CreateForm = () => {
                   />
                 </FormControl>
                 {imagePreview && (
-                  <div className="mt-4">
+                  <div className="h-32 items-center flex ">
+                    <div className="relative z-10 p-[2px] bottom-10 left-[76px] rounded-full bg-neutral-50/70 flex items-center">
+                      <X
+                        size={14}
+                        onClick={() => {
+                          setImagePreview(null);
+                          setSelectedImage(null);
+                          setValue("imageUrl", "");
+                        }}
+                      />
+                    </div>
                     <Image
                       src={imagePreview}
                       alt="Selected"
-                      width={64}
-                      height={64}
-                      className="object-cover"
+                      width={100}
+                      height={100}
+                      className="object-cover absolute"
                     />
                   </div>
                 )}
               </FormItem>
             )}
           />
-          {state.errors.imageUrl && (
+          {state.errors?.imageUrl && (
             <p className="text-sm font-normal text-red-600">
               {state.errors.imageUrl}
             </p>

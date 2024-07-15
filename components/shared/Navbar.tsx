@@ -5,15 +5,19 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Image from "next/image";
 import { CustomSheetContent } from "./CustomSheetContent";
 
-const NavContent = () => {
+interface NavContentInterface {
+  user: any;
+}
+
+const NavContent = ({ user }: NavContentInterface) => {
   return (
     <section className="flex h-full flex-col gap-6 pt-8">
-      <CustomSheetContent />
+      <CustomSheetContent user={user} />
     </section>
   );
 };
 
-export const Navbar = () => {
+export const Navbar = ({ user }: NavContentInterface) => {
   return (
     <nav className="max-sm:flex justify-between bg-neutral-100 fixed z-50 w-full py-3 px-8 shadow hidden">
       <div className="flex w-full items-center justify-between">
@@ -30,7 +34,7 @@ export const Navbar = () => {
               />
             </SheetTrigger>
             <SheetContent side={"left"} className="bg-neutral-100 border-none">
-              <NavContent />
+              <NavContent user={user} />
             </SheetContent>
           </Sheet>
         </div>

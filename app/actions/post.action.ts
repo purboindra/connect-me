@@ -74,9 +74,11 @@ export async function createPost(
     const data = await response.json();
 
     if (data.status !== 201) throw new Error("Failed creating post");
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error create post", error);
-    throw error;
+    return {
+      errors: error.message,
+    };
   }
 
   revalidatePath("/");

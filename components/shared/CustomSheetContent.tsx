@@ -69,8 +69,8 @@ export const CustomSheetContent = ({ user }: CustomSheetContentInterface) => {
           </>
         )}
         {user ? (
-          <div className="flex items-end h-full">
-            <SheetClose>
+          <SheetClose asChild>
+            <div className="flex items-end h-full">
               <div className="space-x-4 border-none outline-none focus:outline-none">
                 <Link
                   href={"/profile"}
@@ -90,8 +90,8 @@ export const CustomSheetContent = ({ user }: CustomSheetContentInterface) => {
                   </div>
                 </Link>
               </div>
-            </SheetClose>
-          </div>
+            </div>
+          </SheetClose>
         ) : (
           <Button onClick={() => router.push("/login")}>Login</Button>
         )}

@@ -25,8 +25,6 @@ export async function DELETE(req: NextRequest) {
       },
     });
 
-    console.log("response delete like", responseLike);
-
     const updateddd = await prisma.post.update({
       where: {
         id: Number.parseInt(post_id),
@@ -37,8 +35,6 @@ export async function DELETE(req: NextRequest) {
         },
       },
     });
-
-    console.log("updatedd", updateddd);
 
     return NextResponse.json({
       message: "Success delete post",
