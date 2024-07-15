@@ -2,7 +2,7 @@
 
 import { createLike, deleteLike } from "@/app/actions/post.action";
 import { BookMarkedIcon, Heart, MessageCircle, ReplyAll } from "lucide-react";
-import React, { startTransition, useOptimistic } from "react";
+import React, { useOptimistic, useTransition } from "react";
 
 type LikeType = {
   hasLike: boolean;
@@ -19,6 +19,8 @@ export const InteractionItem = ({
   postId,
   initialLike,
 }: InteractionItemInterface) => {
+  const [isPending, startTransition] = useTransition();
+
   const [optimisticLike, addOptimisticLike] = useOptimistic(
     initialLike,
     (currentState: LikeType, _: LikeType) => {
