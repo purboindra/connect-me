@@ -69,29 +69,27 @@ export const LeftSidebarSheet = ({ user }: LeftSidebarSheetInterface) => {
           </>
         )}
         {user ? (
-          <SheetClose asChild>
-            <div className="flex items-end h-full">
-              <div className="space-x-4 border-none outline-none focus:outline-none">
-                <Link
-                  href={"/profile"}
-                  className={`flex flex-col items-start justify-center py-1 px-2`}
-                >
-                  <div className="flex flex-row items-center space-x-2">
-                    <Image
-                      src={"/assets/icons/user.svg"}
-                      alt="Sidebar Icon"
-                      width={20}
-                      height={20}
-                      className="text-neutral-900"
-                    />
-                    <p className={`text-base font-medium  text-neutral-700/40`}>
-                      Profile
-                    </p>
-                  </div>
-                </Link>
-              </div>
-            </div>
-          </SheetClose>
+          <>
+            <SheetClose asChild>
+              <Link
+                href={"/profile"}
+                className={`flex flex-col justify-end py-1 px-2  items-start h-full space-x-4 border-none outline-none focus:outline-none`}
+              >
+                <div className="flex flex-row items-center space-x-2">
+                  <Image
+                    src={"/assets/icons/user.svg"}
+                    alt="Sidebar Icon"
+                    width={20}
+                    height={20}
+                    className="text-neutral-900"
+                  />
+                  <p className={`text-base font-medium  text-neutral-700/40`}>
+                    Profile
+                  </p>
+                </div>
+              </Link>
+            </SheetClose>
+          </>
         ) : (
           <Button onClick={() => router.push("/login")}>Login</Button>
         )}
