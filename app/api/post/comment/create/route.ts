@@ -1,6 +1,6 @@
+import { verifyToken } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { verifyToken } from "@/lib/utils";
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,30 +14,46 @@ export async function POST(req: NextRequest) {
     const payload = verifyToken(token);
     const userId = (payload as any).userId;
 
-    const { post_id } = await req.json();
+    const { postId, comment } = await req.json();
 
-    await prisma.like.create({
+    if (!postId)
+      return NextResponse.json({
+        status: 404,
+        message: "Post not found",
+      });
+
+    if (!comment)
+      return NextResponse.json({
+        message: "Required comment",
+        statis: 422,
+      });
+
+    /// THIS FUNCTION TO STORE COMMENT TO DB
+    const commentResponse = await prisma.comment.create({
       data: {
-        postId: Number.parseInt(post_id),
-        userId: Number.parseInt(userId),
+        content: comment,
+        authorId: userId,
+        postId: Number.parseInt(postId),
       },
     });
 
+    /// UPDATED POST WHEN SUCCESS CREATE COMMENT
     await prisma.post.update({
       where: {
-        id: Number.parseInt(post_id),
+        id: Number.parseInt(postId),
       },
       data: {
-        likesCount: {
-          increment: 1,
+        comments: {
+          connect: {
+            id: commentResponse.id,
+          },
         },
       },
     });
 
     return NextResponse.json({
-      message: "Success like post",
-      statusCode: 201,
-      data: null,
+      message: "Success add comment",
+      status: 200,
     });
   } catch (error) {
     console.log(error);
