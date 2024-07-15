@@ -182,3 +182,45 @@ export async function deleteLike(formData: FormData) {
   }
   revalidatePath("/");
 }
+
+export async function createComment(formData: FormData) {
+  const cookieStore = cookies();
+
+  const token = cookieStore.get("access_token")?.value;
+
+  if (!token) {
+    throw new Error("Invalid token");
+  }
+
+  try {
+    const postId = formData.get("postId");
+    const comment = formData.get("comment");
+
+    if (!postId) throw new Error("Invalid post");
+
+    if (!comment) return;
+
+    const response = await fetch(
+      `${process.env.BASE_URL}/api/post/comment/create`,
+      {
+        method: "POST",
+        body: JSON.stringify({ postId, comment }),
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+
+    if (response.status !== 200) {
+      throw new Error(response.statusText);
+    }
+
+    const data = await response.json();
+
+    console.log(data);
+  } catch (error) {
+    console.log("error createComment", error);
+    throw error;
+  }
+  revalidatePath("/");
+}
