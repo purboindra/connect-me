@@ -28,7 +28,7 @@ export const TruncateText: React.FC<TruncateTextInterface> = ({
           className="text-blue-500 font-normal text-sm cursor-pointer"
           onClick={handleToggle}
         >
-          {isTruncated ? " ... show more" : " show less"}
+          {isTruncated ? " ... more" : " less"}
         </span>
       )}
     </span>
