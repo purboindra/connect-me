@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    if (!user) {
+    if (!user || user === null) {
       return NextResponse.json({ message: "User not found", status: 401 });
     }
 

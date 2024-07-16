@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useDialog } from "@/hooks/useDialog";
 import { X } from "lucide-react";
-import Image from "next/image";
 import { PostItem } from "../PostItem";
 import { InteractionItem } from "../InteractionItem";
 import { LikeInterface } from "@/types";
