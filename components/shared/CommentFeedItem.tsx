@@ -1,6 +1,7 @@
 import { createComment } from "@/app/actions/post.action";
 import { CommentInterface, UserInterface } from "@/types";
 import React, { useOptimistic, useState, useTransition } from "react";
+import Image from "next/image";
 
 interface CommentFeedItemInterface {
   postId: string;
@@ -34,9 +35,9 @@ export const CommentFeedItem = ({
       });
     });
 
-    await createComment(new FormData(e.currentTarget.form as HTMLFormElement));
-
     setNewComment("");
+
+    await createComment(new FormData(e.currentTarget.form as HTMLFormElement));
   };
 
   return (
@@ -69,24 +70,41 @@ export const CommentFeedItem = ({
           </h2>
         </span>
       </div>
-      <form className="flex w-full gap-1 justify-between items-center">
-        <input
-          placeholder="Write a comment..."
-          name="comment"
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          type="text"
-          className="text-sm font-normal text-neutral-600 p-1 w-full focus:outline-none focus:border-none"
-        />
-        <input type="hidden" name="postId" value={postId} />
 
-        <button
-          className="text-xs font-medium text-blue-600"
-          onClick={handleClick}
-        >
-          Send
-        </button>
-      </form>
+      <div className="flex flex-row gap-1 items-center">
+        <div className="rounded-full p-[2px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+          <div className="h-[22px] w-[22px] bg-neutral-300 rounded-full">
+            {user.photoUrl !== undefined ? (
+              <Image src={user.photoUrl} alt="profile" width={48} height={48} />
+            ) : (
+              <Image
+                src={"/assets/icons/account.svg"}
+                alt="profile"
+                width={48}
+                height={48}
+              />
+            )}
+          </div>
+        </div>
+        <form className="flex w-full gap-1 justify-between items-center">
+          <input
+            placeholder="Write a comment..."
+            name="comment"
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            type="text"
+            className="text-sm font-normal text-neutral-600 p-1 w-full focus:outline-none focus:border-none"
+          />
+          <input type="hidden" name="postId" value={postId} />
+
+          <button
+            className="text-xs font-medium text-blue-600"
+            onClick={handleClick}
+          >
+            Send
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
