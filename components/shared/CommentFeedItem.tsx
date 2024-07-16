@@ -1,19 +1,19 @@
 import { createComment } from "@/app/actions/post.action";
-import { CommentInterface } from "@/types";
+import { CommentInterface, UserInterface } from "@/types";
 import React, { useOptimistic, useState, useTransition } from "react";
 
 interface CommentFeedItemInterface {
   postId: string;
-  userId: string;
+  user: UserInterface;
   comments: Array<CommentInterface>;
 }
 
 export const CommentFeedItem = ({
   postId,
-  userId,
+  user,
   comments,
 }: CommentFeedItemInterface) => {
-  const [isPending, startTransition] = useTransition();
+  const [_, startTransition] = useTransition();
 
   const [newComment, setNewComment] = useState("");
 
@@ -30,7 +30,7 @@ export const CommentFeedItem = ({
         content: newComment,
         createdAt: Date.now(),
         postid: postId,
-        userId: userId,
+        userId: user.id,
       });
     });
 
@@ -44,7 +44,14 @@ export const CommentFeedItem = ({
       {optimisticMessages.length < 2 && (
         <>
           {optimisticMessages.map((comment, index) => (
-            <p key={index}>{comment.content}</p>
+            <div className="flex gap-1 items-center" key={index}>
+              <span className="font-semibold text-neutral-800">
+                <h2>{user.username}</h2>
+              </span>
+              <span>
+                <p className="text-sm text-neutral-800">{comment.content}</p>
+              </span>
+            </div>
           ))}
         </>
       )}
@@ -57,7 +64,9 @@ export const CommentFeedItem = ({
       <div className="flex gap-1">
         <span className="text-sm font-normal text-neutral-600">Comment as</span>
         <span>
-          <h2 className="text-sm font-semibold text-neutral-600">Purboyndra</h2>
+          <h2 className="text-sm font-semibold text-neutral-600">
+            {user.username}
+          </h2>
         </span>
       </div>
       <form className="flex w-full gap-1 justify-between items-center">
