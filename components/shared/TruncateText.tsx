@@ -25,7 +25,7 @@ export const TruncateText: React.FC<TruncateTextInterface> = ({
       {displayText}
       {React.Children.count(children) > maxLength && (
         <span
-          className="text-blue-500 font-normal text-sm cursor-pointer"
+          className="text-neutral-400 font-normal text-sm cursor-pointer"
           onClick={handleToggle}
         >
           {isTruncated ? " ... more" : " less"}
