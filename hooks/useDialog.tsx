@@ -1,5 +1,5 @@
 import { DialogEnum } from "@/lib/enums";
-import create from "zustand";
+import { create } from "zustand";
 
 interface DialogProps {
   isOpen: boolean;
