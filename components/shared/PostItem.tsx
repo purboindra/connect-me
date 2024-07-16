@@ -13,7 +13,7 @@ export const PostItem = ({ post }: PostItemInterface) => {
     <div className="flex flex-col gap-2 ">
       <div className="flex justify-between items-center">
         <div className="flex space-x-2 items-center">
-          <div className="rounded-full p-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+          <div className="rounded-full p-[2px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
             <div className="h-[36px] w-[36px] bg-neutral-300 rounded-full">
               {post.author.photoUrl !== undefined ? (
                 <Image
