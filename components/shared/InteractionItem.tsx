@@ -2,6 +2,7 @@
 
 import { createLike, deleteLike } from "@/app/actions/post.action";
 import { BookMarkedIcon, Heart, MessageCircle, ReplyAll } from "lucide-react";
+import Image from "next/image";
 import React, { useOptimistic, useTransition } from "react";
 
 type LikeType = {
@@ -70,10 +71,22 @@ export const InteractionItem = ({
             </button>
           </form>
           <MessageCircle size={24} />
-          <ReplyAll size={24} />
+          <Image
+            src={"/assets/icons/share.svg"}
+            alt="Share"
+            width={28}
+            height={28}
+            className="object-fill"
+          />
         </div>
         <div className="flex">
-          <BookMarkedIcon size={24} />
+          <Image
+            src={"/assets/icons/save.svg"}
+            alt="Save"
+            width={18}
+            height={18}
+            className="object-fill"
+          />
         </div>
       </div>
       {optimisticLike.likeCount > 0 && (
