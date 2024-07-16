@@ -100,9 +100,11 @@ export async function login(prevState: LoginState, formData: FormData) {
     cookies().set("user_id", data.data.id);
     cookies().set("username", data.data.username);
     cookies().set("email", data.data.email);
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    throw error;
+    return {
+      errors: error.message,
+    };
   }
   redirect("/");
 }

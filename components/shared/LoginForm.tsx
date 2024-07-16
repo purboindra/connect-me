@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -9,6 +9,7 @@ import { useFormState, useFormStatus } from "react-dom";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { login } from "@/app/actions/auth.action";
+import { toast } from "../ui/use-toast";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -31,6 +32,27 @@ export const LoginForm = () => {
       password: "",
     },
   });
+
+  useEffect(() => {
+    if (state.errors) {
+      let errorMessage;
+      const errors = state.errors || {};
+
+      if (typeof errors !== "string") {
+        errorMessage = errors?.content?.[0];
+      } else {
+        errorMessage = errors;
+      }
+
+      if (errors) {
+        toast({
+          title: "Oops...",
+          description: errorMessage,
+          variant: "destructive",
+        });
+      }
+    }
+  }, [state.errors ? JSON.stringify(state.errors) : ""]);
 
   return (
     <Form {...form}>
