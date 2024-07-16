@@ -8,5 +8,5 @@ import { DialogEnum } from "@/lib/enums";
 export const ModalProvider = () => {
   const { type } = useDialog();
 
-  return <>{type === DialogEnum.Comment && <CommentModal />}</>;
+  return <>{type === DialogEnum.Feed && <CommentModal />}</>;
 };

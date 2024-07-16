@@ -1,5 +1,5 @@
 export enum DialogEnum {
-  Comment = "COMMENT",
+  Feed = "FEED",
   Login = "LOGIN",
   Initial = "INITIAL",
 }

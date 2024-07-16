@@ -1,11 +1,25 @@
 import { createComment } from "@/app/actions/post.action";
-import { CommentInterface, UserInterface } from "@/types";
-import React, { useOptimistic, useState, useTransition } from "react";
+import { CommentInterface, PostInterface, UserInterface } from "@/types";
+import React, {
+  useEffect,
+  useOptimistic,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 import Image from "next/image";
+import { useDialog } from "@/hooks/useDialog";
+import { DialogEnum } from "@/lib/enums";
+
+interface CommentDialogParams {
+  post: PostInterface;
+  user: UserInterface;
+}
 
 interface CommentFeedItemInterface {
   postId: string;
   user: UserInterface;
+  post: PostInterface;
   comments: Array<CommentInterface>;
 }
 
@@ -13,8 +27,12 @@ export const CommentFeedItem = ({
   postId,
   user,
   comments,
+  post,
 }: CommentFeedItemInterface) => {
   const [_, startTransition] = useTransition();
+
+  const { onOpen, onChangeType, setData, onClose, isOpen } = useDialog();
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   const [newComment, setNewComment] = useState("");
 
@@ -40,8 +58,38 @@ export const CommentFeedItem = ({
     await createComment(new FormData(e.currentTarget.form as HTMLFormElement));
   };
 
+  const handlePopDialog = () => {
+    onOpen();
+    onChangeType(DialogEnum.Feed);
+    setData({
+      post: post,
+      user: user,
+    });
+  };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dialogRef.current &&
+      !dialogRef.current.contains(event.target as Node)
+    ) {
+      onClose();
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+
   return (
-    <div className="mt-1 flex flex-col gap-1 w-full">
+    <div className="mt-1 flex flex-col gap-1 w-full" ref={dialogRef}>
       {optimisticMessages.length < 2 && (
         <>
           {optimisticMessages.map((comment, index) => (
@@ -58,9 +106,11 @@ export const CommentFeedItem = ({
       )}
 
       {optimisticMessages.length > 1 && (
-        <h2 className="text-sm font-medium text-neutral-500 hover:cursor-pointer">
-          {`View all ${optimisticMessages.length} comments`}
-        </h2>
+        <button onClick={handlePopDialog} className="flex justify-start">
+          <h2 className="text-sm font-medium text-neutral-500 hover:cursor-pointer">
+            {`View all ${optimisticMessages.length} comments`}
+          </h2>
+        </button>
       )}
       <div className="flex gap-1">
         <span className="text-sm font-normal text-neutral-600">Comment as</span>

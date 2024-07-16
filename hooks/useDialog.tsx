@@ -7,6 +7,8 @@ interface DialogProps {
   onClose: () => void;
   type: DialogEnum;
   onChangeType: (type: DialogEnum) => void;
+  data: any;
+  setData: (data: any) => void;
 }
 
 export const useDialog = create<DialogProps>((set) => ({
@@ -15,4 +17,6 @@ export const useDialog = create<DialogProps>((set) => ({
   onOpen: () => set({ isOpen: true }),
   type: DialogEnum.Initial,
   onChangeType: (type: DialogEnum) => set({ type: type }),
+  data: null,
+  setData: (data) => set({ data: data }),
 }));

@@ -75,6 +75,7 @@ export const FeedItem = ({ posts, user }: FeedItemInterface) => {
               comments={post.comments}
               postId={post.id}
               user={user}
+              post={post}
             />
           </div>
         );

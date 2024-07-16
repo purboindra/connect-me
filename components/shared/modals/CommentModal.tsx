@@ -1,46 +1,45 @@
+"use client";
+
+import Post from "@/app/(root)/create/page";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useDialog } from "@/hooks/useDialog";
+import { X } from "lucide-react";
+import Image from "next/image";
+import { PostItem } from "../PostItem";
+import { InteractionItem } from "../InteractionItem";
+import { LikeInterface } from "@/types";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 export function CommentModal() {
+  const { isOpen, data, onClose } = useDialog();
+
+  const hasLiked =
+    data.user &&
+    data.post.likes.find(
+      (like: LikeInterface) =>
+        like.userId.toString() === data.user.id.toString()
+    ) !== undefined;
+
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline">Edit Profile</Button>
-      </DialogTrigger>
+    <Dialog open={isOpen} modal defaultOpen={isOpen}>
+      <DialogClose>
+        <Button variant="outline" className="rounded">
+          <X className="ml-2 h-4 w-4" />
+        </Button>
+      </DialogClose>
       <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
-          <DialogDescription>
-            Make changes to your profile here. Click save when yore done.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input id="name" value="Pedro Duarte" className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input id="username" value="@peduarte" className="col-span-3" />
-          </div>
+        <div className="flex flex-col gap-8 px-4 py-2">
+          <PostItem post={data.post} />
+          <InteractionItem
+            postId={data.post.id.toString()}
+            initialLike={{
+              hasLike: hasLiked,
+              likeCount: data.post.likes.length,
+            }}
+            hasLiked={hasLiked}
+          />
         </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

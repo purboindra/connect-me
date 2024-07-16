@@ -12,11 +12,11 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "plus.unsplash.com",
+        hostname: "**.unsplash.com",
       },
       {
         protocol: "https",
-        hostname: "tccsjyqivxkiwubgckgb.supabase.co",
+        hostname: "**.supabase.co",
       },
     ],
   },
