@@ -50,7 +50,7 @@ export const FeedItem = ({ posts, user }: FeedItemInterface) => {
         return (
           <div
             key={post.id}
-            className="mt-8 flex flex-col max-md:w-full w-[550px] "
+            className="mt-8 flex flex-col max-md:w-full w-[550px]"
           >
             <PostItem post={post} />
             <InteractionItem
@@ -77,6 +77,7 @@ export const FeedItem = ({ posts, user }: FeedItemInterface) => {
               user={user}
               post={post}
             />
+            <div className=" h-[1px] bg-neutral-500 mt-6 flex" />
           </div>
         );
       })}
