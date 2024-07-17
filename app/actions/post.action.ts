@@ -256,8 +256,6 @@ export async function fetchPostByUserid(params: FetchPostByUserIdParams) {
 
     const data = await response.json();
 
-    console.log("response postt", data.data);
-
     return data.data;
   } catch (error) {
     console.log(error);

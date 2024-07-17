@@ -34,7 +34,7 @@ export const LoginForm = () => {
   });
 
   useEffect(() => {
-    if (state.errors) {
+    if (state.errors.length > 0) {
       let errorMessage;
       const errors = state.errors || {};
 
