@@ -14,10 +14,10 @@ export async function POST(req: NextRequest) {
 
     const { title, content, imageUrl, hashtags } = await req.json();
 
-    if (!title || !content)
+    if (!title && !content)
       return NextResponse.json({
         status: 400,
-        message: "Title or content is required",
+        message: "Required content and title",
       });
 
     /// LOWERCASE HASHTAGS

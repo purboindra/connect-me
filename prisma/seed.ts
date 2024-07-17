@@ -9,19 +9,20 @@ async function main() {
       username: "Alice",
       password: "qwerty",
       photo_url: "",
+      bio: "",
+      comments: {},
+      posts: {},
+      created_at: new Date(),
+      followers: {},
+      following: {},
+      id: 1,
+      likes: {},
+      refreshTokens: {},
+      tokens: {},
     },
   });
-  const bob = await prisma.user.upsert({
-    where: { email: "bob@prisma.io" },
-    update: {},
-    create: {
-      email: "bob@prisma.io",
-      username: "Bob",
-      password: "qwerty",
-      photo_url: "",
-    },
-  });
-  console.log({ alice, bob });
+
+  console.log({ alice });
 }
 main()
   .then(async () => {

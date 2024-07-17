@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { PostInterface } from "@/types";
+import { PostInterface, UserInterface } from "@/types";
 
 import { InteractionItem } from "./InteractionItem";
 import { PostItem } from "./PostItem";
@@ -11,11 +11,11 @@ import { CommentFeedItem } from "./CommentFeedItem";
 
 interface FeedItemInterface {
   posts: PostInterface[];
-  user: any;
+  user: UserInterface;
 }
 
 export const FeedItem = ({ posts, user }: FeedItemInterface) => {
-  const [isClient, setIsClient] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
 
   const isHashtag = (word: string) => word.startsWith("#");
 
@@ -35,7 +35,7 @@ export const FeedItem = ({ posts, user }: FeedItemInterface) => {
   };
 
   React.useEffect(() => {
-    setIsClient(true);
+    setMounted(true);
   }, []);
 
   return (
@@ -62,7 +62,7 @@ export const FeedItem = ({ posts, user }: FeedItemInterface) => {
               hasLiked={hasLiked}
             />
             <div className="flex flex-col text-neutral-700">
-              {isClient && (
+              {mounted && (
                 <span className="font-semibold">
                   {post.author.username}{" "}
                   <TruncateText maxLength={15}>

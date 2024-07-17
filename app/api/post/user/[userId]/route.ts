@@ -12,7 +12,7 @@ export async function GET(req: NextRequest, { params }: { params: IParams }) {
     if (!userId) {
       return NextResponse.json({
         message: "Invalid user id",
-        status: 404,
+        status: 401,
       });
     }
 
@@ -26,6 +26,9 @@ export async function GET(req: NextRequest, { params }: { params: IParams }) {
     const posts = await prisma.post.findMany({
       where: {
         authorId: Number.parseInt(userId),
+      },
+      orderBy: {
+        created_at: "desc",
       },
     });
 

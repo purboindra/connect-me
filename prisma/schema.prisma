@@ -21,6 +21,7 @@ model User{
   email String @unique
   password String
   tokens    Token[] 
+  bio String?
   refreshTokens  RefreshToken[]
   photo_url String
   created_at DateTime @default(now())

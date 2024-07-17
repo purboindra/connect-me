@@ -8,6 +8,17 @@ import { usePathname } from "next/navigation";
 import Avatar from "./Avatar";
 import { AvatarEnum } from "@/lib/enums";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "../ui/button";
+import { logout } from "@/app/actions/auth.action";
+
 interface NavContentInterface {
   user: any;
 }
@@ -36,7 +47,18 @@ export const Navbar = ({ user }: NavContentInterface) => {
           Connect Me
         </h1>
         <div className={`${!isProfile ? "hidden" : "flex"}`}>
-          <Avatar type={AvatarEnum.User} user={user} />
+          <Dialog>
+            <DialogTrigger>
+              <Avatar type={AvatarEnum.User} user={user} />
+            </DialogTrigger>
+            <DialogContent>
+              <div className="flex flex-col p-8 items-center mx-auto">
+                <form action={logout}>
+                  <Button>Logout</Button>
+                </form>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
         <div className="flex flex-row space-x-6 items-center">
           <Sheet>

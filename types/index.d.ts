@@ -8,6 +8,7 @@ export interface UserInterface {
   id: string;
   username: string;
   email: string;
+  bio: string;
   photoUrl: string;
   token: string;
   refreshToken: string;
