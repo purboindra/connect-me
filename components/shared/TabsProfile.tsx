@@ -6,6 +6,8 @@ import React from "react";
 import PostGrid from "./PostGrid";
 import Image from "next/image";
 import { Grid } from "lucide-react";
+import Reels from "./Reels";
+import Tag from "./Tag";
 
 interface TabsProfileInterface {
   posts: PostInterface[];
@@ -65,10 +67,10 @@ const TabsProfile = ({ posts }: TabsProfileInterface) => {
           <PostGrid posts={posts} />
         </TabsContent>
         <TabsContent value="video">
-          <h2>Hello video</h2>
+          <Reels />
         </TabsContent>
         <TabsContent value="tag">
-          <h2>Hello tag</h2>
+          <Tag />
         </TabsContent>
       </Tabs>
     </section>
