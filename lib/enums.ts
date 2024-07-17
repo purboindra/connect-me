@@ -3,3 +3,8 @@ export enum DialogEnum {
   Login = "LOGIN",
   Initial = "INITIAL",
 }
+
+export enum AvatarEnum {
+  Post = "POST",
+  User = "USER",
+}
