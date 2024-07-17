@@ -8,7 +8,7 @@ interface PostGridInterface {
 
 const PostGrid = ({ posts }: PostGridInterface) => {
   return (
-    <div className="w-full grid max-sm:grid-cols-3 grid-cols-5 gap-[1px] mt-2">
+    <div className="w-full grid grid-cols-3 md:grid-cols-4 xl:grid-cols-5   gap-[1px] mt-2">
       {posts.map((post) => (
         <div key={post.id} className="max-sm:h-[155px] h-full">
           <Image
