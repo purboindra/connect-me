@@ -5,8 +5,13 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { addHashtags, dynamicToPostInterface } from "@/lib/utils";
+import {
+  addHashtags,
+  dynamicToPostInterface,
+  parseStringify,
+} from "@/lib/utils";
 import console from "console";
+import { FetchPostByUserIdParams } from "./shared.types";
 
 export async function createPost(
   prevState: CreatePostState,
@@ -223,4 +228,39 @@ export async function createComment(formData: FormData) {
     throw error;
   }
   revalidatePath("/");
+}
+
+export async function fetchPostByUserid(params: FetchPostByUserIdParams) {
+  const cookieStore = cookies();
+
+  const token = cookieStore.get("access_token")?.value;
+
+  if (!token) {
+    throw new Error("Invalid token");
+  }
+
+  try {
+    const response = await fetch(
+      `${process.env.BASE_URL}/api/post/user/${params.userId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    const data = await response.json();
+
+    console.log("response postt", data.data);
+
+    return data.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }

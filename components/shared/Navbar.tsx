@@ -4,6 +4,9 @@ import React from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Image from "next/image";
 import { LeftSidebarSheet } from "./LeftSidebarSheet";
+import { usePathname } from "next/navigation";
+import Avatar from "./Avatar";
+import { AvatarEnum } from "@/lib/enums";
 
 interface NavContentInterface {
   user: any;
@@ -18,10 +21,23 @@ const NavContent = ({ user }: NavContentInterface) => {
 };
 
 export const Navbar = ({ user }: NavContentInterface) => {
+  const pathname = usePathname();
+
+  const isProfile = pathname.startsWith("/profile");
+
   return (
-    <nav className="max-sm:flex justify-between bg-neutral-100 fixed z-50 w-full py-3 px-8 shadow hidden">
+    <nav className="max-sm:flex justify-between bg-neutral-50 fixed z-50 w-full py-3 px-8 shadow hidden">
       <div className="flex w-full items-center justify-between">
-        <h1 className="text-base font-bold text-neutral-700">Connect Me</h1>
+        <h1
+          className={`text-base font-bold text-neutral-700 ${
+            isProfile && "hidden"
+          }`}
+        >
+          Connect Me
+        </h1>
+        <div className={`${!isProfile ? "hidden" : "flex"}`}>
+          <Avatar type={AvatarEnum.User} user={user} />
+        </div>
         <div className="flex flex-row space-x-6 items-center">
           <Sheet>
             <SheetTrigger asChild>
