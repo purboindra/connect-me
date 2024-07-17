@@ -56,9 +56,11 @@ export async function register(prevState: RegisterState, formData: FormData) {
     cookies().set("refresh_token", data.data.refresh_token);
     cookies().set("username", username);
     cookies().set("email", email);
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    throw error;
+    return {
+      errors: error.message,
+    };
   }
   redirect("/");
 }

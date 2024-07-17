@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Form,
   FormControl,
@@ -16,6 +16,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useFormState, useFormStatus } from "react-dom";
 import { register } from "@/app/actions/auth.action";
+import { toast } from "../ui/use-toast";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -38,6 +39,27 @@ export const RegisterForm = () => {
       username: "",
     },
   });
+
+  useEffect(() => {
+    if (state.errors.length > 0) {
+      let errorMessage;
+      const errors = state.errors || {};
+
+      if (typeof errors !== "string") {
+        errorMessage = errors?.content?.[0];
+      } else {
+        errorMessage = errors;
+      }
+
+      if (errors) {
+        toast({
+          title: "Oops...",
+          description: errorMessage,
+          variant: "destructive",
+        });
+      }
+    }
+  }, [state.errors ? JSON.stringify(state.errors) : ""]);
 
   return (
     <Form {...form}>
