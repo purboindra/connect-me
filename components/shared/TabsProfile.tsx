@@ -6,8 +6,9 @@ import React from "react";
 import PostGrid from "./PostGrid";
 import Image from "next/image";
 import { Grid } from "lucide-react";
-import Reels from "./Reels";
+import Reels from "./SavedPosts";
 import Tag from "./Tag";
+import SavedPosts from "./SavedPosts";
 
 interface TabsProfileInterface {
   posts: PostInterface[];
@@ -37,16 +38,19 @@ const TabsProfile = ({ posts }: TabsProfileInterface) => {
             />
           </TabsTrigger>
           <TabsTrigger
-            value="video"
+            value="save"
             className="shadow-none bg-transparent"
-            onClick={() => handleTabChange("video")}
+            onClick={() => handleTabChange("save")}
           >
             <Image
-              src={"/assets/icons/video.svg"}
-              alt="video"
-              width={24}
-              height={24}
-              className={`${activeTab === "video" && "invert"}`}
+              src={`${
+                activeTab === "save"
+                  ? "/assets/icons/save.svg"
+                  : "/assets/icons/save_unactive.svg"
+              }`}
+              alt="save"
+              width={20}
+              height={20}
             />
           </TabsTrigger>
           <TabsTrigger
@@ -66,8 +70,8 @@ const TabsProfile = ({ posts }: TabsProfileInterface) => {
         <TabsContent value="post">
           <PostGrid posts={posts} />
         </TabsContent>
-        <TabsContent value="video">
-          <Reels />
+        <TabsContent value="save">
+          <SavedPosts />
         </TabsContent>
         <TabsContent value="tag">
           <Tag />
