@@ -35,6 +35,7 @@ export interface CommentInterface {
   postid: string;
   createdAt: number;
   content: string;
+  author: UserInterface;
 }
 
 export interface PostInterface {
