@@ -262,3 +262,42 @@ export async function fetchPostByUserid(params: FetchPostByUserIdParams) {
     throw error;
   }
 }
+
+export async function savePost(formData: FormData) {
+  const cookieStore = cookies();
+
+  const token = cookieStore.get("access_token")?.value;
+
+  if (!token) {
+    redirect("/login");
+  }
+
+  try {
+    const postId = formData.get("postId");
+
+    if (!postId) throw new Error("Invalid post");
+
+    const response = await fetch(
+      `${process.env.BASE_URL}/api/post/save/create`,
+      {
+        method: "POST",
+        body: JSON.stringify({ post_id: postId }),
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    console.log(data);
+
+    if (response.status !== 200) {
+      throw new Error(data.message);
+    }
+  } catch (error) {
+    console.log("Error savePost", error);
+    throw error;
+  }
+  revalidatePath("/");
+}
