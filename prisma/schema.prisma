@@ -26,6 +26,7 @@ model User{
   photo_url String
   created_at DateTime @default(now())
   likes Like[]
+  savedPost SavedPost[]
   followers   Follow[] @relation("followersRelation")
   following   Follow[] @relation("followingRelation")
   comments Comment[]
@@ -59,6 +60,8 @@ model Comment {
   postId     Int
 }
 
+
+
 model Post {
   id         Int      @id @default(autoincrement())
   author     User     @relation(fields: [authorId], references: [id])
@@ -70,7 +73,18 @@ model Post {
   created_at DateTime @default(now())
   comments   Comment[]
   likes      Like[]
-  likesCount Int      @default(0) // Field to store the count of likes
+  likesCount Int      @default(0)
+  savedBy SavedPost[]
+}
+
+
+model SavedPost {
+  id         Int        @id @unique @default(autoincrement())
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int
+  post       Post       @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId     Int
+  created_at DateTime   @default(now())
 }
 
 model Hashtag{
