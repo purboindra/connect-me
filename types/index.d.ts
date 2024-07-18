@@ -30,6 +30,13 @@ export interface LikeInterface {
   postid: string;
   createdAt: number;
 }
+
+export interface SaveInterface {
+  id: string;
+  userId: string;
+  postid: string;
+  createdAt: number;
+}
 export interface CommentInterface {
   userId: string;
   postid: string;
@@ -48,4 +55,5 @@ export interface PostInterface {
   author: UserInterface;
   likes: Array<LikeInterface>;
   comments: Array<CommentInterface>;
+  savedBy: Array<SaveInterface>;
 }
