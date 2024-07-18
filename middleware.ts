@@ -10,8 +10,16 @@ export async function middleware(request: NextRequest) {
   const hasOnLogin = request.url.includes("/login");
   const hasOnRegister = request.url.includes("/register");
 
-  if ((!token || (token && isExpired)) && (!hasOnLogin || !hasOnRegister)) {
-    return NextResponse.rewrite(new URL("/login", request.url));
+  // If the user is not authenticated or token is expired, redirect to login or register page if not already on those pages
+  if (!token || (token && isExpired)) {
+    if (!hasOnLogin && !hasOnRegister) {
+      return NextResponse.rewrite(new URL("/login", request.url));
+    }
+  }
+
+  // If the user is on the login or register page and already has a valid token, redirect them to the home page or some other page
+  if ((hasOnLogin || hasOnRegister) && token && !isExpired) {
+    return NextResponse.rewrite(new URL("/", request.url));
   }
 
   return NextResponse.next();
