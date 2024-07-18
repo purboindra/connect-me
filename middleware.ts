@@ -19,7 +19,7 @@ export async function middleware(request: NextRequest) {
 
   // If the user is on the login or register page and already has a valid token, redirect them to the home page or some other page
   if ((hasOnLogin || hasOnRegister) && token && !isExpired) {
-    return NextResponse.rewrite(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   return NextResponse.next();
