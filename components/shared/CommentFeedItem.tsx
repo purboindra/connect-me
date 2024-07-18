@@ -1,6 +1,7 @@
 import { createComment } from "@/app/actions/post.action";
 import { CommentInterface, PostInterface, UserInterface } from "@/types";
 import React, {
+  startTransition,
   useEffect,
   useOptimistic,
   useRef,
@@ -10,6 +11,7 @@ import React, {
 import Image from "next/image";
 import { useDialog } from "@/hooks/useDialog";
 import { DialogEnum } from "@/lib/enums";
+import { Heart } from "lucide-react";
 
 interface CommentDialogParams {
   post: PostInterface;
@@ -30,12 +32,11 @@ export const CommentFeedItem = ({
   post,
 }: CommentFeedItemInterface) => {
   const [_, startTransition] = useTransition();
-  const [hasSendComment, setHasSendComment] = useState(false);
+
+  const [newComment, setNewComment] = useState("");
 
   const { onOpen, onChangeType, setData, onClose, isOpen } = useDialog();
   const dialogRef = useRef<HTMLDivElement>(null);
-
-  const [newComment, setNewComment] = useState("");
 
   const [optimisticMessages, addOptimisticMessage] = useOptimistic(
     comments,
@@ -44,7 +45,6 @@ export const CommentFeedItem = ({
 
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    // setHasSendComment(true);
 
     startTransition(() => {
       addOptimisticMessage({
@@ -93,54 +93,41 @@ export const CommentFeedItem = ({
 
   return (
     <div className="mt-1 flex flex-col gap-1 w-full" ref={dialogRef}>
-      {/* {hasSendComment ? (
-        <>
-          {optimisticMessages.map((comment, index) => {
-            console.log(comment.author.username);
-            return (
-              <div className="flex gap-1 items-center" key={index}>
-                <span className="font-semibold text-neutral-800">
-                  <h2>{`${
-                    comment.author.username === user.username
-                      ? "You"
-                      : `${user.username}`
-                  }`}</h2>
-                </span>
-                <span>
-                  <p className="text-sm text-neutral-800">{comment.content}</p>
-                </span>
-              </div>
-            );
-          })}
-        </>
-      ) : (
-        <>
-          {post.comments.map((comment, index) => (
-            <div className="flex gap-1 items-center" key={index}>
+      {optimisticMessages.map((comment, index) => {
+        return (
+          <div className="flex gap-1 items-center justify-between" key={index}>
+            <div className="flex flex-row items-center gap-1">
               <span className="font-semibold text-neutral-800">
-                <h2>{comment.author.username}</h2>
+                <h2>{`${
+                  comment.author.username === user.username
+                    ? "You"
+                    : `${comment.author.username}`
+                }`}</h2>
               </span>
               <span>
                 <p className="text-sm text-neutral-800">{comment.content}</p>
               </span>
             </div>
-          ))}
-        </>
-      )} */}
+            <form>
+              <input type="hidden" name="postId" value={postId} />
+              <button type="submit" onClick={handleClick}>
+                <Heart
+                  size={14}
+                  // className={`${
+                  //   !optimisticLike.hasLike
+                  //     ? "text-red-500"
+                  //     : "text-red-500 fill-current"
+                  // }`}
+                  className="text-red-500"
+                />
+              </button>
+            </form>
 
-      {optimisticMessages.map((comment, index) => {
-        return (
-          <div className="flex gap-1 items-center" key={index}>
-            <span className="font-semibold text-neutral-800">
-              <h2>{`${
-                comment.author.username === user.username
-                  ? "You"
-                  : `${comment.author.username}`
-              }`}</h2>
-            </span>
-            <span>
-              <p className="text-sm text-neutral-800">{comment.content}</p>
-            </span>
+            {/* <p className="text-sm text-neutral-400">
+              <DateComponent
+                dateString={new Date(comment.createdAt).toString()}
+              />
+            </p> */}
           </div>
         );
       })}
