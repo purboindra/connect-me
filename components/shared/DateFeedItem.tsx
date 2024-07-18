@@ -8,26 +8,30 @@ import {
 } from "date-fns";
 
 const DateFeedItem = ({ dateString }: { dateString: string }) => {
-  const date = parseISO(dateString);
-  const now = new Date();
+  try {
+    const date = parseISO(dateString);
+    const now = new Date();
 
-  const daysDifference = differenceInDays(now, date);
-  const hoursDifference = differenceInHours(now, date);
-  const minutesDifference = differenceInMinutes(now, date);
+    const daysDifference = differenceInDays(now, date);
+    const hoursDifference = differenceInHours(now, date);
+    const minutesDifference = differenceInMinutes(now, date);
 
-  let displayText = "";
+    let displayText = "";
 
-  if (daysDifference > 0) {
-    displayText = `${daysDifference}d`;
-  } else if (hoursDifference > 0) {
-    displayText = `${hoursDifference}h`;
-  } else if (minutesDifference > 0) {
-    displayText = `${minutesDifference}m`;
-  } else {
-    displayText = formatDistanceToNow(date, { addSuffix: true });
+    if (daysDifference > 0) {
+      displayText = `${daysDifference}d`;
+    } else if (hoursDifference > 0) {
+      displayText = `${hoursDifference}h`;
+    } else if (minutesDifference > 0) {
+      displayText = `${minutesDifference}m`;
+    } else {
+      displayText = formatDistanceToNow(date, { addSuffix: true });
+    }
+
+    return <span>{displayText}</span>;
+  } catch (error) {
+    return <>Invalid</>;
   }
-
-  return <span>{displayText}</span>;
 };
 
 export default DateFeedItem;
