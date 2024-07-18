@@ -48,6 +48,12 @@ export const FeedItem = ({ posts, user }: FeedItemInterface) => {
             (like) => like.userId.toString() === user.id.toString()
           ) !== undefined;
 
+        const hasSaved =
+          user &&
+          post.savedBy.find(
+            (like) => like.userId.toString() === user.id.toString()
+          ) !== undefined;
+
         return (
           <div
             key={post.id}
@@ -60,6 +66,7 @@ export const FeedItem = ({ posts, user }: FeedItemInterface) => {
                 hasLike: hasLiked,
                 likeCount: post.likes.length,
               }}
+              hasSaved={hasSaved}
               hasLiked={hasLiked}
             />
             <div className="flex flex-col text-neutral-700">

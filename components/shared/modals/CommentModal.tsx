@@ -20,6 +20,13 @@ export function CommentModal() {
         like.userId.toString() === data.user.id.toString()
     ) !== undefined;
 
+  const hasSaved =
+    data.user &&
+    data.post.likes.find(
+      (like: LikeInterface) =>
+        like.userId.toString() === data.user.id.toString()
+    ) !== undefined;
+
   return (
     <Dialog open={isOpen} modal defaultOpen={isOpen}>
       <DialogClose>
@@ -36,6 +43,7 @@ export function CommentModal() {
               hasLike: hasLiked,
               likeCount: data.post.likes.length,
             }}
+            hasSaved={hasSaved}
             hasLiked={hasLiked}
           />
         </div>
