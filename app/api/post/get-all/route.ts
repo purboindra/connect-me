@@ -13,6 +13,7 @@ export async function GET(request: NextRequest) {
         },
         hashtag: true,
         likes: true,
+        savedBy: true,
       },
 
       orderBy: {
