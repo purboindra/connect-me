@@ -30,6 +30,7 @@ export const CommentFeedItem = ({
   post,
 }: CommentFeedItemInterface) => {
   const [_, startTransition] = useTransition();
+  const [hasSendComment, setHasSendComment] = useState(false);
 
   const { onOpen, onChangeType, setData, onClose, isOpen } = useDialog();
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -43,6 +44,7 @@ export const CommentFeedItem = ({
 
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    // setHasSendComment(true);
 
     startTransition(() => {
       addOptimisticMessage({
@@ -50,6 +52,7 @@ export const CommentFeedItem = ({
         createdAt: Date.now(),
         postid: postId,
         userId: user.id,
+        author: user,
       });
     });
 
@@ -90,12 +93,32 @@ export const CommentFeedItem = ({
 
   return (
     <div className="mt-1 flex flex-col gap-1 w-full" ref={dialogRef}>
-      {optimisticMessages.length < 2 && (
+      {/* {hasSendComment ? (
         <>
-          {optimisticMessages.map((comment, index) => (
+          {optimisticMessages.map((comment, index) => {
+            console.log(comment.author.username);
+            return (
+              <div className="flex gap-1 items-center" key={index}>
+                <span className="font-semibold text-neutral-800">
+                  <h2>{`${
+                    comment.author.username === user.username
+                      ? "You"
+                      : `${user.username}`
+                  }`}</h2>
+                </span>
+                <span>
+                  <p className="text-sm text-neutral-800">{comment.content}</p>
+                </span>
+              </div>
+            );
+          })}
+        </>
+      ) : (
+        <>
+          {post.comments.map((comment, index) => (
             <div className="flex gap-1 items-center" key={index}>
               <span className="font-semibold text-neutral-800">
-                <h2>{user.username}</h2>
+                <h2>{comment.author.username}</h2>
               </span>
               <span>
                 <p className="text-sm text-neutral-800">{comment.content}</p>
@@ -103,15 +126,25 @@ export const CommentFeedItem = ({
             </div>
           ))}
         </>
-      )}
+      )} */}
 
-      {optimisticMessages.length > 1 && (
-        <button onClick={handlePopDialog} className="flex justify-start">
-          <h2 className="text-sm font-medium text-neutral-500 hover:cursor-pointer">
-            {`View all ${optimisticMessages.length} comments`}
-          </h2>
-        </button>
-      )}
+      {optimisticMessages.map((comment, index) => {
+        return (
+          <div className="flex gap-1 items-center" key={index}>
+            <span className="font-semibold text-neutral-800">
+              <h2>{`${
+                comment.author.username === user.username
+                  ? "You"
+                  : `${comment.author.username}`
+              }`}</h2>
+            </span>
+            <span>
+              <p className="text-sm text-neutral-800">{comment.content}</p>
+            </span>
+          </div>
+        );
+      })}
+
       <div className="flex gap-1">
         <span className="text-sm font-normal text-neutral-600">Comment as</span>
         <span>

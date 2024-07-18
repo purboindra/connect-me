@@ -41,6 +41,7 @@ export const FeedItem = ({ posts, user }: FeedItemInterface) => {
   return (
     <>
       {posts.map((post) => {
+        console.log({ post });
         const hasLiked =
           user &&
           post.likes.find(
