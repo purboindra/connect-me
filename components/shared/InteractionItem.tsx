@@ -1,6 +1,6 @@
 "use client";
 
-import { createLike, deleteLike } from "@/app/actions/post.action";
+import { createLike, deleteLike, savePost } from "@/app/actions/post.action";
 import { BookMarkedIcon, Heart, MessageCircle, ReplyAll } from "lucide-react";
 import Image from "next/image";
 import React, { useOptimistic, useTransition } from "react";
@@ -14,11 +14,13 @@ interface InteractionItemInterface {
   postId: string;
   initialLike: LikeType;
   hasLiked: boolean;
+  hasSaved: boolean;
 }
 
 export const InteractionItem = ({
   postId,
   initialLike,
+  hasSaved,
 }: InteractionItemInterface) => {
   const [isPending, startTransition] = useTransition();
 
@@ -32,6 +34,11 @@ export const InteractionItem = ({
           : currentState.likeCount + 1,
       };
     }
+  );
+
+  const [optimisticSave, addOptimisticSave] = useOptimistic(
+    hasSaved,
+    (currentState: boolean, _: boolean) => !currentState
   );
 
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -51,6 +58,16 @@ export const InteractionItem = ({
     } else {
       await createLike(new FormData(e.currentTarget.form as HTMLFormElement));
     }
+  };
+
+  const handleSave = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    startTransition(() => {
+      addOptimisticSave(!optimisticSave);
+    });
+
+    await savePost(new FormData(e.currentTarget.form as HTMLFormElement));
   };
 
   return (
@@ -80,13 +97,21 @@ export const InteractionItem = ({
           />
         </div>
         <div className="flex">
-          <Image
-            src={"/assets/icons/save.svg"}
-            alt="Save"
-            width={18}
-            height={18}
-            className="object-fill"
-          />
+          <form>
+            <input type="hidden" name="postId" value={postId} />
+            <button type="submit" onClick={handleSave}>
+              <Image
+                src={`${
+                  optimisticSave
+                    ? "/assets/icons/save_fill.svg"
+                    : "/assets/icons/save.svg"
+                }`}
+                alt="Save"
+                width={18}
+                height={18}
+              />
+            </button>
+          </form>
         </div>
       </div>
       {optimisticLike.likeCount > 0 && (
