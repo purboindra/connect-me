@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { verifyToken } from "@/lib/utils";
 
-export async function POST(req: NextRequest) {
+export async function DELETE(req: NextRequest) {
   try {
     const requestHeaders = new Headers(req.headers);
 
@@ -16,38 +16,39 @@ export async function POST(req: NextRequest) {
 
     const { post_id } = await req.json();
 
-    await prisma.savedPost.create({
-      data: {
-        postId: Number.parseInt(post_id),
-        userId: Number.parseInt(userId),
-      },
-    });
-
-    await prisma.post.update({
+    await prisma.savedPost.delete({
       where: {
-        id: Number.parseInt(post_id),
-      },
-      data: {
-        savedBy: {
-          connect: {
-            userId_postId: {
-              postId: Number.parseInt(post_id),
-              userId: Number.parseInt(userId),
-            },
-          },
+        userId_postId: {
+          userId: Number.parseInt(userId),
+          postId: Number.parseInt(post_id),
         },
       },
     });
 
+    // await prisma.savedPost.update({
+    //   where: {
+    //     userId_postId: {
+    //       postId: Number.parseInt(post_id),
+    //       userId: Number.parseInt(userId),
+    //     },
+    //   },
+    //   data:{
+
+    //   }
+    // });
+
     return NextResponse.json({
-      message: "Success save post",
-      status: 200,
+      message: "Success delete post",
+      statusCode: 201,
+      data: null,
     });
   } catch (error) {
     console.log(error);
+
     return NextResponse.json({
       message: "Internal server error",
-      status: 500,
+      statusCode: 500,
+      data: null,
     });
   }
 }

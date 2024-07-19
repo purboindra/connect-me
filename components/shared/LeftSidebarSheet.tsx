@@ -72,7 +72,7 @@ export const LeftSidebarSheet = ({ user }: LeftSidebarSheetInterface) => {
           <>
             <SheetClose asChild>
               <Link
-                href={"/profile"}
+                href={`/profile/${user.id}`}
                 className={`flex flex-col justify-end py-1 px-2  items-start h-full space-x-4 border-none outline-none focus:outline-none`}
               >
                 <div className="flex flex-row items-center space-x-2">
@@ -91,7 +91,9 @@ export const LeftSidebarSheet = ({ user }: LeftSidebarSheetInterface) => {
             </SheetClose>
           </>
         ) : (
-          <Button onClick={() => router.push("/login")}>Login</Button>
+          <Link href={"/login"}>
+            <Button>Login</Button>
+          </Link>
         )}
       </div>
     </>

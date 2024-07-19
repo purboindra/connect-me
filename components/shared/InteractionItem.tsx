@@ -1,6 +1,11 @@
 "use client";
 
-import { createLike, deleteLike, savePost } from "@/app/actions/post.action";
+import {
+  createLike,
+  deleteLike,
+  deleteSavePost,
+  savePost,
+} from "@/app/actions/post.action";
 import { BookMarkedIcon, Heart, MessageCircle, ReplyAll } from "lucide-react";
 import Image from "next/image";
 import React, { useOptimistic, useTransition } from "react";
@@ -67,7 +72,13 @@ export const InteractionItem = ({
       addOptimisticSave(!optimisticSave);
     });
 
-    await savePost(new FormData(e.currentTarget.form as HTMLFormElement));
+    if (optimisticLike) {
+      await deleteSavePost(
+        new FormData(e.currentTarget.form as HTMLFormElement)
+      );
+    } else {
+      await savePost(new FormData(e.currentTarget.form as HTMLFormElement));
+    }
   };
 
   return (

@@ -5,11 +5,7 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import {
-  addHashtags,
-  dynamicToPostInterface,
-  parseStringify,
-} from "@/lib/utils";
+import { addHashtags, dynamicToPostInterface } from "@/lib/utils";
 import console from "console";
 import { FetchPostByUserIdParams } from "./shared.types";
 
@@ -54,7 +50,7 @@ export async function createPost(
 
     const { data: url, error: urlError } = await supabase.storage
       .from("post")
-      .createSignedUrl(fileName, 3600);
+      .createSignedUrl(fileName, 36000);
 
     if (urlError) {
       console.log("error createSignedUrl", urlError);
@@ -300,4 +296,80 @@ export async function savePost(formData: FormData) {
     throw error;
   }
   revalidatePath("/");
+}
+
+export async function deleteSavePost(formData: FormData) {
+  const cookieStore = cookies();
+
+  const token = cookieStore.get("access_token")?.value;
+
+  if (!token) {
+    redirect("/login");
+  }
+
+  try {
+    const postId = formData.get("postId");
+
+    if (!postId) throw new Error("Invalid post");
+
+    const response = await fetch(
+      `${process.env.BASE_URL}/api/post/save/delete`,
+      {
+        method: "DELETE",
+        body: JSON.stringify({ post_id: postId }),
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    console.log(data);
+
+    if (response.status !== 200) {
+      throw new Error(data.message);
+    }
+  } catch (error) {
+    console.log("Error savePost", error);
+    throw error;
+  }
+  revalidatePath("/");
+}
+
+export async function fetchSavedPostByuserId(params: FetchPostByUserIdParams) {
+  const cookieStore = cookies();
+
+  const token = cookieStore.get("access_token")?.value;
+
+  if (!token) {
+    throw new Error("Invalid token");
+  }
+
+  try {
+    console.log(params.userId);
+
+    const response = await fetch(
+      `${process.env.BASE_URL}/api/post/save/user/${params.userId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+
+    if (response.status !== 200) {
+      throw new Error("Failed fetch saved post");
+    }
+
+    const data = await response.json();
+
+    console.log(data);
+
+    return data.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }

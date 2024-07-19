@@ -1,6 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
 import { isTokenExpired } from "./lib/utils";
-import { getCurrentUser } from "./app/actions/user.action";
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get("access_token")?.value;

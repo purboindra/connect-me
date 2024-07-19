@@ -27,6 +27,14 @@ export const LeftSideBar = ({ user }: LeftSideBarInterface) => {
                 (pathname.includes(item.route) && item.route.length > 1) ||
                 pathname == item.route;
 
+              if (item.route === "/profile") {
+                if (user) {
+                  item.route = `${item.route}/${user.id}`;
+                } else {
+                  return null;
+                }
+              }
+
               return (
                 <Link
                   href={item.route}

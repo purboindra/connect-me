@@ -12,9 +12,10 @@ import SavedPosts from "./SavedPosts";
 
 interface TabsProfileInterface {
   posts: PostInterface[];
+  savedPost: any[];
 }
 
-const TabsProfile = ({ posts }: TabsProfileInterface) => {
+const TabsProfile = ({ posts, savedPost }: TabsProfileInterface) => {
   const [activeTab, setActiveTab] = React.useState("post");
 
   const handleTabChange = (value: string) => {
@@ -71,7 +72,7 @@ const TabsProfile = ({ posts }: TabsProfileInterface) => {
           <PostGrid posts={posts} />
         </TabsContent>
         <TabsContent value="save">
-          <SavedPosts />
+          <SavedPosts posts={savedPost} />
         </TabsContent>
         <TabsContent value="tag">
           <Tag />
