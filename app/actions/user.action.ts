@@ -1,5 +1,7 @@
 import { isTokenExpired, parseStringify } from "@/lib/utils";
+import { EditProfileSchema, EditUserState } from "@/lib/validation";
 import { UserInterface } from "@/types";
+import { redirect } from "next/dist/server/api-utils";
 import { cookies } from "next/headers";
 
 export async function fetchAllUser() {
@@ -78,5 +80,48 @@ export async function getCurrentUser() {
   } catch (error) {
     console.error(error);
     return null;
+  }
+}
+
+export async function editUser(prevState: EditUserState, formData: FormData) {
+  const cookiesStore = cookies();
+
+  const token = cookiesStore.get("token");
+
+  if (!token) throw new Error("Unauthorized");
+
+  const validatedFields = EditProfileSchema.safeParse({
+    username: formData.get("username"),
+    bio: formData.get("bio"),
+    image_url: formData.get("image_url"),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+
+  try {
+    const bio = validatedFields.data.bio;
+    const username = validatedFields.data.username;
+
+    const response = await fetch(`${process.env.BASE_URL}/api/user/edit`, {
+      method: "PUT",
+      body: JSON.stringify({ bio: bio, username: username }),
+    });
+
+    if (response.status !== 200) throw new Error(response.statusText);
+  } catch (error) {
+    console.log(error);
+    if (error instanceof Error) {
+      return {
+        errors: error.message,
+      };
+    } else {
+      return {
+        errors: "An error unexcepted occured",
+      };
+    }
   }
 }

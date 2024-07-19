@@ -15,8 +15,6 @@ export async function GET(req: NextRequest) {
     const payload = verifyToken(token);
     const userId = (payload as any).userId;
 
-    console.log(payload);
-
     const user = await prisma.user.findFirst({
       where: {
         id: userId,

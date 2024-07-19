@@ -55,3 +55,32 @@ export const CreatePostSchema = z.object({
     }, "Only .jpg, .jpeg, .png and .webp formats are supported."),
   // .optional(),
 });
+
+export const EditProfileSchema = z.object({
+  username: z
+    .string()
+    .max(20, "Username must be maximal 20 characters")
+    .optional(),
+  bio: z.string().max(50, "Bio must be maximal 50 character").optional(),
+  photoUrl: z
+    .any()
+    .refine((file) => {
+      if (!file) return true;
+      return file.size <= MAX_FILE_SIZE;
+    }, `Max image size is 5MB.`)
+    .refine((file) => {
+      if (!file) return true;
+      return ACCEPTED_IMAGE_MIME_TYPES.includes(file.type);
+    }, "Only .jpg, .jpeg, .png and .webp formats are supported.")
+    .optional(),
+  /// PATH FOR REDIRECT/REVALIDATE FUNC
+  path: z.string().optional(),
+});
+
+export type EditUserState = {
+  errors?: {
+    username?: string[];
+    bio?: string[];
+  };
+  message?: string | null;
+};

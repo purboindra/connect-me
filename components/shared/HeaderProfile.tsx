@@ -10,6 +10,7 @@ import PostGrid from "./PostGrid";
 import Highlight from "./Highlight";
 import StatsProfile from "./StatsProfile";
 import TabsProfile from "./TabsProfile";
+import Link from "next/link";
 
 interface HeaderProfileInterface {
   user: UserInterface;
@@ -44,7 +45,9 @@ const HeaderProfile = ({ user, posts }: HeaderProfileInterface) => {
             {user.username}
           </h2>
           <div className="flex flex-row space-x-2">
-            <Button>Edit Profile</Button>
+            <Link href={`/profile/${user.id}/edit`}>
+              <Button>Edit Profile</Button>
+            </Link>
             <Button>View Archive</Button>
           </div>
         </div>

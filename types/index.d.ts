@@ -57,3 +57,7 @@ export interface PostInterface {
   comments: Array<CommentInterface>;
   savedBy: Array<SaveInterface>;
 }
+
+export interface ParamsProps {
+  params: { id: string };
+}
