@@ -6,7 +6,7 @@ import {
   deleteSavePost,
   savePost,
 } from "@/app/actions/post.action";
-import { BookMarkedIcon, Heart, MessageCircle, ReplyAll } from "lucide-react";
+import { Heart, MessageCircle, ReplyAll } from "lucide-react";
 import Image from "next/image";
 import React, { useOptimistic, useTransition } from "react";
 
@@ -72,7 +72,7 @@ export const InteractionItem = ({
       addOptimisticSave(!optimisticSave);
     });
 
-    if (optimisticLike) {
+    if (optimisticSave) {
       await deleteSavePost(
         new FormData(e.currentTarget.form as HTMLFormElement)
       );
