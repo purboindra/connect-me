@@ -41,7 +41,6 @@ export const FeedItem = ({ posts, user }: FeedItemInterface) => {
   return (
     <>
       {posts.map((post) => {
-        console.log({ post });
         const hasLiked =
           user &&
           post.likes.find(
@@ -59,7 +58,7 @@ export const FeedItem = ({ posts, user }: FeedItemInterface) => {
             key={post.id}
             className="mt-8 flex flex-col max-md:w-full w-[550px]"
           >
-            <PostItem post={post} />
+            <PostItem post={post} user={user} />
             <InteractionItem
               postId={post.id.toString()}
               initialLike={{

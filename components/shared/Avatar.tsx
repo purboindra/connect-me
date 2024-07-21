@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { PostInterface, UserInterface } from "@/types";
 import { AvatarEnum } from "@/lib/enums";
+import { Plus } from "lucide-react";
 
 interface AvatarInterface {
   post?: PostInterface;
@@ -10,6 +11,8 @@ interface AvatarInterface {
 }
 
 const Avatar = ({ post, user, type }: AvatarInterface) => {
+  console.log(`post user: ${post?.author.id} -- ${user?.id}`);
+
   return (
     <div className="flex flex-row gap-1 items-center">
       {type === AvatarEnum.Post ? (
@@ -36,6 +39,14 @@ const Avatar = ({ post, user, type }: AvatarInterface) => {
           <p className="font-semibold text-neutral-800">
             {post?.author.username}
           </p>
+          {post?.author.id.toString() !== user?.id.toString() && (
+            <div className="flex flex-row gap-[1px] items-center">
+              <p className="text-xs flex items-center font-semibold text-blue-700">
+                Follow
+              </p>
+              <Plus size={14} className="text-blue-700" />
+            </div>
+          )}
         </>
       ) : (
         <>

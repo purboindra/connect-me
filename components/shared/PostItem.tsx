@@ -1,6 +1,6 @@
 "use client";
 
-import { PostInterface } from "@/types";
+import { PostInterface, UserInterface } from "@/types";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { MoreHorizontal } from "lucide-react";
@@ -10,9 +10,10 @@ import { AvatarEnum } from "@/lib/enums";
 
 interface PostItemInterface {
   post: PostInterface;
+  user: UserInterface;
 }
 
-export const PostItem = ({ post }: PostItemInterface) => {
+export const PostItem = ({ post, user }: PostItemInterface) => {
   const [src, setSrc] = useState(post.imageUrl);
   const [mounted, setMounted] = useState(false);
 
@@ -28,7 +29,7 @@ export const PostItem = ({ post }: PostItemInterface) => {
     <div className="flex flex-col gap-2 ">
       <div className="flex justify-between items-center">
         <div className="flex space-x-2 items-center">
-          <Avatar type={AvatarEnum.Post} post={post} />
+          <Avatar type={AvatarEnum.Post} post={post} user={user} />
           {mounted && (
             <p className="text-sm text-neutral-400">
               <DateComponent dateString={post.created_at.toString()} />
