@@ -1,8 +1,8 @@
-import { isTokenExpired, parseStringify } from "@/lib/utils";
-import { EditProfileSchema, EditUserState } from "@/lib/validation";
+import { isTokenExpired, parseStringify, verifyToken } from "../../lib/utils";
+import { EditProfileSchema, EditUserState } from "../../lib/validation";
 import { UserInterface } from "@/types";
-import { redirect } from "next/dist/server/api-utils";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export async function fetchAllUser() {
   let users: UserInterface[] = [];
@@ -83,7 +83,10 @@ export async function getCurrentUser() {
   }
 }
 
-export async function editUser(prevState: EditUserState, formData: FormData) {
+export async function editProfile(
+  prevState: EditUserState,
+  formData: FormData
+) {
   const cookiesStore = cookies();
 
   const token = cookiesStore.get("token");
@@ -93,7 +96,7 @@ export async function editUser(prevState: EditUserState, formData: FormData) {
   const validatedFields = EditProfileSchema.safeParse({
     username: formData.get("username"),
     bio: formData.get("bio"),
-    image_url: formData.get("image_url"),
+    photoUrl: formData.get("photoUrl"),
   });
 
   if (!validatedFields.success) {
@@ -102,26 +105,33 @@ export async function editUser(prevState: EditUserState, formData: FormData) {
     };
   }
 
-  try {
-    const bio = validatedFields.data.bio;
-    const username = validatedFields.data.username;
+  const payload = verifyToken(token.value);
+  const userId = (payload as any).userId;
 
-    const response = await fetch(`${process.env.BASE_URL}/api/user/edit`, {
-      method: "PUT",
-      body: JSON.stringify({ bio: bio, username: username }),
+  const bio = validatedFields.data.bio;
+  const username = validatedFields.data.username;
+
+  try {
+    const response = await fetch(`${process.env.BASE_URL}/api/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        bio,
+        username,
+      }),
     });
 
-    if (response.status !== 200) throw new Error(response.statusText);
-  } catch (error) {
-    console.log(error);
-    if (error instanceof Error) {
-      return {
-        errors: error.message,
-      };
-    } else {
-      return {
-        errors: "An error unexcepted occured",
-      };
-    }
+    const data = await response.json();
+
+    if (data.status !== 201) throw new Error(`${data.message}`);
+  } catch (error: any) {
+    console.log("Error edit user", error);
+    return {
+      errors: error.message,
+    };
   }
+  redirect("/");
 }
