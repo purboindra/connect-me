@@ -39,19 +39,21 @@ interface EditProfileFormInterface {
   user: UserInterface;
 }
 
-export const EditProfileForm = () => {
+export const EditProfileForm = ({ user }: EditProfileFormInterface) => {
   const { toast } = useToast();
 
   const [mounted, setMounted] = useState(false);
 
-  const [state, dispatch] = useFormState(editProfile, initialState);
+  const updateuserWithId = editProfile.bind(null, user.id);
+
+  const [state, dispatch] = useFormState(updateuserWithId, initialState);
 
   const form = useForm<z.infer<typeof EditProfileSchema>>({
     resolver: zodResolver(EditProfileSchema),
     defaultValues: {
-      bio: "No bio yet",
-      photoUrl: "",
-      username: "",
+      bio: user.bio || "No bio yet",
+      photoUrl: user.photoUrl || "",
+      username: user.username || "",
     },
   });
 
