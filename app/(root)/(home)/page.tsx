@@ -39,7 +39,20 @@ export default async function page() {
         </div>
       </div>
       {/* FEED */}
-      <FeedItem posts={posts} user={currentUser} />
+      {posts.length > 0 ? (
+        <FeedItem posts={posts} user={currentUser} />
+      ) : (
+        <div className="flex flex-col space-y-4 mx-auto items-center justify-center">
+          <h2>No posts or users found</h2>
+          <Image
+            src={"/assets/icons/video.svg"}
+            alt="Post"
+            width={500}
+            height={500}
+            className="w-24 h-24 invert"
+          />
+        </div>
+      )}
     </section>
   );
 }
