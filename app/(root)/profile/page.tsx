@@ -1,6 +1,9 @@
 import { logout } from "@/app/actions/auth.action";
-import { fetchPostByUserid } from "@/app/actions/post.action";
-import { getCurrentUser } from "@/app/actions/user.action";
+import {
+  fetchPostByUserid,
+  fetchSavedPostByuserId,
+} from "@/app/actions/post.action";
+import { fetchFollow, getCurrentUser } from "@/app/actions/user.action";
 import HeaderProfile from "@/components/shared/HeaderProfile";
 import StatsProfile from "@/components/shared/StatsProfile";
 import TabsProfile from "@/components/shared/TabsProfile";
@@ -15,6 +18,8 @@ export default async function page() {
   const posts = await fetchPostByUserid({
     userId: user.id,
   });
+  const savedPost = await fetchSavedPostByuserId({ userId: user.id });
+  const follow = await fetchFollow();
 
   return (
     <section className="max-w-5xl flex flex-col mx-auto">
@@ -24,10 +29,10 @@ export default async function page() {
       <Highlight />
 
       {/* STATS */}
-      <StatsProfile posts={posts} user={user} />
+      <StatsProfile posts={posts} user={user} follow={follow} />
 
       {/* POST */}
-      <TabsProfile posts={posts} />
+      <TabsProfile posts={posts} savedPost={savedPost} />
     </section>
   );
 }
