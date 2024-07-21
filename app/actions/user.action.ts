@@ -87,19 +87,19 @@ export async function getCurrentUser() {
 }
 
 export async function editProfile(
+  userId: string,
   prevState: EditUserState,
   formData: FormData
 ) {
   const cookiesStore = cookies();
 
-  const token = cookiesStore.get("token");
+  const token = cookiesStore.get("access_token");
 
   if (!token) throw new Error("Unauthorized");
 
   const validatedFields = EditProfileSchema.safeParse({
     username: formData.get("username"),
     bio: formData.get("bio"),
-    photoUrl: formData.get("photoUrl"),
   });
 
   if (!validatedFields.success) {
@@ -108,35 +108,37 @@ export async function editProfile(
     };
   }
 
-  const payload = verifyToken(token.value);
-  const userId = (payload as any).userId;
-
   const bio = validatedFields.data.bio;
   const username = validatedFields.data.username;
 
   try {
-    const response = await fetch(`${process.env.BASE_URL}/api/auth/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+    const response = await fetch(
+      `${process.env.BASE_URL}/api/user/edit/${userId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token.value,
+        },
 
-      body: JSON.stringify({
-        bio,
-        username,
-      }),
-    });
+        body: JSON.stringify({
+          bio,
+          username,
+        }),
+      }
+    );
 
     const data = await response.json();
 
-    if (data.status !== 201) throw new Error(`${data.message}`);
+    if (data.status !== 200) throw new Error(`${data.message}`);
   } catch (error: any) {
     console.log("Error edit user", error);
     return {
       errors: error.message,
     };
   }
-  redirect("/");
+  revalidatePath(`/profile/${userId}`);
+  redirect(`/profile/${userId}`);
 }
 
 export async function deleteFollow(formData: FormData) {
