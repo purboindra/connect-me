@@ -4,13 +4,8 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { PostInterface, UserInterface } from "@/types";
 import { Button } from "../ui/button";
-import { Grid } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import PostGrid from "./PostGrid";
-import Highlight from "./Highlight";
-import StatsProfile from "./StatsProfile";
-import TabsProfile from "./TabsProfile";
 import Link from "next/link";
+import { logout } from "@/app/actions/auth.action";
 
 interface HeaderProfileInterface {
   user: UserInterface;
@@ -48,7 +43,9 @@ const HeaderProfile = ({ user, posts }: HeaderProfileInterface) => {
             <Link href={`/profile/${user.id}/edit`}>
               <Button>Edit Profile</Button>
             </Link>
-            <Button>View Archive</Button>
+            <form action={logout}>
+              <Button>Logout</Button>
+            </form>
           </div>
         </div>
       </div>
