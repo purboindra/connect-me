@@ -1,6 +1,9 @@
+"use server";
+
 import { isTokenExpired, parseStringify, verifyToken } from "../../lib/utils";
 import { EditProfileSchema, EditUserState } from "../../lib/validation";
 import { UserInterface } from "@/types";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -134,4 +137,82 @@ export async function editProfile(
     };
   }
   redirect("/");
+}
+
+export async function deleteFollow(formData: FormData) {
+  const cookieStore = cookies();
+
+  const token = cookieStore.get("access_token")?.value;
+
+  if (!token) {
+    redirect("/login");
+  }
+
+  try {
+    const userId = formData.get("userId");
+
+    if (!userId) throw new Error("Invalid post");
+
+    const response = await fetch(
+      `${process.env.BASE_URL}/api/user/follow/delete`,
+      {
+        method: "DELETE",
+        body: JSON.stringify({ userId: userId }),
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    console.log(data);
+
+    if (response.status !== 200) {
+      throw new Error(data.message);
+    }
+  } catch (error) {
+    console.log("Error createFollow", error);
+    throw error;
+  }
+  revalidatePath("/");
+}
+
+export async function createFollow(formData: FormData) {
+  const cookieStore = cookies();
+
+  const token = cookieStore.get("access_token")?.value;
+
+  if (!token) {
+    redirect("/login");
+  }
+
+  try {
+    const userId = formData.get("userId");
+
+    if (!userId) throw new Error("Invalid post");
+
+    const response = await fetch(
+      `${process.env.BASE_URL}/api/user/follow/create`,
+      {
+        method: "POST",
+        body: JSON.stringify({ userId: userId }),
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    console.log(data);
+
+    if (response.status !== 200) {
+      throw new Error(data.message);
+    }
+  } catch (error) {
+    console.log("Error createFollow", error);
+    throw error;
+  }
+  revalidatePath("/");
 }

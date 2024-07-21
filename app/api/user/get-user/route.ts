@@ -19,6 +19,18 @@ export async function GET(req: NextRequest) {
       where: {
         id: userId,
       },
+      include: {
+        followers: {
+          include: {
+            follower: true,
+          },
+        },
+        following: {
+          include: {
+            following: true,
+          },
+        },
+      },
     });
 
     if (!user)

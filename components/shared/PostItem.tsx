@@ -7,6 +7,8 @@ import { MoreHorizontal } from "lucide-react";
 import DateComponent from "./DateFeedItem";
 import Avatar from "./Avatar";
 import { AvatarEnum } from "@/lib/enums";
+import { string } from "zod";
+import { parseStringify } from "@/lib/utils";
 
 interface PostItemInterface {
   post: PostInterface;
@@ -16,6 +18,15 @@ interface PostItemInterface {
 export const PostItem = ({ post, user }: PostItemInterface) => {
   const [src, setSrc] = useState(post.imageUrl);
   const [mounted, setMounted] = useState(false);
+
+  const [hasFollow, setHasFollow] = useState(false);
+
+  useEffect(() => {
+    const followed = user.following.some((follow) => {
+      return follow.followedUserId.toString() == post.author.id;
+    });
+    setHasFollow(followed);
+  }, [post.author.id, user.followers, user.following]);
 
   useEffect(() => {
     setSrc(src);
@@ -29,7 +40,12 @@ export const PostItem = ({ post, user }: PostItemInterface) => {
     <div className="flex flex-col gap-2 ">
       <div className="flex justify-between items-center">
         <div className="flex space-x-2 items-center">
-          <Avatar type={AvatarEnum.Post} post={post} user={user} />
+          <Avatar
+            type={AvatarEnum.Post}
+            post={post}
+            user={user}
+            hasFollow={hasFollow}
+          />
           {mounted && (
             <p className="text-sm text-neutral-400">
               <DateComponent dateString={post.created_at.toString()} />

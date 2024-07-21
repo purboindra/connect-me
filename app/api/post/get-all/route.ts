@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
             author: true,
           },
         },
+
         hashtag: true,
         likes: true,
         savedBy: true,

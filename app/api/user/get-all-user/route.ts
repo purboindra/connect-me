@@ -4,7 +4,20 @@ import console from "console";
 
 export async function GET(req: NextRequest) {
   try {
-    const user = await prisma.user.findMany();
+    const user = await prisma.user.findMany({
+      include: {
+        followers: {
+          include: {
+            follower: true,
+          },
+        },
+        following: {
+          include: {
+            following: true,
+          },
+        },
+      },
+    });
 
     return NextResponse.json({
       message: "Successfully get user",

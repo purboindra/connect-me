@@ -12,10 +12,10 @@ export interface UserInterface {
   photoUrl: string;
   token: string;
   refreshToken: string;
-  likes: Array<String>;
-  followers: Array<String>;
-  following: Array<String>;
-  posts: Array<String>;
+  likes: Array<string>;
+  followers: Array<any>;
+  following: Array<any>;
+  posts: Array<string>;
 }
 
 export interface SuggestedPeopleInterface {
