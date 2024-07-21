@@ -1,5 +1,9 @@
 import { fetchAllPost } from "@/app/actions/post.action";
-import { fetchAllUser, getCurrentUser } from "@/app/actions/user.action";
+import {
+  fetchAllUser,
+  fetchFollow,
+  getCurrentUser,
+} from "@/app/actions/user.action";
 import { FeedItem } from "@/components/shared/FeedItem";
 import Image from "next/image";
 import React from "react";
@@ -8,14 +12,16 @@ export default async function page() {
   const users = await fetchAllUser();
   const posts = await fetchAllPost();
 
+  const follows = await fetchFollow();
+
   const currentUser = await getCurrentUser();
 
   return (
     <section className="flex flex-col items-center">
       <div className="w-full overflow-auto no-scrollbar">
         <div className="flex py-4 flex-row gap-4 ">
-          {users.map((user) => (
-            <div key={user.id} className="flex flex-col gap-1">
+          {follows.map((user: any) => (
+            <div key={user.followedUserId} className="flex flex-col gap-1">
               <div className="rounded-full h-[56px] w-[56px] p-[2px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
                 <div className=" bg-neutral-300 w-full h-full rounded-full">
                   <Image
@@ -27,7 +33,7 @@ export default async function page() {
                   />
                 </div>
               </div>
-              <p className="truncate w-[56px] flex">{user.username}</p>
+              <p className="truncate w-[56px] flex">{user.follower.username}</p>
             </div>
           ))}
         </div>

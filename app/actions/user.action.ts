@@ -216,3 +216,29 @@ export async function createFollow(formData: FormData) {
   }
   revalidatePath("/");
 }
+
+export async function fetchFollow() {
+  const token = cookies().get("access_token");
+
+  if (!token) throw new Error("Unauthorized");
+
+  try {
+    const response = await fetch(`${process.env.BASE_URL}/api/user/follow`, {
+      method: "GET",
+      headers: {
+        Authorization: token.value,
+      },
+    });
+
+    const data = await response.json();
+
+    if (response.status !== 200) throw new Error(`${data.message}`);
+
+    console.log(data);
+
+    return parseStringify(data.data);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
