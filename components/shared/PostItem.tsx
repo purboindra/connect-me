@@ -7,8 +7,6 @@ import { MoreHorizontal } from "lucide-react";
 import DateComponent from "./DateFeedItem";
 import Avatar from "./Avatar";
 import { AvatarEnum } from "@/lib/enums";
-import { string } from "zod";
-import { parseStringify } from "@/lib/utils";
 
 interface PostItemInterface {
   post: PostInterface;

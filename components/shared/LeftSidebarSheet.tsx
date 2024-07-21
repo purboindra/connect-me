@@ -91,9 +91,11 @@ export const LeftSidebarSheet = ({ user }: LeftSidebarSheetInterface) => {
             </SheetClose>
           </>
         ) : (
-          <Link href={"/login"}>
-            <Button>Login</Button>
-          </Link>
+          <SheetClose>
+            <Link href={"/login"}>
+              <Button>Login</Button>
+            </Link>
+          </SheetClose>
         )}
       </div>
     </>

@@ -4,9 +4,10 @@ import React from "react";
 interface StatsProfileInterface {
   user: UserInterface;
   posts: PostInterface[];
+  follow: any;
 }
 
-const StatsProfile = ({ user, posts }: StatsProfileInterface) => {
+const StatsProfile = ({ user, posts, follow }: StatsProfileInterface) => {
   return (
     <section>
       <div className="flex flex-col gap-1">

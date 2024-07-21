@@ -34,7 +34,6 @@ export async function PUT(
       data: {
         username,
         bio,
-        photo_url: image_url,
       },
     });
 
