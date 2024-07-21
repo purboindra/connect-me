@@ -11,4 +11,5 @@ export interface EditUserParams {
   username: string;
   bio: string;
   image_url: string;
+  pathname: string;
 }

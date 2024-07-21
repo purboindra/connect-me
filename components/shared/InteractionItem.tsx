@@ -27,7 +27,7 @@ export const InteractionItem = ({
   initialLike,
   hasSaved,
 }: InteractionItemInterface) => {
-  const [isPending, startTransition] = useTransition();
+  const [_, startTransition] = useTransition();
 
   const [optimisticLike, addOptimisticLike] = useOptimistic(
     initialLike,

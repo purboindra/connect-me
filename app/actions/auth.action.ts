@@ -9,7 +9,6 @@ import {
 } from "../../lib/validation";
 import { verifyToken } from "../../lib/utils";
 import { cookies } from "next/headers";
-import console from "console";
 
 export async function register(prevState: RegisterState, formData: FormData) {
   const validatedFields = RegisterSchema.safeParse({
