@@ -30,6 +30,7 @@ model User{
   followers   Follow[] @relation("followersRelation")
   following   Follow[] @relation("followingRelation")
   comments Comment[]
+  likesComment LikeComment[]
   posts Post[]
 }
 
@@ -58,6 +59,8 @@ model Comment {
   created_at DateTime @default(now())
   post       Post     @relation(fields: [postId], references: [id])
   postId     Int
+  likes      LikeComment[]
+  likesCount Int      @default(0)
 }
 
 
@@ -104,6 +107,16 @@ model PostHashtag{
   @@id([postId, hashtagId])
   @@unique([postId, hashtagId])
   createdAt  DateTime    @default(now())
+}
+model LikeComment {
+  userId     Int
+  commentId  Int
+  created_at DateTime @default(now())
+
+  user       User     @relation(fields: [userId], references: [id],onDelete: Cascade)
+  comment    Comment  @relation(fields: [commentId], references: [id],onDelete: Cascade)
+
+  @@id([userId, commentId])
 }
 
 

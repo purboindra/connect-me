@@ -12,6 +12,7 @@ import Image from "next/image";
 import { useDialog } from "@/hooks/useDialog";
 import { DialogEnum } from "@/lib/enums";
 import { Heart } from "lucide-react";
+import { LikeComment } from "./LikeComment";
 
 interface CommentDialogParams {
   post: PostInterface;
@@ -48,11 +49,13 @@ export const CommentFeedItem = ({
 
     startTransition(() => {
       addOptimisticMessage({
+        id: "",
         content: newComment,
         createdAt: Date.now(),
         postid: postId,
         userId: user.id,
         author: user,
+        likes: [],
       });
     });
 
@@ -94,6 +97,13 @@ export const CommentFeedItem = ({
   return (
     <div className="mt-1 flex flex-col gap-1 w-full" ref={dialogRef}>
       {optimisticMessages.map((comment, index) => {
+        console.log("my comment", comment);
+        const hasLiked =
+          user &&
+          comment.likes.find(
+            (commentItem) =>
+              commentItem.userId.toString() === user.id.toString()
+          ) !== undefined;
         return (
           <div className="flex gap-1 items-center justify-between" key={index}>
             <div className="flex flex-row items-center gap-1">
@@ -108,26 +118,14 @@ export const CommentFeedItem = ({
                 <p className="text-sm text-neutral-800">{comment.content}</p>
               </span>
             </div>
-            <form>
-              <input type="hidden" name="postId" value={postId} />
-              <button type="submit" onClick={handleClick}>
-                <Heart
-                  size={14}
-                  // className={`${
-                  //   !optimisticLike.hasLike
-                  //     ? "text-red-500"
-                  //     : "text-red-500 fill-current"
-                  // }`}
-                  className="text-red-500"
-                />
-              </button>
-            </form>
-
-            {/* <p className="text-sm text-neutral-400">
-              <DateComponent
-                dateString={new Date(comment.createdAt).toString()}
-              />
-            </p> */}
+            <LikeComment
+              commentId={comment.id}
+              initialLike={{
+                hasLike: hasLiked,
+                likeCount: comment.likes.length,
+              }}
+              userId={comment.author.id}
+            />
           </div>
         );
       })}

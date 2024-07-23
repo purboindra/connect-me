@@ -24,8 +24,7 @@ export async function DELETE(req: NextRequest) {
         },
       },
     });
-
-    const updateddd = await prisma.post.update({
+    await prisma.post.update({
       where: {
         id: Number.parseInt(post_id),
       },

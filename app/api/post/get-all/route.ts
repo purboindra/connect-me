@@ -9,6 +9,9 @@ export async function GET(request: NextRequest) {
         comments: {
           include: {
             author: true,
+            likes: true,
+            post: true,
+            _count: true,
           },
         },
 

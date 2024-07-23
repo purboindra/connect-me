@@ -31,6 +31,11 @@ export interface LikeInterface {
   createdAt: number;
 }
 
+export interface LikeCommentInterface {
+  userId: string;
+  commentId: string;
+  createdAt: number;
+}
 export interface SaveInterface {
   id: string;
   userId: string;
@@ -38,11 +43,13 @@ export interface SaveInterface {
   createdAt: number;
 }
 export interface CommentInterface {
+  id: string;
   userId: string;
   postid: string;
   createdAt: number;
   content: string;
   author: UserInterface;
+  likes: Array<LikeCommentInterface>;
 }
 
 export interface PostInterface {
