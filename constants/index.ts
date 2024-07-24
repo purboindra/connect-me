@@ -6,21 +6,13 @@ export const sidebarLinks: SidebarLinkInterface[] = [
     label: "Home",
     route: "/",
   },
-  {
-    imgUrl: "/assets/icons/search.svg",
-    label: "Search",
-    route: "/search",
-  },
+
   {
     imgUrl: "/assets/icons/add-post.svg",
     label: "Create",
     route: "/create",
   },
-  {
-    imgUrl: "/assets/icons/comment.svg",
-    label: "Message",
-    route: "/message",
-  },
+
   {
     imgUrl: "/assets/icons/bookmark.svg",
     label: "Saved Post",
