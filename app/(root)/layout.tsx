@@ -2,11 +2,7 @@ import { LeftSideBar } from "@/components/shared/LeftSideBar";
 import { Navbar } from "@/components/shared/Navbar";
 import { RightSideBar } from "@/components/shared/RightSideBar";
 import React from "react";
-import {
-  fetchAllUser,
-  fetchSuggestedUser,
-  getCurrentUser,
-} from "../actions/user.action";
+import { fetchSuggestedUser, getCurrentUser } from "../actions/user.action";
 
 export default async function Layout({
   children,
