@@ -43,6 +43,37 @@ export async function fetchAllUser() {
   }
 }
 
+export async function fetchSuggestedUser() {
+  let users: UserInterface[] = [];
+
+  const token = cookies().get("access_token");
+
+  if (!token) return users;
+
+  try {
+    const response = await fetch(
+      `${process.env.BASE_URL}/api/user/get-suggested-user`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: token.value,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    for (const user of data.data) {
+      users.push(parseStringify(user));
+    }
+
+    return users;
+  } catch (error) {
+    console.log("ERROR GET ALL USER", error);
+    throw error;
+  }
+}
+
 export async function getCurrentUser() {
   let token = cookies().get("access_token")?.value;
   const refreshToken = cookies().get("refresh_token")?.value;
