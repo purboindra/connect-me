@@ -25,13 +25,13 @@ export async function POST(req: NextRequest) {
 
     if (!commentId)
       return NextResponse.json({
-        status: 404,
+        status: 422,
         message: "Invalid comment",
       });
 
-    if (!commentId)
+    if (!userId)
       return NextResponse.json({
-        status: 404,
+        status: 422,
         message: "Invalid user",
       });
 
