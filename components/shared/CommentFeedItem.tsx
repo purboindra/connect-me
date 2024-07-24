@@ -123,7 +123,7 @@ export const CommentFeedItem = ({
                 hasLike: hasLiked,
                 likeCount: comment.likes.length,
               }}
-              userId={comment.author.id}
+              userId={user.id}
             />
           </div>
         );
