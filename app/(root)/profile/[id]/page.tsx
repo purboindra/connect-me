@@ -34,7 +34,7 @@ export default async function page({ params }: any) {
       <Highlight />
 
       {/* STATS */}
-      <StatsProfile posts={posts} user={user} />
+      <StatsProfile posts={posts} user={user} follow={""} />
 
       {/* POST */}
       <TabsProfile posts={posts} savedPost={savedPosts} />

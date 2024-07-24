@@ -15,7 +15,11 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json();
 
-    console.log("my body", body);
+    if (!body)
+      return NextResponse.json({
+        message: "Invalid body",
+        status: 422,
+      });
 
     const { commentId, userId } = body;
 
@@ -23,6 +27,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         status: 404,
         message: "Invalid comment",
+      });
+
+    if (!commentId)
+      return NextResponse.json({
+        status: 404,
+        message: "Invalid user",
       });
 
     await prisma?.likeComment.create({

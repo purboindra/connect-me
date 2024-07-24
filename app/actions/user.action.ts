@@ -1,6 +1,6 @@
 "use server";
 
-import { isTokenExpired, parseStringify, verifyToken } from "../../lib/utils";
+import { isTokenExpired, parseStringify } from "../../lib/utils";
 import { EditProfileSchema, EditUserState } from "../../lib/validation";
 import { UserInterface } from "@/types";
 import { revalidatePath } from "next/cache";

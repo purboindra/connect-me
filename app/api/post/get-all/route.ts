@@ -8,18 +8,24 @@ export async function GET(request: NextRequest) {
         author: true,
         comments: {
           include: {
-            author: true,
             likes: true,
+            author: true,
             post: true,
-            _count: true,
           },
         },
-
         hashtag: true,
         likes: true,
-        savedBy: true,
+        savedBy: {
+          where: {
+            userId: {
+              not: undefined,
+            },
+          },
+          include: {
+            user: true,
+          },
+        },
       },
-
       orderBy: {
         created_at: "desc",
       },

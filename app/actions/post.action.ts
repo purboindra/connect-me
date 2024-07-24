@@ -97,7 +97,7 @@ export async function fetchAllPost() {
       throw new Error(data.message);
     }
 
-    if (data.data == null) throw new Error("Data not found");
+    if (data.data == null) return [];
 
     return dynamicToPostInterface(data.data.posts);
   } catch (error) {

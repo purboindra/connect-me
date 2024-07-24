@@ -97,7 +97,6 @@ export const CommentFeedItem = ({
   return (
     <div className="mt-1 flex flex-col gap-1 w-full" ref={dialogRef}>
       {optimisticMessages.map((comment, index) => {
-        console.log("my comment", comment);
         const hasLiked =
           user &&
           comment.likes.find(
