@@ -34,12 +34,17 @@ export const LoginForm = () => {
   });
 
   useEffect(() => {
-    if (state.errors.length > 0) {
+    let errors = state.errors || {};
+
+    if (Object.keys(errors).length > 0) {
       let errorMessage;
-      const errors = state.errors || {};
 
       if (typeof errors !== "string") {
-        errorMessage = errors?.content?.[0];
+        if (state.errors.email) {
+          errorMessage = errors?.email?.[0];
+        } else {
+          errorMessage = errors?.password?.[0];
+        }
       } else {
         errorMessage = errors;
       }
@@ -52,7 +57,8 @@ export const LoginForm = () => {
         });
       }
     }
-  }, [state.errors ? JSON.stringify(state.errors) : ""]);
+    errors = {};
+  }, [state.errors]);
 
   return (
     <Form {...form}>
