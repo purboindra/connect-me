@@ -6,6 +6,7 @@ import { PostInterface, UserInterface } from "@/types";
 import { AvatarEnum } from "@/lib/enums";
 import { Plus } from "lucide-react";
 import { createFollow, deleteFollow } from "@/app/actions/user.action";
+import Link from "next/link";
 
 interface AvatarInterface {
   post?: PostInterface;
@@ -56,9 +57,11 @@ const Avatar = ({ post, user, type, hasFollow }: AvatarInterface) => {
               )}
             </div>
           </div>
-          <p className="font-semibold text-neutralx-800">
-            {post?.author.username}
-          </p>
+          <Link href={`/profile/${post?.author.id}`}>
+            <p className="font-semibold text-neutralx-800">
+              {post?.author.username}
+            </p>
+          </Link>
           {post?.author.id.toString() !== user?.id.toString() && (
             <form>
               <input type="hidden" value={post?.author.id} name="userId" />
