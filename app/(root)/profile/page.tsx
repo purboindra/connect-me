@@ -23,7 +23,7 @@ export default async function page() {
 
   return (
     <section className="max-w-5xl flex flex-col mx-auto">
-      <HeaderProfile posts={posts} user={user} />
+      <HeaderProfile user={user} currentUserId={user.id} />
       {/* HIGHLIGHT */}
 
       <Highlight />
