@@ -24,7 +24,7 @@ const ImageGrid = ({ imageUrl }: ImageGridInterface) => {
     <div
       className={
         isError
-          ? "w-auto h-full flex items-center justify-center bg-neutral-200/40"
+          ? "w-auto max-sm:h-[155px] h-48 flex items-center justify-center bg-neutral-200/40"
           : "w-full h-full"
       }
     >

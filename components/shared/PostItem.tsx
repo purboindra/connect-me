@@ -58,10 +58,10 @@ export const PostItem = ({ post, user }: PostItemInterface) => {
             </p>
           )}
         </div>
-        <MoreHorizontal
+        {/* <MoreHorizontal
           size={24}
           className="text-neutral-500 hover:cursor-pointer"
-        />
+        /> */}
       </div>
       <div
         className={`relative w-full h-[488px] ${
