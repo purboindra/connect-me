@@ -15,6 +15,9 @@ interface PostItemInterface {
 
 export const PostItem = ({ post, user }: PostItemInterface) => {
   const [src, setSrc] = useState(post.imageUrl);
+
+  const [isErrorImage, setIserrorImage] = useState(false);
+
   const [mounted, setMounted] = useState(false);
 
   const [hasFollow, setHasFollow] = useState(false);
@@ -33,6 +36,11 @@ export const PostItem = ({ post, user }: PostItemInterface) => {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const handleImageError = () => {
+    setSrc("/assets/icons/error.svg");
+    setIserrorImage(true);
+  };
 
   return (
     <div className="flex flex-col gap-2 ">
@@ -55,15 +63,22 @@ export const PostItem = ({ post, user }: PostItemInterface) => {
           className="text-neutral-500 hover:cursor-pointer"
         />
       </div>
-      <div className="relative w-full h-[488px]">
+      <div
+        className={`relative w-full h-[488px] ${
+          isErrorImage && "flex items-center justify-center bg-neutral-200/40"
+        }`}
+      >
         {post.imageUrl !== null ? (
           <Image
-            src={post.imageUrl}
+            src={src || ""}
             alt="Post"
-            fill
-            objectFit="cover"
-            className="object-top"
-            onErrorCapture={(e) => setSrc("/assets/images/error.png")}
+            width={500}
+            height={500}
+            priority
+            className={`object-top ${
+              !isErrorImage ? "w-full h-full" : "h-24 w-24"
+            } `}
+            onError={handleImageError}
           />
         ) : (
           <div className="h-full w-full bg-neutral-300">
