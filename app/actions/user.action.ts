@@ -6,6 +6,7 @@ import { UserInterface } from "@/types";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { FetchUserByIdParams } from "./shared.types";
 
 export async function fetchAllUser() {
   let users: UserInterface[] = [];
@@ -70,6 +71,27 @@ export async function fetchSuggestedUser() {
     return users;
   } catch (error) {
     console.log("ERROR GET ALL USER", error);
+    throw error;
+  }
+}
+
+export async function fetchUserById(params: FetchUserByIdParams) {
+  console.log(params.userId);
+
+  try {
+    const response = await fetch(
+      `${process.env.BASE_URL}/api/user/${params.userId}`
+    );
+
+    const data = await response.json();
+
+    console.log(data);
+
+    if (!response.ok) throw new Error(`${data.message}`);
+
+    return parseStringify(data);
+  } catch (error) {
+    console.log(error);
     throw error;
   }
 }
