@@ -9,10 +9,10 @@ import { logout } from "@/app/actions/auth.action";
 
 interface HeaderProfileInterface {
   user: UserInterface;
-  posts: PostInterface[];
+  currentUserId: string;
 }
 
-const HeaderProfile = ({ user, posts }: HeaderProfileInterface) => {
+const HeaderProfile = ({ user, currentUserId }: HeaderProfileInterface) => {
   return (
     <header className="flex flex-col gap-4 w-full">
       <div className="flex flex-row gap-4 items-center">
@@ -35,19 +35,21 @@ const HeaderProfile = ({ user, posts }: HeaderProfileInterface) => {
             )}
           </div>
         </div>
-        <div className="flex flex-col space-y-2">
-          <h2 className="text-lg font-semibold text-neutral-700">
-            {user.username}
-          </h2>
-          <div className="flex flex-row space-x-2">
-            <Link href={`/profile/${user.id}/edit`}>
-              <Button>Edit Profile</Button>
-            </Link>
-            <form action={logout}>
-              <Button>Logout</Button>
-            </form>
+        {currentUserId === user.id && (
+          <div className="flex flex-col space-y-2">
+            <h2 className="text-lg font-semibold text-neutral-700">
+              {user.username}
+            </h2>
+            <div className="flex flex-row space-x-2">
+              <Link href={`/profile/${user.id}/edit`}>
+                <Button>Edit Profile</Button>
+              </Link>
+              <form action={logout}>
+                <Button>Logout</Button>
+              </form>
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <div className="flex flex-col ">
         <h2 className="text-base font-semibold text-neutral-700">
