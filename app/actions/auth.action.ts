@@ -97,7 +97,7 @@ export async function login(prevState: LoginState, formData: FormData) {
     if (data.status !== 201) throw new Error(`${data.message}`);
 
     cookies().set("access_token", data.data.token);
-    cookies().set("refresh_token", data.data.token);
+    cookies().set("refresh_token", data.data.refreshToken);
     cookies().set("user_id", data.data.id);
     cookies().set("username", data.data.username);
     cookies().set("email", data.data.email);
@@ -146,9 +146,14 @@ export async function refreshToken() {
 
     const data = await response.json();
 
+    console.log(`response refreshToken action: ${data}`);
+
     if (data.status !== 201) return null;
 
-    console.log(`REFRESH TOKEN: ${data}`);
+    cookies().set("access_token", data.data.accessToken);
+    cookies().set("refresh_token", data.data.refreshToken);
+
+    return data.data;
   } catch (error) {
     console.error(error);
     throw error;

@@ -7,17 +7,18 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   const { refreshToken } = await req.json();
+
   const requestHeaders = new Headers(req.headers);
 
   const token = requestHeaders.get("Authorization");
 
   if (!token)
-    return NextResponse.json({ message: "Invalid token", status: 400 });
+    return NextResponse.json({ message: "Invalid token", status: 422 });
 
   if (!refreshToken) {
     return NextResponse.json({
-      message: "Refresh token is required",
-      status: 400,
+      message: "Invalid refresh token",
+      status: 422,
     });
   }
 
@@ -33,7 +34,7 @@ export async function POST(req: NextRequest) {
 
     if (!existToken || existToken.userId !== userId)
       return NextResponse.json({
-        message: "Invalid refresh token",
+        message: "Invalid user",
         status: 401,
       });
 
@@ -60,8 +61,11 @@ export async function POST(req: NextRequest) {
     ]);
 
     return NextResponse.json({
-      accessToken: accessToken,
-      refreshToken: newRefreshToken,
+      data: {
+        accessToken: accessToken,
+        refreshToken: newRefreshToken,
+      },
+      message: "Successfully refresh token",
       status: 201,
     });
   } catch (error) {
