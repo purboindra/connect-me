@@ -23,16 +23,6 @@ export default async function page({ params }: any) {
   const payload = verifyToken(token?.value || "");
   const userId = (payload as any).userId;
 
-  const posts = await fetchPostByUserid({
-    userId: user.data.id,
-  });
-
-  const savedPosts = await fetchSavedPostByuserId(
-    parseStringify({
-      userId: params.id,
-    })
-  );
-
   return (
     <section className="max-w-5xl flex flex-col mx-auto">
       <HeaderProfile user={user.data} currentUserId={userId} />
@@ -41,10 +31,10 @@ export default async function page({ params }: any) {
       <Highlight />
 
       {/* STATS */}
-      <StatsProfile posts={posts} user={user.data} follow={""} />
+      <StatsProfile user={user.data} />
 
       {/* POST */}
-      <TabsProfile posts={posts} savedPost={savedPosts} />
+      <TabsProfile userId={params.id} />
     </section>
   );
 }

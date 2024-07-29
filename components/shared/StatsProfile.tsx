@@ -1,13 +1,16 @@
-import { PostInterface, UserInterface } from "@/types";
+import { fetchPostByUserid } from "@/app/actions/post.action";
+import { UserInterface } from "@/types";
 import React from "react";
 
 interface StatsProfileInterface {
   user: UserInterface;
-  posts: PostInterface[];
-  follow: any;
 }
 
-const StatsProfile = ({ user, posts, follow }: StatsProfileInterface) => {
+export default async function StatsProfile({ user }: StatsProfileInterface) {
+  const posts = await fetchPostByUserid({
+    userId: user.id,
+  });
+
   return (
     <section>
       <div className="flex flex-col gap-1">
@@ -33,6 +36,4 @@ const StatsProfile = ({ user, posts, follow }: StatsProfileInterface) => {
       </div>
     </section>
   );
-};
-
-export default StatsProfile;
+}

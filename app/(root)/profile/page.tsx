@@ -1,9 +1,4 @@
-import { logout } from "@/app/actions/auth.action";
-import {
-  fetchPostByUserid,
-  fetchSavedPostByuserId,
-} from "@/app/actions/post.action";
-import { fetchFollow, getCurrentUser } from "@/app/actions/user.action";
+import { getCurrentUser } from "@/app/actions/user.action";
 import HeaderProfile from "@/components/shared/HeaderProfile";
 import StatsProfile from "@/components/shared/StatsProfile";
 import TabsProfile from "@/components/shared/TabsProfile";
@@ -15,11 +10,6 @@ export default async function page() {
   /// OPTIMIZE REQUEST
 
   const user = await getCurrentUser();
-  const posts = await fetchPostByUserid({
-    userId: user.id,
-  });
-  const savedPost = await fetchSavedPostByuserId({ userId: user.id });
-  const follow = await fetchFollow();
 
   return (
     <section className="max-w-5xl flex flex-col mx-auto">
@@ -29,10 +19,10 @@ export default async function page() {
       <Highlight />
 
       {/* STATS */}
-      <StatsProfile posts={posts} user={user} follow={follow} />
+      <StatsProfile user={user} />
 
       {/* POST */}
-      <TabsProfile posts={posts} savedPost={savedPost} />
+      <TabsProfile userId={user.id} />
     </section>
   );
 }
