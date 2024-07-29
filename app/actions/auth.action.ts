@@ -51,10 +51,7 @@ export async function register(prevState: RegisterState, formData: FormData) {
 
     cookies().set("user_id", userId);
     cookies().set("access_token", data.data.access_token);
-
     cookies().set("refresh_token", data.data.refresh_token);
-    cookies().set("username", username);
-    cookies().set("email", email);
   } catch (error: any) {
     console.error(error);
     return {
@@ -99,8 +96,6 @@ export async function login(prevState: LoginState, formData: FormData) {
     cookies().set("access_token", data.data.token);
     cookies().set("refresh_token", data.data.refreshToken);
     cookies().set("user_id", data.data.id);
-    cookies().set("username", data.data.username);
-    cookies().set("email", data.data.email);
   } catch (error: any) {
     console.error(error);
     return {
@@ -114,8 +109,6 @@ export async function logout() {
   try {
     cookies().delete("access_token");
     cookies().delete("user_id");
-    cookies().delete("email");
-    cookies().delete("username");
     cookies().delete("refresh_token");
   } catch (error) {
     console.error(error);
