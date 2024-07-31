@@ -1,6 +1,9 @@
 export interface FetchPostByUserIdParams {
   userId: string;
 }
+export interface FetchPostByIdParams {
+  postId: string;
+}
 
 export interface FetchSavedPostByuserIdParams {
   userId: string;

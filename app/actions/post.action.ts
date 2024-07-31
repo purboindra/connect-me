@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { addHashtags, dynamicToPostInterface } from "@/lib/utils";
 import console from "console";
-import { FetchPostByUserIdParams } from "./shared.types";
+import { FetchPostByIdParams, FetchPostByUserIdParams } from "./shared.types";
 
 export async function createPost(
   prevState: CreatePostState,
@@ -366,6 +366,30 @@ export async function fetchSavedPostByuserId(params: FetchPostByUserIdParams) {
     const data = await response.json();
 
     console.log(data);
+
+    return data.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function fetchPostById(params: FetchPostByIdParams) {
+  try {
+    const response = await fetch(
+      `${process.env.BASE_URL}/api/post/${params.postId}`,
+      {
+        method: "GET",
+      }
+    );
+
+    const data = await response.json();
+
+    console.log("response fetchPostById", data);
+
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
 
     return data.data;
   } catch (error) {

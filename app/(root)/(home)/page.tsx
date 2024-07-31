@@ -9,7 +9,6 @@ import Image from "next/image";
 import React from "react";
 
 export default async function page() {
-  const users = await fetchAllUser();
   const posts = await fetchAllPost();
 
   const follows = await fetchFollow();
