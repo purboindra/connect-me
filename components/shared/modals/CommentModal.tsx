@@ -36,7 +36,7 @@ export function CommentModal() {
       </DialogClose>
       <DialogContent className="sm:max-w-[425px]">
         <div className="flex flex-col gap-8 px-4 py-2">
-          <PostItem post={data.post} />
+          <PostItem post={data.post} user={data} />
           <InteractionItem
             postId={data.post.id.toString()}
             initialLike={{

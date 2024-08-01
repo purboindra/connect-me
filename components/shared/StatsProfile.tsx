@@ -1,6 +1,7 @@
 import { fetchPostByUserid } from "@/app/actions/post.action";
 import { UserInterface } from "@/types";
 import React from "react";
+import { FollowerFollowingStats } from "./FollowerFollowingStats";
 
 interface StatsProfileInterface {
   user: UserInterface;
@@ -14,24 +15,7 @@ export default async function StatsProfile({ user }: StatsProfileInterface) {
   return (
     <section>
       <div className="flex flex-col gap-1">
-        <div className="flex flex-row justify-between w-full py-4">
-          <div className="flex flex-col gap-[1px] items-center">
-            <h2 className="text-base font-semibold">{posts.length}</h2>
-            <p className="text-sm font-mono text-neutral-700">posts</p>
-          </div>
-          <div className="flex flex-col gap-[1px] items-center">
-            <h2 className="text-base font-semibold">
-              {user.followers?.length || 0}
-            </h2>
-            <p className="text-sm font-mono text-neutral-700">followers</p>
-          </div>
-          <div className="flex flex-col gap-[1px] items-center">
-            <h2 className="text-base font-semibold">
-              {user.following?.length || 0}
-            </h2>
-            <p className="text-sm font-mono text-neutral-700">following</p>
-          </div>
-        </div>
+        <FollowerFollowingStats posts={posts} user={user} />
         <div className="h-[1px] bg-neutral-400 w-full" />
       </div>
     </section>
