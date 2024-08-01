@@ -2,12 +2,15 @@
 
 import { CreatePostSchema, CreatePostState } from "@/lib/validation";
 import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { addHashtags, dynamicToPostInterface } from "@/lib/utils";
-import console from "console";
-import { FetchPostByIdParams, FetchPostByUserIdParams } from "./shared.types";
+import {
+  FetchPostByHashtagParams,
+  FetchPostByIdParams,
+  FetchPostByUserIdParams,
+} from "./shared.types";
 
 export async function createPost(
   prevState: CreatePostState,
@@ -90,6 +93,7 @@ export async function fetchAllPost() {
   try {
     const response = await fetch(`${process.env.BASE_URL}/api/post/get-all`, {
       method: "GET",
+      cache: "force-cache",
     });
     const data = await response.json();
 
@@ -390,6 +394,29 @@ export async function fetchPostById(params: FetchPostByIdParams) {
     if (!response.ok) {
       throw new Error(response.statusText);
     }
+
+    return data.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function fetchPostByHashtag(params: FetchPostByHashtagParams) {
+  try {
+    const response = await fetch(
+      `${process.env.BASE_URL}/api/post/hashtag/${params.name}`,
+      {
+        method: "GET",
+      }
+    );
+
+    if (!response.ok) {
+      return [];
+    }
+    const data = await response.json();
+
+    console.log("response fetchPostByHashtag", data.data);
 
     return data.data;
   } catch (error) {

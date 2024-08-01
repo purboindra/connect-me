@@ -5,6 +5,10 @@ export interface FetchPostByIdParams {
   postId: string;
 }
 
+export interface FetchPostByHashtagParams {
+  name: string;
+}
+
 export interface FetchSavedPostByuserIdParams {
   userId: string;
 }

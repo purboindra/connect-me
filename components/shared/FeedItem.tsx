@@ -8,6 +8,7 @@ import { InteractionItem } from "./InteractionItem";
 import { PostItem } from "./PostItem";
 import { TruncateText } from "./TruncateText";
 import { CommentFeedItem } from "./CommentFeedItem";
+import Link from "next/link";
 
 interface FeedItemInterface {
   posts: PostInterface[];
@@ -20,18 +21,23 @@ export const FeedItem = ({ posts, user }: FeedItemInterface) => {
   const isHashtag = (word: string) => word.startsWith("#");
 
   const renderContent = (text: string) => {
-    return text.split(" ").map((word, index) => (
-      <span
-        key={index}
-        className={`text-sm font-normal ${
-          isHashtag(word)
-            ? "text-blue-600 hover:cursor-pointer font-medium"
-            : "text-neutral-600"
-        }`}
-      >
-        {word + " "}
-      </span>
-    ));
+    return text.split(" ").map((word, index) => {
+      if (isHashtag(word)) {
+        return (
+          <Link href={`/hashtag/${word.replace("#", "")}`} key={index}>
+            <span className="text-sm  text-blue-600 hover:cursor-pointer font-medium">
+              {word + " "}
+            </span>
+          </Link>
+        );
+      } else {
+        return (
+          <span key={index} className="text-sm font-normal text-neutral-600">
+            {word + " "}
+          </span>
+        );
+      }
+    });
   };
 
   React.useEffect(() => {
