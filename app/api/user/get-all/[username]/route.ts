@@ -25,7 +25,7 @@ export async function GET(
     const user = await prisma?.user.findMany({
       where: {
         username: {
-          contains: username,
+          search: username,
           mode: "insensitive",
         },
       },

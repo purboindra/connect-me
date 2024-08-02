@@ -24,7 +24,7 @@ export default async function page({ params }: any) {
   const userId = (payload as any).userId;
 
   return (
-    <section className="max-w-5xl flex flex-col mx-auto">
+    <section className="max-w-5xl flex flex-col mx-auto max-sm:pt-8">
       <HeaderProfile user={user.data} currentUserId={userId} />
       {/* HIGHLIGHT */}
 

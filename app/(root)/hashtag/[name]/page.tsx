@@ -10,7 +10,7 @@ export default async function page({ params }: { params: { name: string } }) {
   const post = await fetchPostByHashtag({ name: params.name });
 
   return (
-    <section className="flex flex-col max-w-5xl mx-auto">
+    <section className="flex flex-col max-w-5xl mx-auto max-sm:pt-8">
       <h1 className="text-3xl max-sm:text-lg font-bold text-neutral-800">
         #{params.name}
       </h1>

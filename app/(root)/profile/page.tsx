@@ -12,7 +12,7 @@ export default async function page() {
   const user = await getCurrentUser();
 
   return (
-    <section className="max-w-5xl flex flex-col mx-auto">
+    <section className="max-w-5xl flex flex-col mx-auto max-sm:pt-8">
       <HeaderProfile user={user} currentUserId={user.id} />
       {/* HIGHLIGHT */}
 

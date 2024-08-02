@@ -3,7 +3,6 @@
 import { SearchIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
-import { useDebouncedCallback } from "use-debounce";
 
 export const Search = ({ placeholder }: { placeholder: string }) => {
   const [query, setQuery] = useState("");
@@ -12,16 +11,16 @@ export const Search = ({ placeholder }: { placeholder: string }) => {
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  const handleSearch = useDebouncedCallback((term) => {
+  const handleSearch = (term: string) => {
     const params = new URLSearchParams(searchParams);
 
-    if (term) {
+    if (term.length > 0) {
       params.set("user", term);
     } else {
       params.delete("user");
     }
     replace(`${pathname}?${params.toString()}`);
-  }, 300);
+  };
 
   return (
     <div className="flex flex-1 relative flex-shrink-0 w-full">
@@ -35,7 +34,7 @@ export const Search = ({ placeholder }: { placeholder: string }) => {
         }}
       >
         <input
-          className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
+          className=" block rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
           placeholder="Search"
           onChange={(e) => setQuery(e.target.value)}
           defaultValue={searchParams.get("user")?.toString()}

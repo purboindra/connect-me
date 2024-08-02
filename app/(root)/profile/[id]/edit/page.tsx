@@ -8,7 +8,9 @@ export default async function page({ params }: ParamsProps) {
 
   return (
     <>
-      <h1 className="text-lg font-semibold text-center">Edit Profile</h1>
+      <h1 className="text-lg font-semibold text-center max-sm:pt-8">
+        Edit Profile
+      </h1>
       <div className="mt-9">
         <EditProfileForm user={user} />
       </div>

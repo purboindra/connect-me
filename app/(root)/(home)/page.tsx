@@ -4,13 +4,10 @@ import { FeedItem } from "@/components/shared/FeedItem";
 import { Search } from "@/components/shared/Search";
 import { SearchParamsProps, UserInterface } from "@/types";
 import Image from "next/image";
-import { notFound } from "next/navigation";
 import React from "react";
 
 export default async function page({ searchParams }: SearchParamsProps) {
   const query = searchParams?.user || "";
-
-  console.log(query);
 
   const users = await fetchUserByUsername({ username: query });
 
@@ -20,30 +17,10 @@ export default async function page({ searchParams }: SearchParamsProps) {
   ]);
 
   return (
-    <section className="flex flex-col items-center">
-      {/* <div className="w-full overflow-auto no-scrollbar"> */}
-      {/* <div className="flex py-4 flex-row gap-4 "> */}
-      {/* {follows.map((user: any) => (
-            <div key={user.followedUserId} className="flex flex-col gap-1">
-              <div className="rounded-full h-[56px] w-[56px] p-[2px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
-                <div className=" bg-neutral-300 w-full h-full rounded-full">
-                  <Image
-                    src={"/assets/icons/account.svg"}
-                    alt="profile"
-                    width={300}
-                    height={300}
-                    className="text-neutral-600 object-cover"
-                  />
-                </div>
-              </div>
-              <p className="truncate w-[56px] flex">{user.follower.username}</p>
-            </div>
-          ))} */}
-      {/* </div> */}
-      {/* </div> */}
+    <section className="flex flex-col items-center max-sm:pt-8">
       {/* FEED */}
       <Search placeholder={query} />
-      {users !== undefined && users.length > 0 ? (
+      {users !== undefined ? (
         users.map((user) => <p key={user.id}>{user.username}</p>)
       ) : (
         <>
