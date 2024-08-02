@@ -21,16 +21,25 @@ export async function GET(req: NextRequest, { params }: { params: IParams }) {
       },
       include: {
         author: true,
-        comments: true,
-        hashtag: true,
-        likes: {
+        comments: {
           include: {
+            likes: true,
+            author: true,
             post: true,
+          },
+        },
+        hashtag: true,
+        likes: true,
+        savedBy: {
+          where: {
+            userId: {
+              not: undefined,
+            },
+          },
+          include: {
             user: true,
           },
         },
-        _count: true,
-        savedBy: true,
       },
     });
 

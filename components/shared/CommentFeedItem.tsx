@@ -13,6 +13,7 @@ import { useDialog } from "@/hooks/useDialog";
 import { DialogEnum } from "@/lib/enums";
 import { Heart } from "lucide-react";
 import { LikeComment } from "./LikeComment";
+import { comment } from "postcss";
 
 interface CommentDialogParams {
   post: PostInterface;
@@ -99,6 +100,7 @@ export const CommentFeedItem = ({
       {optimisticMessages.map((comment, index) => {
         const hasLiked =
           user &&
+          comment.likes !== undefined &&
           comment.likes.find(
             (commentItem) =>
               commentItem.userId.toString() === user.id.toString()

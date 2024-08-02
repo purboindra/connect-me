@@ -39,6 +39,11 @@ export const ContentPostById = ({ post, user }: ContentPostByIdParams) => {
   }, []);
 
   React.useEffect(() => {
+    console.log(user);
+    console.log(post);
+  }, [post, user]);
+
+  React.useEffect(() => {
     const hasLiked =
       user &&
       post.likes.find(

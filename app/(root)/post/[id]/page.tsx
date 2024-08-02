@@ -18,8 +18,6 @@ export default async function page({ params }: ParamsProps) {
     notFound();
   }
 
-  console.log(post);
-
   return (
     <main className="flex">
       <ContentPostById post={post} user={currentUser} />

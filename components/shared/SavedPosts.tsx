@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import ImageGrid from "./ImageGrid";
+import Link from "next/link";
 
 interface SavedPostsInterface {
   posts: any[];
@@ -11,9 +12,11 @@ const SavedPosts = ({ posts }: SavedPostsInterface) => {
     <div className="w-full grid grid-cols-3 md:grid-cols-4 xl:grid-cols-5   gap-[1px] mt-2">
       {posts.map((post: any) => {
         return (
-          <div key={post.postId} className="max-sm:h-[155px] h-full">
-            <ImageGrid imageUrl={post.post.imageUrl || ""} />
-          </div>
+          <Link key={post.postId} href={`/post/${post.postId}`}>
+            <div className="max-sm:h-[155px] h-full">
+              <ImageGrid imageUrl={post.post.imageUrl || ""} />
+            </div>
+          </Link>
         );
       })}
     </div>
