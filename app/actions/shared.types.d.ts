@@ -17,6 +17,9 @@ export interface FetchUserByIdParams {
   userId: string;
 }
 
+export interface FetchUserByUsernameParams {
+  username: string;
+}
 export interface EditUserParams {
   userId: string;
   username: string;

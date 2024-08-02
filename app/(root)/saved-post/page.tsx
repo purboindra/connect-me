@@ -18,14 +18,16 @@ export default async function page() {
       <h1 className="text-3xl max-sm:text-lg font-bold text-neutral-800">
         Saved Post
       </h1>
-      <div className="grid grid-cols-5  max-sm:grid-cols-3 gap-2">
-        {savedPosts.map((post: any) => (
-          <div key={post.post.id} className="max-sm:h-[155px] h-full">
-            <Link href={`/post/${post.post.id}`}>
-              <ImageGrid imageUrl={post.post.imageUrl || ""} />
+      <div className="w-full grid grid-cols-3 md:grid-cols-4 xl:grid-cols-5   gap-[1px] mt-2">
+        {savedPosts.map((post: any) => {
+          return (
+            <Link key={post.postId} href={`/post/${post.postId}`}>
+              <div className="max-sm:h-[155px] h-full">
+                <ImageGrid imageUrl={post.post.imageUrl || ""} />
+              </div>
             </Link>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

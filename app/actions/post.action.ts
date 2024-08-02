@@ -351,8 +351,6 @@ export async function fetchSavedPostByuserId(params: FetchPostByUserIdParams) {
   }
 
   try {
-    console.log(params.userId);
-
     const response = await fetch(
       `${process.env.BASE_URL}/api/post/save/user/${params.userId}`,
       {

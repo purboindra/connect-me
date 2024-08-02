@@ -8,8 +8,6 @@ interface IParams {
 export async function GET(req: NextRequest, { params }: { params: IParams }) {
   const { userId } = params;
 
-  console.log("userId", userId);
-
   try {
     if (!userId) {
       return NextResponse.json({

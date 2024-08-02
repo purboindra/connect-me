@@ -2,7 +2,6 @@ import { fetchPostById } from "@/app/actions/post.action";
 import { getCurrentUser } from "@/app/actions/user.action";
 import { ContentPostById } from "@/components/shared/ContentPostById";
 import { ParamsProps } from "@/types";
-import console from "console";
 import { notFound } from "next/navigation";
 import React from "react";
 

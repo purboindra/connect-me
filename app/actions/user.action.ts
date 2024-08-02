@@ -6,7 +6,7 @@ import { UserInterface } from "@/types";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { FetchUserByIdParams } from "./shared.types";
+import { FetchUserByIdParams, FetchUserByUsernameParams } from "./shared.types";
 
 export async function fetchAllUser() {
   let users: UserInterface[] = [];
@@ -292,6 +292,27 @@ export async function fetchFollow() {
     console.log(data);
 
     return parseStringify(data.data);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function fetchUserByUsername(params: FetchUserByUsernameParams) {
+  if (params.username.length === 0) return;
+
+  try {
+    const response = await fetch(
+      `${process.env.BASE_URL}/api/user/get-all/${params.username}`
+    );
+
+    const data = await response.json();
+
+    console.log(data);
+
+    if (!response.ok) throw new Error(`${data.message}`);
+
+    return data.data as UserInterface[];
   } catch (error) {
     console.log(error);
     throw error;
