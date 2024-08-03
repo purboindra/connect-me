@@ -1,5 +1,6 @@
 import { fetchAllPost } from "@/app/actions/post.action";
 import { fetchUserByUsername, getCurrentUser } from "@/app/actions/user.action";
+import { EmptyContent } from "@/components/shared/EmptyContent";
 import { FeedItem } from "@/components/shared/FeedItem";
 import { Search } from "@/components/shared/Search";
 import { UserCard } from "@/components/shared/UserCard";
@@ -29,7 +30,20 @@ export default async function page({ searchParams }: SearchParamsProps) {
       <Search placeholder={query} />
       {/* CONDITIO FETCH USER FROM SEARCH */}
       {users !== undefined ? (
-        users!.map((user) => <UserCard user={user} key={user.id} />)
+        users.length > 0 ? (
+          users!.map((user) => <UserCard user={user} key={user.id} />)
+        ) : (
+          <div className="flex mt-8 flex-col space-y-2 mx-auto items-center justify-center">
+            <h2>No users found</h2>
+            <Image
+              src={"/assets/icons/account.svg"}
+              alt="Post"
+              width={500}
+              height={500}
+              className="w-24 h-24 invert"
+            />
+          </div>
+        )
       ) : (
         <>
           {posts.length > 0 ? (

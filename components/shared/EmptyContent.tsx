@@ -11,7 +11,7 @@ export const EmptyContent = ({ title, imageUrl }: EmptyContentInterface) => {
     <div className="flex flex-col gap-4 h-48 items-center mx-auto justify-center">
       <Image
         src={imageUrl}
-        alt="video"
+        alt={imageUrl}
         width={64}
         height={64}
         className=" text-neutral-400"
