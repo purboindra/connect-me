@@ -23,11 +23,12 @@ export const Search = ({ placeholder }: { placeholder: string }) => {
   };
 
   return (
-    <div className="flex flex-1 relative flex-shrink-0 w-full">
+    <div className="flex relative w-full">
       <label htmlFor="search" className="sr-only">
         Search
       </label>
       <form
+        className="w-full max-w-5xl max-sm:w-[220px]"
         onSubmit={(e) => {
           e.preventDefault();
           handleSearch(query);
