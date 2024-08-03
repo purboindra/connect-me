@@ -2,26 +2,34 @@ import { fetchAllPost } from "@/app/actions/post.action";
 import { fetchUserByUsername, getCurrentUser } from "@/app/actions/user.action";
 import { FeedItem } from "@/components/shared/FeedItem";
 import { Search } from "@/components/shared/Search";
-import { SearchParamsProps, UserInterface } from "@/types";
+import { UserCard } from "@/components/shared/UserCard";
+import { PostInterface, SearchParamsProps, UserInterface } from "@/types";
 import Image from "next/image";
 import React from "react";
 
 export default async function page({ searchParams }: SearchParamsProps) {
   const query = searchParams?.user || "";
 
-  const users = await fetchUserByUsername({ username: query });
+  let users = undefined;
+  let posts: PostInterface[] = [];
+  let currentUser = null;
 
-  const [posts, currentUser] = await Promise.all([
-    fetchAllPost(),
-    getCurrentUser(),
-  ]);
+  if (query) {
+    users = await fetchUserByUsername({ username: query });
+  } else {
+    [posts, currentUser] = await Promise.all([
+      fetchAllPost(),
+      getCurrentUser(),
+    ]);
+  }
 
   return (
     <section className="flex flex-col items-center max-sm:pt-8">
       {/* FEED */}
       <Search placeholder={query} />
+      {/* CONDITIO FETCH USER FROM SEARCH */}
       {users !== undefined ? (
-        users.map((user) => <p key={user.id}>{user.username}</p>)
+        users!.map((user) => <UserCard user={user} key={user.id} />)
       ) : (
         <>
           {posts.length > 0 ? (

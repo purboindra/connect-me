@@ -301,9 +301,19 @@ export async function fetchFollow() {
 export async function fetchUserByUsername(params: FetchUserByUsernameParams) {
   if (params.username.length === 0) return;
 
+  const token = cookies().get("access_token");
+
+  if (!token) return;
+
   try {
     const response = await fetch(
-      `${process.env.BASE_URL}/api/user/get-all/${params.username}`
+      `${process.env.BASE_URL}/api/user/get-all/${params.username}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: token.value,
+        },
+      }
     );
 
     const data = await response.json();

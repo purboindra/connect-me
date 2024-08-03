@@ -1,3 +1,4 @@
+import { verifyToken } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
 
 interface IParams {
@@ -13,6 +14,16 @@ export async function GET(
   }
 ) {
   try {
+    const requestHeaders = new Headers(req.headers);
+
+    const token = requestHeaders.get("Authorization");
+
+    if (!token)
+      return NextResponse.json({ message: "Unauthorized", status: 401 });
+
+    const parseToken = verifyToken(token);
+    const currentUserid = (parseToken as any).userId;
+
     const { username } = params;
 
     if (!username) {
@@ -25,8 +36,11 @@ export async function GET(
     const user = await prisma?.user.findMany({
       where: {
         username: {
-          search: username,
+          contains: username,
           mode: "insensitive",
+        },
+        NOT: {
+          id: Number.parseInt(currentUserid),
         },
       },
       include: {
