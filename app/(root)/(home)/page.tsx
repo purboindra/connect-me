@@ -1,10 +1,9 @@
 import { fetchAllPost } from "@/app/actions/post.action";
 import { fetchUserByUsername, getCurrentUser } from "@/app/actions/user.action";
-import { EmptyContent } from "@/components/shared/EmptyContent";
 import { FeedItem } from "@/components/shared/FeedItem";
 import { Search } from "@/components/shared/Search";
 import { UserCard } from "@/components/shared/UserCard";
-import { PostInterface, SearchParamsProps, UserInterface } from "@/types";
+import { PostInterface, SearchParamsProps } from "@/types";
 import Image from "next/image";
 import React from "react";
 
@@ -13,7 +12,7 @@ export default async function page({ searchParams }: SearchParamsProps) {
 
   let users = undefined;
   let posts: PostInterface[] = [];
-  let currentUser = null;
+  let currentUser = undefined;
 
   if (query) {
     users = await fetchUserByUsername({ username: query });

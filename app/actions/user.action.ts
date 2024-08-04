@@ -308,6 +308,7 @@ export async function fetchUserByUsername(params: FetchUserByUsernameParams) {
   try {
     const response = await fetch(
       `${process.env.BASE_URL}/api/user/get-all/${params.username}`,
+
       {
         method: "GET",
         headers: {
