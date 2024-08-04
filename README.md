@@ -2,6 +2,25 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+Required for this project:
+
+## prism for database
+
+## supabase for image storage
+
+```change with yours
+DATABASE_URL="..."
+BASE_URL="http://localhost:3000"
+JWT_SECRET="..."
+NEXT_PUBLIC_SUPABASE_URL="..."
+NEXT_PUBLIC_SUPABASE_KEY="..."
+NEXT_PUBLIC_SUPABASE_ANON_KEY="..."
+```
+
+then, add those variables to .env file
+
+Reference [https://www.prisma.io/docs/getting-started] and [https://supabase.com/docs/guides/storage]
+
 First, run the development server:
 
 ```bash
