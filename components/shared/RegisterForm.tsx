@@ -41,25 +41,14 @@ export const RegisterForm = () => {
   });
 
   useEffect(() => {
-    if (state.errors.length > 0) {
-      let errorMessage;
-      const errors = state.errors || {};
-
-      if (typeof errors !== "string") {
-        errorMessage = errors?.content?.[0];
-      } else {
-        errorMessage = errors;
-      }
-
-      if (errors) {
-        toast({
-          title: "Oops...",
-          description: errorMessage,
-          variant: "destructive",
-        });
-      }
+    if (state.errors?.timestamp && state.errors.errors) {
+      toast({
+        title: "Oops...",
+        description: state.errors.errors,
+        variant: "destructive",
+      });
     }
-  }, [state.errors ? JSON.stringify(state.errors) : ""]);
+  }, [state.errors.errors, state.errors?.timestamp]);
 
   return (
     <Form {...form}>

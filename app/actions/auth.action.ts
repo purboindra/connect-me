@@ -7,7 +7,7 @@ import {
   RegisterSchema,
   RegisterState,
 } from "../../lib/validation";
-import { verifyToken } from "../../lib/utils";
+import { addTimestampToError, verifyToken } from "../../lib/utils";
 import { cookies } from "next/headers";
 
 export async function register(prevState: RegisterState, formData: FormData) {
@@ -55,7 +55,9 @@ export async function register(prevState: RegisterState, formData: FormData) {
   } catch (error: any) {
     console.error(error);
     return {
-      errors: error.message,
+      errors: addTimestampToError({
+        errors: error.message,
+      }),
     };
   }
   redirect("/");
@@ -99,7 +101,9 @@ export async function login(prevState: LoginState, formData: FormData) {
   } catch (error: any) {
     console.error(error);
     return {
-      errors: error.message,
+      errors: addTimestampToError({
+        errors: error.message,
+      }),
     };
   }
   redirect("/");

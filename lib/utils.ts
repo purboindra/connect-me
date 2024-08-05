@@ -87,3 +87,10 @@ export const addHashtags = (text: string) => {
   );
   return newHashtags;
 };
+
+export function addTimestampToError(errors: any) {
+  return {
+    ...errors,
+    timestamp: new Date().getTime(),
+  };
+}

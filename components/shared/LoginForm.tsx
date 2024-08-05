@@ -34,31 +34,14 @@ export const LoginForm = () => {
   });
 
   useEffect(() => {
-    let errors = state.errors || {};
-
-    if (Object.keys(errors).length > 0) {
-      let errorMessage;
-
-      if (typeof errors !== "string") {
-        if (state.errors.email) {
-          errorMessage = errors?.email?.[0];
-        } else {
-          errorMessage = errors?.password?.[0];
-        }
-      } else {
-        errorMessage = errors;
-      }
-
-      if (errors) {
-        toast({
-          title: "Oops...",
-          description: errorMessage,
-          variant: "destructive",
-        });
-      }
+    if (state.errors?.timestamp && state.errors.errors) {
+      toast({
+        title: "Oops...",
+        description: state.errors.errors,
+        variant: "destructive",
+      });
     }
-    errors = {};
-  }, [state.errors]);
+  }, [state.errors.errors, state.errors?.timestamp]);
 
   return (
     <Form {...form}>
