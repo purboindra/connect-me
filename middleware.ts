@@ -12,8 +12,11 @@ export async function middleware(request: NextRequest) {
 
   const response = NextResponse.next();
 
-  if (!token && (hasOnLogin || hasOnRegister))
+  if (!token && hasOnLogin)
     return NextResponse.rewrite(new URL("/login", request.url));
+
+  if (!token && hasOnRegister)
+    return NextResponse.rewrite(new URL("/register", request.url));
 
   if (token) {
     const expired = isTokenExpired(token!.value);

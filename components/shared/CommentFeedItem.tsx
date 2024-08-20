@@ -110,7 +110,7 @@ export const CommentFeedItem = ({
             <div className="flex flex-row items-center gap-1">
               <span className="font-semibold text-neutral-800">
                 <h2>{`${
-                  comment.author.username === user.username
+                  comment.author.username === user?.username
                     ? "You"
                     : `${comment.author.username}`
                 }`}</h2>
@@ -125,7 +125,7 @@ export const CommentFeedItem = ({
                 hasLike: hasLiked,
                 likeCount: comment.likes.length,
               }}
-              userId={user.id}
+              userId={user?.id}
             />
           </div>
         );
@@ -135,7 +135,7 @@ export const CommentFeedItem = ({
         <span className="text-sm font-normal text-neutral-600">Comment as</span>
         <span>
           <h2 className="text-sm font-semibold text-neutral-600">
-            {user.username}
+            {user?.username}
           </h2>
         </span>
       </div>
@@ -143,7 +143,7 @@ export const CommentFeedItem = ({
       <div className="flex flex-row gap-1 items-center">
         <div className="rounded-full p-[2px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
           <div className="h-[22px] w-[22px] bg-neutral-300 rounded-full">
-            {user.photoUrl !== undefined ? (
+            {user?.photoUrl !== undefined ? (
               <Image src={user.photoUrl} alt="profile" width={48} height={48} />
             ) : (
               <Image

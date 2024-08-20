@@ -26,7 +26,7 @@ export default async function page({ searchParams }: SearchParamsProps) {
   return (
     <section className="flex flex-col items-center max-sm:pt-8">
       {/* FEED */}
-      <Search placeholder={query} />
+      {/* <Search placeholder={query} /> */}
       {/* CONDITIO FETCH USER FROM SEARCH */}
       {users !== undefined ? (
         users.length > 0 ? (

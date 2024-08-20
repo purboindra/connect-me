@@ -23,11 +23,11 @@ export const PostItem = ({ post, user }: PostItemInterface) => {
   const [hasFollow, setHasFollow] = useState(false);
 
   useEffect(() => {
-    const followed = user.following.some((follow) => {
+    const followed = user?.following?.some((follow) => {
       return follow.followedUserId.toString() == post.author.id;
     });
     setHasFollow(followed);
-  }, [post.author.id, user.followers, user.following]);
+  }, [post.author.id, user?.followers, user?.following]);
 
   useEffect(() => {
     setSrc(src);
